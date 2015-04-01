@@ -1,7 +1,7 @@
 {
-  "name": "Eurobot-2015",
+  "name": "Eurobot-core",
   "version": "1.0.0",
-  "description": "",
+  "description": "Nodejs core embedded on a linux board of our main robot for Eurobot Challenge",
   "scripts": {
     "start": "iojs build/src/main.js",
     "deploy": "./deploy.sh",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/RobotikUTT/eurobot-2015"
+    "url": "https://github.com/RobotikUTT/eurobot-core"
   },
   "author": "Axel Mousset Aurélien Labate",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RobotikUTT/eurobot-2015/issues"
+    "url": "https://github.com/RobotikUTT/eurobot-core/issues"
   },
-  "homepage": "https://github.com/RobotikUTT/eurobot-2015",
+  "homepage": "https://github.com/RobotikUTT/eurobot-core",
   "dependencies": {
     "express": "^4.11.2",
     "native-promisify": "^1.2.0",
