@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "start": "iojs build/src/main.js",
+    "deploy": "./deploy.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
