@@ -1,45 +1,46 @@
-import packets from '../communication/packets/index'
-//import Parser from '../communcation/PacketParser'
+import packets from '../communication/packets'
 
-let i2c = require('i2c-bus');
+let promisify = require('native-promisify');
+let i2c       = require('i2c-bus');
 
 
 /**
- * @brief Motor controller interface
- * @details Control two motors by I2C
+ * Interface with eurobot-motorController module
+ * over I²C
  */
-
 class MotorController {
 
     /**
-     * @brief Constructor
-     * 
-     * @param  address I2C address
+     * Constructor
+     * @param  {String} address motorController I²C address
      */
-    
     constructor(address) {
         this.address = address;
-        //this.parser = new PacketParser();
-    } 
+        this.parser  = null;
+        this.bus = promisify(i2c.openSync(1), ['i2cWrite']);
+        console.log('Connected to motorController');
+    }
 
+    close() {
+        this.bus.close();
+        return this.bus;
+    }
 
     /**
-     * @brief Send a packet to the module
-     * 
-     * @param  packet Packet object
+     * Send a packet
+     * @param  {Packet} packet Packet to send
      */
-    
     sendPacket(packet) {
 
     }
 
 
     /**
-     * @brief Ping the module to test communication
-     * @details Use a TestPacket. If the module responds correctly,
+     * Ping the module to test communication
+     * Use a TestPacket. If the module responds correctly,
      * the response TestPacket will have a (number+1) number.
+     * @param {Int} number Initial number
      */
-    
     ping(number) {
         this.sendPacket(new packets.TestPacket(number));
     }
