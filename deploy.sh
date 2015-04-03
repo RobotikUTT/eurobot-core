@@ -11,8 +11,4 @@ rsync -v --exclude '*.map' -a --delete build/src package.json prod@"$prodIp":dev
 echo "----------- Deploy over, start script -----------"
 ssh prod@"$prodIp" "cd /home/prod/dev/ & node /home/prod/dev/src/main.js"
 echo "----------- Kill script -----------"
-<<<<<<< HEAD
 ssh prod@"$prodIp" "pkill node -n"
-=======
-ssh prod@"$prodIp" "pkill node -n"
->>>>>>> eb7eefda242ad8f09520af2ce30d806dc01c0e5f
