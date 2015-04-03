@@ -1,4 +1,4 @@
-import packets from '../communication/packets'
+//import packets from '../communication/packets'
 
 let promisify = require('native-promisify');
 let i2c       = require('i2c-bus');
@@ -42,7 +42,7 @@ class MotorController {
      * @param {Int} number Initial number
      */
     ping(number) {
-        this.sendPacket(new packets.TestPacket(number));
+        // this.sendPacket(new packets.TestPacket(number));
     }
 }
 
