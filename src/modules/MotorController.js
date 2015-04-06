@@ -1,7 +1,5 @@
-import packets from '../communication/packets'
-
-let promisify = require('native-promisify');
-let i2c       = require('i2c-bus');
+import Communication from '../communication/Communication';
+import * as random from '../helpers/random';
 
 
 /**
@@ -12,37 +10,42 @@ class MotorController {
 
     /**
      * Constructor
-     * @param  {String} address motorController I²C address
+     * @param  {Int} address I2C slave address
      */
     constructor(address) {
-        this.address = address;
-        this.parser  = null;
-        this.bus = promisify(i2c.openSync(1), ['i2cWrite']);
-        console.log('Connected to motorController');
+        this.communication = new Communication(address);
+        this.communication.open();
     }
 
-    close() {
-        this.bus.close();
-        return this.bus;
-    }
 
-    /**
-     * Send a packet
-     * @param  {Packet} packet Packet to send
-     */
-    sendPacket(packet) {
+    init() {
+        // Avoid overflow when incrementing
+        let number1 = random.randRange(0, 254);
+        let number2 = random.randRange(-128, 126);
+        let number3 = random.randRange(0, 65536);
+        let number4 = random.randRange(-32768, 33766);
 
+        return this.ping(number1, number2, number3, number4);
     }
 
 
     /**
-     * Ping the module to test communication
-     * Use a TestPacket. If the module responds correctly,
-     * the response TestPacket will have a (number+1) number.
-     * @param {Int} number Initial number
+     * Test communication with the module
+     * All four number will be incremented
+     * @param {UInt8}  number1 first number
+     * @param {Int8}   number2 second number
+     * @param {UInt16} number3 third number
+     * @param {Int16}  number4 forth number
+     * @return {Promise}  reolved with the new nember sent back by the module
      */
-    ping(number) {
-        this.sendPacket(new packets.TestPacket(number));
+    ping(number1, number2, number3, number4) {
+        return this.communication.request(0, number1, number2, number3, number4)
+            .then(function(packet) {
+                if (!(number1 === packet.number1-1 && number2 === packet.number2-1 &&
+                    number3 === packet.number3-1 && number4 === packet.number4-1)) {
+                    throw new Error('Ping test failed');
+                }
+            });
     }
 }
 
