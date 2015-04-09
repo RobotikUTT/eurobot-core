@@ -1,14 +1,17 @@
-import packetsByNumber from './packets/'
+import EventEmitter from 'events';
+import packetsByNumber from './packets/';
+import GpioPin from '../libs/GpioPin';
 
 let promisify = require('native-promisify');
 let i2c       = require('i2c-bus');
 let util      = require('util');
+let log       = require('../libs/logger').getLogger(module);
 
 
 /**
  * Interface with I2C module
  */
-class Communication {
+class Communication extends EventEmitter {
 
     /**
      * Constructor
@@ -17,10 +20,27 @@ class Communication {
      */
     constructor(address, dataAvailablePin) {
         this.address = address;
-        this.dataAvailablePin = dataAvailablePin;
+        this.dataAvailablePin = new GpioPin(dataAvailablePin);
         this.bus = null;
 
         this.lastRcvCheck = -1;
+
+        this.dataAvailablePin.mode('out');
+        this.previousDataState = 'low';
+
+        // Constantly update dataAvailable state
+        setInterval(() => {
+            this.dataAvailablePin.read()
+                .then((level)  => {
+                    // Emit only RISING event
+                    if (level === 'high' &&
+                        level != this.previousDataState) {
+                        this.emit('data');
+                    }
+
+                    this.previousDataState = level;
+                })
+        }, 2);
     }
 
     /**
@@ -58,6 +78,7 @@ class Communication {
         header.writeUInt8(packetNumber, 0);
 
         let data = packet.serialize();
+
         // Write data length
         header.writeUInt8(data.length, 1);
 
@@ -73,6 +94,7 @@ class Communication {
         this.lastRcvCheck = newCheck;
 
         let frame = Buffer.concat([ header, data, new Buffer([newCheck]) ]);
+
         return this.bus.i2cWrite(this.address, frame.length, frame);
     }
 
@@ -107,7 +129,7 @@ class Communication {
                 });
                 // return this.bus.i2cRead(this.address, frame.length, frame)
             })
-            .then((bytesRead) => {
+            .then(() => {
                 let offset = 0;
                 let newCheck;
 
@@ -124,6 +146,11 @@ class Communication {
                 let length = frame.readUInt8(offset);
                 offset++;
                 newCheck = length;
+
+                if (length > 32) {
+                    // Impossible
+                    throw new Error('Packet dropped. Length too long.');
+                }
 
                 // Read arguments
                 let data = new Buffer(length);

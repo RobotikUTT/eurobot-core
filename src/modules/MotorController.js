@@ -1,5 +1,12 @@
 import Communication from '../communication/Communication';
+import MovePacket from '../communication/packets/MovePacket';
 import * as random from '../helpers/random';
+
+let log = require('../libs/logger').getLogger(module);
+
+
+
+const GOTO_TIMEOUT = 15 * 1000; //ms
 
 
 /**
@@ -13,7 +20,7 @@ class MotorController {
      * @param  {Int} address I2C slave address
      */
     constructor(address) {
-        this.communication = new Communication(address);
+        this.communication = new Communication(address, 11);
         this.communication.open();
     }
 
@@ -39,12 +46,63 @@ class MotorController {
      * @return {Promise}  reolved with the new nember sent back by the module
      */
     ping(number1, number2, number3, number4) {
+        log.debug('Ping !');
+
         return this.communication.request(0, number1, number2, number3, number4)
             .then(function(packet) {
                 if (!(number1 === packet.number1-1 && number2 === packet.number2-1 &&
                     number3 === packet.number3-1 && number4 === packet.number4-1)) {
                     throw new Error('Ping test failed');
                 }
+            });
+    }
+
+
+    /**
+     * Make the robot go to a (x,y) point
+     * @param  {Int} x         x coordinates in meters
+     * @param  {Int} y         y coordinates in meters
+     * @param  {Bool} forceFace set to true if the robot must go front
+     * @return {Promise}           resolved when the robot finished.
+     * rejected after a GOTO_TIMEOUT milliseconds timeout.
+     */
+    goTo(x, y, forceFace) {
+        log.debug('goTo !');
+
+        let movePacket = new MovePacket(x, y, forceFace);
+
+        return this.communication.send(movePacket)
+            .then(() => {
+                return new Promise((resolve, reject) => {
+                    let resolved = false;
+
+                    // Rising dataAvailable means that enslavement is finished
+                    this.communication.on('data', function() {
+                        log.info('info !');
+                        resolve();
+                    });
+
+                    // Timeout on enslavement
+                    setTimeout(function() {
+                        log.error('Timeout !');
+                        if (!resolved) {
+                            reject(new Error('goTo timeout'));
+                        }
+                    }, GOTO_TIMEOUT);
+                });
+            });
+    }
+
+
+    getPosition() {
+        log.debug('getPosition !');
+
+        return this.communication.request(2)
+            .then(function(packet) {
+                let status = packet.getPoint();
+                status.orientation = packet.getOrientation();
+
+                return  Promise.resolve(status);
             });
     }
 }

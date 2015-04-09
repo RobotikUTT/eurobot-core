@@ -52,7 +52,7 @@ class TestPacket extends Packet {
 
 
     /**
-     * @brief number getter
+     * number getter
      */
     getNumber() {
         return this.number;
@@ -60,7 +60,7 @@ class TestPacket extends Packet {
 
 
     /**
-     * @brief number setter
+     * number setter
      */
     setNumber(number) {
         this.number = number;

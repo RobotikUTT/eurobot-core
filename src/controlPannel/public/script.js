@@ -10,7 +10,7 @@ socket.on('log', function(data) {
     var toAdd = '';
     toAdd += '<p> <span class="' + data.level + '">' + data.level + '</span>: ';
     toAdd += (data.msg) ? data.msg : '';
-    toAdd += (data.meta) ? JSON.stringify(data.meta) : '';
+    // toAdd += (data.meta) ? JSON.stringify(data.meta) : '';
     toAdd += '</p>';
 
     div.innerHTML += toAdd;
