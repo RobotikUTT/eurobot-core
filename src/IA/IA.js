@@ -51,21 +51,22 @@ class IA {
                     .then(function(status) {
                         log.info('Actual position x: '+status.x+', y: '+status.y+
                             ', orientation: ' + status.orientation);
+                        done();
+                    })
+                    .catch((err) => {
+                        log.error(err.stack);
+                    })
+            })
+            .after(0, (done) => {
+                this.motorController.goTo(1, 0)
+                    .then(() => {
+                        log.info('Arrived in 1,0');
+                        done();
                     })
                     .catch((err) => {
                         log.error(err.stack);
                     });
             });
-            // .after(0, (done) => {
-            //     this.motorController.goTo(1, 0)
-            //         .then(() => {
-            //             log.info('Arrived in 1,0');
-            //             done();
-            //         })
-            //         .catch((err) => {
-            //             log.error(err.stack);
-            //         });
-            // })
             // .after(1000, (done) => {
             //     this.motorController.goTo(0, 0)
             //         .then(() => {

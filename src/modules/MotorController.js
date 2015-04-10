@@ -60,16 +60,15 @@ class MotorController {
 
     /**
      * Make the robot go to a (x,y) point
-     * @param  {Int} x         x coordinates in meters
-     * @param  {Int} y         y coordinates in meters
+     * @param {Object} point Carthesian coordinates. x,y {Int16}
      * @param  {Bool} forceFace set to true if the robot must go front
      * @return {Promise}           resolved when the robot finished.
      * rejected after a GOTO_TIMEOUT milliseconds timeout.
      */
-    goTo(x, y, forceFace) {
+    goTo(point, forceFace) {
         log.debug('goTo !');
 
-        let movePacket = new MovePacket(x, y, forceFace);
+        let movePacket = new MovePacket(point, forceFace);
 
         return this.communication.send(movePacket)
             .then(() => {
@@ -84,7 +83,6 @@ class MotorController {
 
                     // Timeout on enslavement
                     setTimeout(function() {
-                        log.error('Timeout !');
                         if (!resolved) {
                             reject(new Error('goTo timeout'));
                         }

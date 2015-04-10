@@ -23,10 +23,7 @@ class MovePacket extends Packet {
         this.packetNumber = PACKET_NUMBER;
         this.packetLength = PACKET_LENGTH;
 
-        this.point = {
-            x: x,
-            y: y
-        };
+        this.point = point;
         this.forceFace = forceFace;
     }
 
