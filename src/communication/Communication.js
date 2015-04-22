@@ -48,12 +48,8 @@ class Communication extends EventEmitter {
      */
     open() {
         // Open cannot be promisified
-        try {
-            this.bus = promisify(i2c.openSync(1), ['i2cWrite', 'i2cRead', 'close']);
-        }
-        catch(err) {
-            console.error('Cannot connect to motorController: ' + err);
-        }
+        this.bus = promisify(i2c.openSync(1), ['i2cWrite', 'i2cRead', 'close']);
+
     }
 
 

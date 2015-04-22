@@ -34,6 +34,11 @@
       $modalContent.append(html);
     }
 
+    /* Messages */
+    data.messages.forEach(function(message) {
+      window.robotik.addMessage(message);
+    });
+
     $('select').material_select();
     $('ul.tabs').tabs();
     $('.modal-trigger').leanModal();

@@ -9,10 +9,10 @@ class IA {
     /**
      * Constructor
      *
-     * @param motorController Motor interface
+     * @param modules modules
      */
-    constructor(motorController) {
-        this.motorController = motorController;
+    constructor(modules) {
+        this.motorController = modules.motorController;
         this.scheduler = new Scheduler();
 
         /**
@@ -36,7 +36,7 @@ class IA {
         // });
 
 
-        let sequence = this.scheduler.sequence((done) => {
+        this.mainSsequence = this.scheduler.sequence((done) => {
             this.motorController.init()
                 .then(() => {
                     log.info('Connected to motorController');
@@ -78,8 +78,7 @@ class IA {
             //         });
             // });
 
-        // Schedule main sequence
-        sequence.schedule();
+
     }
 
 
@@ -87,6 +86,8 @@ class IA {
      * Start IA
      */
     start() {
+        // Schedule main sequence
+        this.mainSsequence.schedule();
         this.scheduler.start();
     }
 

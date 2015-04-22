@@ -10,6 +10,8 @@ var util = require('util');
 
 var io = null;
 
+var history = [];
+
 
 /**
  * @brief Retreive filename given a module name
@@ -35,9 +37,12 @@ var WebLogger = winston.transports.WebLogger = function(options) {
 util.inherits(WebLogger, winston.Transport);
 
 WebLogger.prototype.log = function (level, msg, meta, callback) {
+    var message = { level: level, msg: msg, meta: meta };
+    history.push(message);
+
     if (io)
     {
-        io.emit('log', { level: level, msg: msg, meta: meta });
+        io.emit('log', message);
         callback(null, true);
     }
 };
@@ -75,4 +80,9 @@ export function getLogger(module) {
 
 export function initIO(io_) {
     io = io_;
+}
+
+
+export function getHistory() {
+    return history;
 }

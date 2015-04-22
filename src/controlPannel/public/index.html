@@ -57,27 +57,6 @@
           <button class="btn red active" data-msg="error">Error</button>
         </div>
         <div class="messages">
-          <div class="message info">
-            <i class="mdi-action-info left blue-text"></i>Blablaazeaeaeazeazeazeazeazesaezazeazes
-          </div>
-          <div class="message info">
-            <i class="mdi-action-info left blue-text"></i>Blablaazeaeaeazeazeazeazeazesaezazeazes
-          </div>
-          <div class="message debug">
-            <i class="mdi-action-settings left grey-text"></i>Blablaazeaeaeazeazeazeazeazesaezazeazes
-          </div>
-          <div class="message warn">
-            <i class="mdi-alert-warning left orange-text"></i>Blablaazeaeaeazeazeazeazeazesaezazeazes
-          </div>
-          <div class="message warn">
-            <i class="mdi-alert-warning left orange-text"></i>Blablaazeaeaeazeazeazeazeazesaezazeazes
-          </div>
-          <div class="message error">
-            <i class="mdi-alert-error left red-text"></i>Blablaazeaeaeazeazeazeazeazesaezazeazes
-          </div>
-          <div class="message info">
-            <i class="mdi-action-info left blue-text"></i>Blablaazeaeaeazeazeazeazeazesaezazeazes
-          </div>
         </div>
       </div>
       <div class="content row">
@@ -85,13 +64,13 @@
           <div class="col s12">
             <ul class="tabs">
               <li class="tab col s3">
-                <a href="#" data-target="#map" class="active">
+                <a href="#" data-target=".map" data-sidebar=".sidebarMap" class="active">
                   <i class="mdi-action-room"></i>
                   Carte
                 </a>
               </li>
               <li class="tab col s3">
-                <a href="#" data-target="#chart">
+                <a href="#" data-target=".chart" data-sidebar=".sidebarGraphs">
                   <i class="mdi-editor-insert-chart"></i>
                   Graphes
                 </a>
@@ -106,7 +85,7 @@
           <div id="chart"></div>
         </div>
       </div>
-      <div class="sidebar right teal lighten-3">
+      <div class="sidebar right teal sidebarMap lighten-3">
         <div class="card blue-grey darken-1">
           <div class="card-content white-text">
             <span class="card-title">Coordonnées</span>
@@ -184,10 +163,9 @@
             </div>
             <div class="row plierRow">
               <div class="col s8">
-                <label for="pliers">Hauteur de la pince (%) :</label>
-                <p class="range-field">
-                  <input type="range" id="pliers" min="0" max="100" />
-                </p>
+                <div class="input-field">
+                  <input type="text" placeholder="mm">
+                </div>
               </div>
               <div class="col s4 center rightValidateContainer">
                 <button class="waves-effect waves-light btn">
@@ -200,6 +178,44 @@
                 Stopper
                 <i class="mdi-av-not-interested right"></i>
               </button>
+            </div>
+          </div>
+        </div> <!-- .card -->
+      </div> <!-- .sidebar -->
+      <div class="sidebar right teal sidebarGraphs lighten-3">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">Vitesse</span>
+            <div class="row">
+              <div class="col s12 input-field">
+                <input type="text" placeholder="m/s">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 center">
+                <button class="waves-effect waves-light btn">
+                  Tester
+                  <i class="mdi-image-adjust right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> <!-- .card -->
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">Vitesse angulaire</span>
+            <div class="row">
+              <div class="col s12 input-field">
+                <input type="text" placeholder="rad/s">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 center">
+                <button class="waves-effect waves-light btn">
+                  Tester
+                  <i class="mdi-image-adjust right"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div> <!-- .card -->

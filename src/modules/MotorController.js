@@ -20,8 +20,13 @@ class MotorController {
      * @param  {Int} address I2C slave address
      */
     constructor(address) {
-        this.communication = new Communication(address, 11);
-        this.communication.open();
+        try {
+            this.communication = new Communication(address, 11);
+            this.communication.open();
+        }
+        catch(err) {
+            log.error('Cannot connect to motorController: ' + err);
+        }
     }
 
 

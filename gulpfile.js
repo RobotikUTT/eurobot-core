@@ -6,7 +6,7 @@ var plumber = require('gulp-plumber');
 
 
 gulp.task('build', function () {
-    gulp.src(['src/**/*.js', '!src/controlPannel/public/*.js'])
+    gulp.src(['src/**/*.js', '!src/controlPannel/public/**/*.js'])
         .pipe(plumber({
             handleError: function (err) {
                 console.log(err);
@@ -18,7 +18,7 @@ gulp.task('build', function () {
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('build/src'));
 
-    gulp.src('src/controlPannel/public/*')
+    gulp.src('src/controlPannel/public/**')
         .pipe(gulp.dest('build/src/controlPannel/public'));
 });
 

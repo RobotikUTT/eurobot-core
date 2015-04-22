@@ -1,12 +1,12 @@
 (function () {
   'use strict';
 
-  window.robotik.chartPoints = [
-    [1, 10, 'S1'],
-    [2, 14, 'S1'],
-    [1, 4,  'S2'],
-    [2, 20, 'S2']
-  ];
+
+  window.robotik.chartPoints = [];
+
+  for (var i = 0; i < 1000; ++i) {
+    window.robotik.chartPoints.push([i, Math.sin(i / 10), 'lol']);
+  }
 
   window.robotik.chart = function () {
     var points = window.robotik.chartPoints;

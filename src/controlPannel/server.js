@@ -1,5 +1,6 @@
 import * as logger from '../libs/logger';
 
+
 var promisify = require('native-promisify');
 let path      = require('path');
 let express   = require('express');
@@ -16,8 +17,22 @@ let util      = require('util');
 
 logger.initIO(io);
 let log = logger.getLogger(module);
+let modules = null;
 
 let port = 8080;
+let data = {
+  kp: 5,
+  ki: 6,
+  kd: 7,
+  dt: 10,
+  items: [
+    ['ball',     'Balle',     100],
+    ['cylinder', 'Cylindre',  200],
+    ['bottle',   'Bouteille', 300],
+    ['cube',     'Cube',      400]
+  ]
+};
+
 
 io.on('connection', function(socket) {
     log.info('[WEB] New client connected');
@@ -25,15 +40,23 @@ io.on('connection', function(socket) {
     socket.on('disconnect', function() {
         log.info('[WEB] Client disconnected');
     });
+
+    data.messages = logger.getHistory();
+    socket.emit('init', data);
 });
+
 
 
 /**
  * Start the webServer
  */
 
-export function start() {
+export function start(modules_) {
     log.info('[WEB] Server listening on *:' + port);
 
     return server.listen(port);
+}
+
+export function bind(modules_) {
+    modules = modules_;
 }
