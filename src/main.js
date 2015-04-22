@@ -8,8 +8,8 @@ let log = require('./libs/logger').getLogger(module);
 controlPannel
     .start()
     .then(function() {
-        let motorController = new MotorController(0x2);
-        let ia = new IA(motorController);
+        // let motorController = new MotorController(0x2);
+        // let ia = new IA(motorController);
 
-        ia.start();
+        // ia.start();
     });

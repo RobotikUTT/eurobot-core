@@ -95,7 +95,12 @@ class Communication extends EventEmitter {
 
         let frame = Buffer.concat([ header, data, new Buffer([newCheck]) ]);
 
-        return this.bus.i2cWrite(this.address, frame.length, frame);
+        if (this.bus) {
+            return this.bus.i2cWrite(this.address, frame.length, frame);
+        }
+        else {
+            return Promise.reject(new Error('Bus non open'));
+        }
     }
 
 

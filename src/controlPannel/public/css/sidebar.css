@@ -1,0 +1,118 @@
+.sidebar {
+  height: 100%;
+  padding: 5px 0;
+  width: 300px;
+}
+
+/* Left sidebar */
+.sidebar.left {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.sidebar.left .buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar.left .buttons .btn {
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 5px;
+  flex: 1;
+}
+
+.sidebar.left .buttons .btn.active {
+  text-decoration: underline;
+}
+
+.sidebar.left .messages {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.88);
+  margin: 10px auto 0 auto;
+  padding: 5px 10px;
+  height: 75%;
+  width: 275px;
+}
+
+.sidebar.left .messages .message {
+  text-align: left;
+  word-break: break-all;
+}
+
+.sidebar.left .messages .message i {
+  margin-right: 5px;
+}
+
+/* Right sidebar */
+.sidebar.right {
+
+}
+
+.sidebar.right .card {
+  margin: 0 auto 10px auto;
+  overflow: visible;
+  padding: 0;
+  width: 275px;
+}
+
+.sidebar.right .card .card-content {
+  padding: 10px;
+}
+
+.sidebar.right .card .card-title {
+  line-height: 32px;
+}
+
+.sidebar.right .card .row {
+  margin: 10px 0;
+}
+
+.sidebar.right .card .col {
+  line-height: 3rem;
+  margin-top: 0;
+  padding: 0 5px;
+}
+
+.sidebar.right .card .col.center .btn {
+  width: 100%;
+}
+
+.sidebar.right .range-field {
+  pointer-events: none;
+}
+
+.sidebar.right .plierRow label {
+  color: #fff;
+}
+
+.sidebar.right .plierRow .rightValidateContainer {
+  height: 80px;
+  line-height: 80px;
+}
+
+.sidebar.right .initPlier {
+  position: absolute;
+  margin-top: -40px;
+  margin-right: 20px;
+}
+
+.sidebar.right .range-field input {
+  pointer-events: all;
+}
+
+.sidebar.right .card .row.center {
+  text-align: center;
+}
+
+.sidebar.right .card .selectContainer {
+  margin-top: 15px;
+  position: relative;
+  z-index: 10;
+}
+
+.sidebar.right .card .rightValidateContainer button {
+  width: 100%;
+}
