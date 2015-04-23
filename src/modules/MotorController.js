@@ -1,5 +1,6 @@
 import Communication from '../communication/Communication';
 import MovePacket from '../communication/packets/MovePacket';
+import MotorStopPacket from '../communication/packets/MotorStopPacket';
 import * as random from '../helpers/random';
 
 let log = require('../libs/logger').getLogger(module);
@@ -29,9 +30,8 @@ class MotorController {
                 log.error('MotorController: I2C bus unavailable');
             }
             else {
-
+                log.error('Cannot connect to motorController: ' + err);
             }
-            log.error('Cannot connect to motorController: ' + err);
         }
     }
 
@@ -113,6 +113,15 @@ class MotorController {
 
                 return  Promise.resolve(status);
             });
+    }
+
+
+    stop() {
+        log.debug('stop !');
+
+        let stopPacket = new MotorStopPacket();
+
+        return this.communication.send(stopPacket);
     }
 }
 

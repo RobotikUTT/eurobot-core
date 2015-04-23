@@ -1,13 +1,13 @@
 import * as logger from '../libs/logger';
 
 
+let util      = require('util');
 var promisify = require('native-promisify');
 let path      = require('path');
 let express   = require('express');
 let app       = express().use(express.static(path.join(__dirname, 'public')));
 let server    = promisify(require('http').Server(app), ['listen']);
 let io        = require('socket.io')(server);
-let util      = require('util');
 
 
 /**
@@ -37,9 +37,47 @@ let data = {
 io.on('connection', function(socket) {
     log.info('[WEB] New client connected');
 
-    socket.on('disconnect', function() {
+    /*
+      Setup handlers
+     */
+
+    socket
+      .on('disconnect', function() {
         log.info('[WEB] Client disconnected');
-    });
+      })
+
+      .on('stopMotor', function() {
+        log.info('stopMotor request');
+
+        modules.motorController
+          .stop()
+          .then(() => {
+            log.info('Motors stopped');
+          })
+          .catch(() => {
+            log.warn('Motors has not been stopped');
+          });
+      })
+
+      .on('goToMotor', function(data) {
+        log.info(util.format('goToMotor request (%d, %d) forceFace: %s',
+              data.x, data.y, data.forceFace));
+
+        modules.motorController
+          .goTo(data.x, data.y, Boolean(data.forceFace))
+          .then(() => {
+            log.info(util.format('Arrived in (%d, %d) forceFace: %s',
+              data.x, data.y, data.forceFace));
+          })
+          .catch((err) => {
+            log.warn('Motors goTo has not been made');
+          });
+      });
+
+
+    /*
+      Init interface
+     */
 
     data.messages = logger.getHistory();
     socket.emit('init', data);
