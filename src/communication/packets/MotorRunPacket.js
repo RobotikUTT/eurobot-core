@@ -1,25 +1,32 @@
 import Packet from './Packet';
 
 
-const PACKET_NUMBER = 3;
-const PACKET_LENGTH = 0;
+const PACKET_NUMBER = 4;
+const PACKET_LENGTH = 3;
 
 
 /**
- * Stop motors and enslavement
+ * Start a motor
  */
-class MotorStopPacket extends Packet {
+class MotorRunPacket extends Packet {
 
-    constructor() {
+    constructor(motor, pwm) {
         super();
 
         this.packetNumber = PACKET_NUMBER;
         this.packetLength = PACKET_LENGTH;
+
+        this.motor = motor;
+        this.pwm = pwm;
     }
 
 
     serialize() {
         let data = new Buffer(this.packetLength);
+
+        data.writeUInt8(this.motor, 0);
+        data.writeInt16BE(this.pwm, 1);
+
         return data;
     }
 
@@ -31,4 +38,4 @@ class MotorStopPacket extends Packet {
 }
 
 
-export default MotorStopPacket;
+export default MotorRunPacket;

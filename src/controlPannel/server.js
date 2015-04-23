@@ -54,8 +54,8 @@ io.on('connection', function(socket) {
           .then(() => {
             log.info('Motors stopped');
           })
-          .catch(() => {
-            log.warn('Motors has not been stopped');
+          .catch((err) => {
+            log.warn(err.message);
           });
       })
 
@@ -70,8 +70,34 @@ io.on('connection', function(socket) {
               data.x, data.y, data.forceFace));
           })
           .catch((err) => {
-            log.warn('Motors goTo has not been made');
+            log.warn(err.message);
           });
+      })
+
+      .on('runMotor', function(data) {
+        modules.motorController.run(data.motor, data.pwm)
+          .then(() => {
+            log.info(util.format('%s run at %d', data.motor, data.pwm));
+          })
+          .catch((err) => {
+            log.warn(err.message);
+          });
+      })
+
+      .on('eval', function(data) {
+        /*
+          Shortcuts
+         */
+
+        let help = 'Not yet !';
+        let m = modules;
+
+        try {
+          log.info(eval(data));
+        }
+        catch(err) {
+          log.warn(err.message);
+        }
       });
 
 
