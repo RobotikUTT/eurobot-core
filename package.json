@@ -20,6 +20,7 @@
   "homepage": "https://github.com/RobotikUTT/eurobot-core",
   "dependencies": {
     "express": "^4.11.2",
+    "i2c-bus": "^0.11.1",
     "native-promisify": "^1.2.0",
     "nconf": "^0.7.1",
     "node-robot": "^0.2.0",
