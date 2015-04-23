@@ -25,6 +25,12 @@ class MotorController {
             this.communication.open();
         }
         catch(err) {
+            if (err.message.indexOf('ENOENT') != -1) {
+                log.error('MotorController: I2C bus unavailable');
+            }
+            else {
+
+            }
             log.error('Cannot connect to motorController: ' + err);
         }
     }
