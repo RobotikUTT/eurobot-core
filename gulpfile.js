@@ -17,13 +17,16 @@ gulp.task('build', function () {
         .pipe(babel())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('build/src'));
+});
 
+gulp.task('copy', function() {
     gulp.src('src/controlPannel/public/**')
         .pipe(gulp.dest('build/src/controlPannel/public'));
 });
 
 gulp.task('default', ['build'], function() {
     gulp.watch('src/**/*.js', ['build']);
+    gulp.watch('src/controlPannel/public/**', ['copy']);
 });
 
 
