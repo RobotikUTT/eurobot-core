@@ -123,6 +123,21 @@ class MotorController {
 
         return this.communication.send(stopPacket);
     }
+
+
+    run(motor, pwm) {
+        if (motor !== 'left' && motor !== 'right') {
+            return Promise.reject(new TypeError('motor must be either left or right'));
+        }
+        if (abs(pwm) > 255) {
+            return Promise.reject(new RangeError('abs(pwm) must be < 255'));
+        }
+
+        let packetNumber = (motor === 'right') ? 1 : 0;
+        let runPacket = new MotorRunPacket(packetNumber, pwm);
+
+        return this.communication.send(runPacket);
+    }
 }
 
 export default MotorController;

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "iojs build/src/main.js",
     "deploy": "scripts/deploy.sh",
-    "postinstall": "scripts/install.sh",
+    "postinstall": "sh scripts/install.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
