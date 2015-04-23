@@ -93,7 +93,7 @@ io.on('connection', function(socket) {
         let m = modules;
 
         try {
-          log.info(eval(data));
+          log.info('[EVAL]: ' + eval(data));
         }
         catch(err) {
           log.warn(err.message);

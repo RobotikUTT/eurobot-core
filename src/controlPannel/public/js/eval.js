@@ -11,8 +11,10 @@
   });
 
   function doSend (code) {
-    window.robotik.io.emit('eval', code);
-    $eval.val('');
+    if (code) {
+      window.robotik.io.emit('eval', code);
+      $eval.val('');
+    }
   }
 
 }());
