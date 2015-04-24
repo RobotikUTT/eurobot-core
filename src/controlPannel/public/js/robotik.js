@@ -14,25 +14,16 @@
     robotik.items = data.items;
 
     /* Consts */
-    $('#KI').val(robotik.ki).next().addClass('active');
-    $('#KP').val(robotik.kp).next().addClass('active');
-    $('#KD').val(robotik.kd).next().addClass('active');
-    $('#DT').val(robotik.dt).next().addClass('active');
+    $('#ki > input').val(robotik.ki);
+    $('#kp > input').val(robotik.kp);
+    $('#kd > input').val(robotik.kd);
+    $('#dt > input').val(robotik.dt);
 
     /* Items */
-    var $select       = $('.selectContainer select').empty();
-    var $modalContent = $('#modalConsts .modal-content');
-    $select.append('<option value="" disabled selected>Type d\'objet</option>');
-
-    for (var i = robotik.items.length - 1; i >= 0; i--) {
-      $select.append('<option value="' + robotik.items[i][0] + '">' + robotik.items[i][1] + '</option>');
-      // Add the const for the item
-      var html = '<div class="row"><div class="input-field col s12">';
-      html    += '<input type="text" id="' + robotik.items[i][0] + '" value="' + robotik.items[i][2] + '">';
-      html    += '<label for="' + robotik.items[i][0] + '" class="active">' + robotik.items[i][1] + '</label>';
-      html    += '</div></div>';
-      $modalContent.append(html);
-    }
+    robotik.items.forEach(function (item) {
+      $('.update-th').before('<td>' + item[1] + '</td>');
+      $('.update-tb').before('<td id="' + item[0] + '"><input type="text" placeholder="' + item[1] + '" value="' + item[2] + '"></td>')
+    });
 
     /* Messages */
     data.messages.forEach(function(message) {

@@ -8,3 +8,8 @@ html, body {
   padding: 0 10px;
   text-align: center;
 }
+
+main .constantsContainer table {
+  margin: 0 40px;
+  width: calc(100% - 80px);
+}

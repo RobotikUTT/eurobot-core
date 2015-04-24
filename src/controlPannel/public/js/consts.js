@@ -1,16 +1,16 @@
 (function () {
   'use strict';
 
-  $('.saveConsts').one('click', function oneClick (e) {
+  $('.saveConsts').click(function (e) {
     e.preventDefault();
-    console.log('okokok');
-    window.robotik.kp = $('#KP').val();
-    window.robotik.ki = $('#KI').val();
-    window.robotik.kd = $('#KD').val();
-    window.robotik.dt = $('#DT').val();
+
+    window.robotik.kp = parseFloat($('#kp > input').val());
+    window.robotik.ki = parseFloat($('#ki > input').val());
+    window.robotik.kd = parseFloat($('#kd > input').val());
+    window.robotik.dt = parseFloat($('#dt > input').val());
 
     for (var i = window.robotik.items.length - 1; i >= 0; i--) {
-      window.robotik.items[i][2] = $('#' + window.robotik.items[i][0]).val();
+      window.robotik.items[i][2] = parseFloat($('#' + window.robotik.items[i][0] + ' > input').val());
     }
 
     window.robotik.io.emit('data', {
@@ -19,13 +19,6 @@
       kd: window.robotik.kd,
       dt: window.robotik.dt,
       items: window.robotik.items
-    });
-
-    // Rebind (bug in materialize)
-    // https://github.com/MarijnMensinga/materialize/commit/96b2fec89b51c5a0915a388166d3bebd3bd15e40
-    var $self = $(this);
-    setTimeout(function () {
-      $self.one('click', oneClick);
     });
   });
 }());
