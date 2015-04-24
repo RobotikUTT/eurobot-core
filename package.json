@@ -4,7 +4,7 @@
   "description": "Nodejs core embedded on a linux board of our main robot for Eurobot Challenge",
   "scripts": {
     "start": "iojs build/src/main.js",
-    "deploy": "scripts/deploy.sh",
+    "deploy": "sh scripts/deploy.sh",
     "postinstall": "sh scripts/install.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
