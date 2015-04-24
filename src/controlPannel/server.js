@@ -21,10 +21,10 @@ let modules = null;
 
 let port = 8080;
 let data = {
-  kp: 5,
-  ki: 6,
-  kd: 7,
-  dt: 10,
+  kp: 0,
+  ki: 0,
+  kd: 0,
+  dt: 50,
   items: [
     ['ball',     'Balle',     100],
     ['cylinder', 'Cylindre',  200],
@@ -92,6 +92,17 @@ io.on('connection', function(socket) {
           .catch((err) => {
             log.warn(err.message);
           });
+      })
+
+      .on('setTunings', function(data) {
+        modules.motorController.setTunings(data.kp, data.ki, data.kd, data.dt)
+          .then(() => {
+            log.info(util.format('Tunings set to kp:%d, ki:%d, kd:%d, dt:%d',
+              data.kp, data.ki, data.kd, data.dt));
+          })
+          .catch((err) => {
+            log.warn(err.message);
+          })
       })
       .on('eval', function(data) {
         /*

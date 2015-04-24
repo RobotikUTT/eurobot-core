@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  $('.saveConsts').one('click', function oneClick (e) {
+  $('#setTunings').one('click', function oneClick (e) {
     e.preventDefault();
     console.log('okokok');
     window.robotik.kp = $('#KP').val();
@@ -13,13 +13,8 @@
       window.robotik.items[i][2] = $('#' + window.robotik.items[i][0]).val();
     }
 
-    window.robotik.io.emit('data', {
-      kp: window.robotik.kp,
-      ki: window.robotik.ki,
-      kd: window.robotik.kd,
-      dt: window.robotik.dt,
-      items: window.robotik.items
-    });
+    window.robotik.io.emit('setTunings', { kp: window.robotik.kp, ki: window.robotik.ki,
+      kd: window.robotik.kd, dt: window.robotik.dt });
 
     // Rebind (bug in materialize)
     // https://github.com/MarijnMensinga/materialize/commit/96b2fec89b51c5a0915a388166d3bebd3bd15e40

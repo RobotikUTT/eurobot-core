@@ -11,10 +11,15 @@
   var $stopBtn   = $('.motorStop'),
     $goToBtn     = $('#motorGoTo'),
     $turnBtn     = $('#motorTurn'),
+    $tuningsBtn  = $('#setTunings'),
     $xPos        = $('#xPos'),
     $yPos        = $('#yPos'),
     $forceFace   = $('#forceFace'),
-    $angle       = $('#angle');
+    $angle       = $('#angle'),
+    $KP          = $('#KP'),
+    $KI          = $('#KI'),
+    $KD          = $('#KD'),
+    $DT          = $('#DT');
 
    // Stop
   $stopBtn.click(function() {
@@ -29,7 +34,6 @@
 
   // Turn
   $turnBtn.click(function() {
-    io.emit('turnMotor', { angle: $angle.val() });
     io.emit('turnMotor', { angle: $angle.val() });
   })
 }());

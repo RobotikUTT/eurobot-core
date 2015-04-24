@@ -3,6 +3,7 @@ import MovePacket from '../communication/packets/MovePacket';
 import MotorStopPacket from '../communication/packets/MotorStopPacket';
 import MotorRunPacket from '../communication/packets/MotorRunPacket';
 import TurnPacket from '../communication/packets/TurnPacket';
+import TuningsPacket from '../communication/packets/TuningsPacket';
 import * as random from '../helpers/random';
 
 let log = require('../libs/logger').getLogger(module);
@@ -128,6 +129,8 @@ class MotorController {
 
 
     run(motor, pwm) {
+        log.debug('run !');
+
         if (motor !== 'left' && motor !== 'right') {
             return Promise.reject(new TypeError('motor must be either left or right'));
         }
@@ -143,9 +146,20 @@ class MotorController {
 
 
     turn(angle) {
+        log.debug('turn !');
+
         let turnPacket = new TurnPacket(angle);
 
         return this.communication.send(turnPacket);
+    }
+
+
+    setTunings(kp, ki, kd, dt) {
+        log.debug('Tunings !');
+
+        let tuningsPacket = new TuningsPacket(kp, ki, kd, dt);
+
+        return this.communication.send(tuningsPacket);
     }
 }
 
