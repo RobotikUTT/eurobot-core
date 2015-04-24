@@ -107,14 +107,12 @@ class MotorController {
 
 
     getPosition() {
-        log.debug('getPosition !');
-
         return this.communication.request(2)
             .then(function(packet) {
                 let status = packet.getPoint();
                 status.orientation = packet.getOrientation();
 
-                return  Promise.resolve(status);
+                return Promise.resolve(status);
             });
     }
 

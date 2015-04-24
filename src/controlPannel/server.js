@@ -9,6 +9,8 @@ let app       = express().use(express.static(path.join(__dirname, 'public')));
 let server    = promisify(require('http').Server(app), ['listen']);
 let io        = require('socket.io')(server);
 
+const ODOMETRY_REFRESH = 50; //ms
+
 
 /**
  * Socket io is set up, we can pass the object
@@ -104,6 +106,7 @@ io.on('connection', function(socket) {
             log.warn(err.message);
           })
       })
+
       .on('eval', function(data) {
         /*
           Shortcuts
@@ -120,6 +123,13 @@ io.on('connection', function(socket) {
         }
       });
 
+      // Odometry updates
+      setInterval(function() {
+        modules.motorController.getPosition()
+          .then(function(status) {
+            io.broadcast('getPosition', status);
+          });
+      }, ODOMETRY_REFRESH);
 
     /*
       Init interface
