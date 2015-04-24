@@ -17,10 +17,10 @@
     $yPos        = $('#yPos'),
     $forceFace   = $('#forceFace'),
     $angle       = $('#angle'),
-    $KP          = $('#KP'),
-    $KI          = $('#KI'),
-    $KD          = $('#KD'),
-    $DT          = $('#DT');
+    $KP          = $('#kp > input'),
+    $KI          = $('#ki > input'),
+    $KD          = $('#kd > input'),
+    $DT          = $('#dt > input');
 
    // Stop
   $stopBtn.click(function() {
