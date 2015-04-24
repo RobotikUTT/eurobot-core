@@ -1,7 +1,9 @@
 (function () {
   'use strict';
 
-  $('.saveConsts').click(function () {
+  $('.saveConsts').one('click', function oneClick (e) {
+    e.preventDefault();
+    console.log('okokok');
     window.robotik.kp = $('#KP').val();
     window.robotik.ki = $('#KI').val();
     window.robotik.kd = $('#KD').val();
@@ -17,6 +19,13 @@
       kd: window.robotik.kd,
       dt: window.robotik.dt,
       items: window.robotik.items
+    });
+
+    // Rebind (bug in materialize)
+    // https://github.com/MarijnMensinga/materialize/commit/96b2fec89b51c5a0915a388166d3bebd3bd15e40
+    var $self = $(this);
+    setTimeout(function () {
+      $self.one('click', oneClick);
     });
   });
 }());
