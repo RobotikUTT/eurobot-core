@@ -39,6 +39,7 @@
     $('#status').html(
       '<strong>x:</strong> ' + status.x + '<br>' +
       '<strong>y:</strong> ' + status.y + '<br>' +
-      '<strong>°:</strong> ' + status.orientation);
+      '<strong>rad:</strong> ' + status.orientation + '<br>' +
+      '<strong>deg:</strong> ' + (parseFloat(status.orientation) * 57.2957795).toString();
   });
 }());
