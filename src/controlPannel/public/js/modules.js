@@ -12,6 +12,7 @@
     $goToBtn     = $('#motorGoTo'),
     $turnBtn     = $('#motorTurn'),
     $tuningsBtn  = $('#setTunings'),
+    $resetOdoBtn = $('#resetOdometry'),
     $xPos        = $('#xPos'),
     $yPos        = $('#yPos'),
     $forceFace   = $('#forceFace'),
@@ -35,5 +36,10 @@
   // Turn
   $turnBtn.click(function() {
     io.emit('turnMotor', { angle: $angle.val() });
+  })
+
+  // Odometry
+  $resetOdoBtn.click(function() {
+    io.emit('resetOdometry');
   })
 }());

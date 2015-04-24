@@ -107,6 +107,16 @@ io.on('connection', function(socket) {
           })
       })
 
+      .on('resetOdometry', function() {
+        modules.motorController.setOdometry({x: 0, y: 0}, 0)
+          .then(() => {
+            log.info('Odometry reset');
+          })
+          .catch((err) => {
+            log.warn(err.message);
+          })
+      })
+
       .on('eval', function(data) {
         /*
           Shortcuts

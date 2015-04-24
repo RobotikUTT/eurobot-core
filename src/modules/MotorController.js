@@ -4,6 +4,7 @@ import MotorStopPacket from '../communication/packets/MotorStopPacket';
 import MotorRunPacket from '../communication/packets/MotorRunPacket';
 import TurnPacket from '../communication/packets/TurnPacket';
 import TuningsPacket from '../communication/packets/TuningsPacket';
+import SetOdometryPacket from '../communication/packets/SetOdometryPacket';
 import * as random from '../helpers/random';
 
 let log = require('../libs/logger').getLogger(module);
@@ -158,6 +159,15 @@ class MotorController {
         let tuningsPacket = new TuningsPacket(kp, ki, kd, dt);
 
         return this.communication.send(tuningsPacket);
+    }
+
+
+    setOdometry(point, orientation) {
+        log.debug('Set odometry !');
+
+        let setOdometryPacket = new SetOdometryPacket(point, orientation);
+
+        return this.communication.send(setOdometryPacket);
     }
 }
 
