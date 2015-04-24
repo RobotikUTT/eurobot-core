@@ -2,7 +2,7 @@ import Packet from './Packet';
 
 
 const PACKET_NUMBER = 2;
-const PACKET_LENGTH = 6;
+const PACKET_LENGTH = 12;
 
 
 /**
@@ -35,9 +35,9 @@ class OdometryPacket extends Packet {
 
 
     deserialize(data) {
-        this.point.x = data.readInt16BE(0);
-        this.point.y = data.readInt16BE(2);
-        this.orientation = data.readInt16BE(4);
+        this.point.x = data.readFloatBE(0);
+        this.point.y = data.readFloatBE(4);
+        this.orientation = data.readFloatBE(8);
     }
 
 

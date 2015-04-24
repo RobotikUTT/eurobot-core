@@ -123,14 +123,6 @@ io.on('connection', function(socket) {
         }
       });
 
-      // Odometry updates
-      setInterval(function() {
-        modules.motorController.getPosition()
-          .then(function(status) {
-            io.broadcast('getPosition', status);
-          });
-      }, ODOMETRY_REFRESH);
-
     /*
       Init interface
      */
@@ -139,7 +131,13 @@ io.on('connection', function(socket) {
     socket.emit('init', data);
 });
 
-
+// Odometry updates
+setInterval(function() {
+  modules.motorController.getPosition()
+    .then(function(status) {
+      io.sockets.emit('getPosition', status);
+    });
+}, ODOMETRY_REFRESH);
 
 /**
  * Start the webServer
