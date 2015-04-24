@@ -36,7 +36,9 @@
   });
 
   robotik.io.on('getPosition', function(status) {
-    $('#status').text('x: ' + status.x + ', y: ' + status.y +
-      ', orientation: ' + status.orientation);
+    $('#status').html(
+      '<strong>x:</strong> ' + status.x + '<br>' +
+      '<strong>y:</strong> ' + status.y + '<br>' +
+      '<strong>°:</strong> ' + status.orientation);
   });
 }());
