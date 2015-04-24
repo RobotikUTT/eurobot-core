@@ -40,6 +40,6 @@
       '<strong>x:</strong> ' + status.x + '<br>' +
       '<strong>y:</strong> ' + status.y + '<br>' +
       '<strong>rad:</strong> ' + status.orientation + '<br>' +
-      '<strong>deg:</strong> ' + (parseFloat(status.orientation) * 57.2957795).toString();
+      '<strong>deg:</strong> ' + (parseFloat(status.orientation) * 57.2957795).toString());
   });
 }());

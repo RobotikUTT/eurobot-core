@@ -55,6 +55,11 @@
   width: calc(100% - 25px);
 }
 
+.sidebar.left #resetOdometry {
+  margin: 0 auto;
+  width: 90%;
+}
+
 /* Right sidebar */
 .sidebar.right {
 
