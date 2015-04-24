@@ -3,6 +3,8 @@ import MovePacket from '../communication/packets/MovePacket';
 import MotorStopPacket from '../communication/packets/MotorStopPacket';
 import MotorRunPacket from '../communication/packets/MotorRunPacket';
 import TurnPacket from '../communication/packets/TurnPacket';
+import TuningsPacket from '../communication/packets/TuningsPacket';
+import SetOdometryPacket from '../communication/packets/SetOdometryPacket';
 import * as random from '../helpers/random';
 
 let log = require('../libs/logger').getLogger(module);
@@ -106,14 +108,12 @@ class MotorController {
 
 
     getPosition() {
-        log.debug('getPosition !');
-
         return this.communication.request(2)
             .then(function(packet) {
                 let status = packet.getPoint();
                 status.orientation = packet.getOrientation();
 
-                return  Promise.resolve(status);
+                return Promise.resolve(status);
             });
     }
 
@@ -128,6 +128,8 @@ class MotorController {
 
 
     run(motor, pwm) {
+        log.debug('run !');
+
         if (motor !== 'left' && motor !== 'right') {
             return Promise.reject(new TypeError('motor must be either left or right'));
         }
@@ -143,9 +145,29 @@ class MotorController {
 
 
     turn(angle) {
+        log.debug('turn !');
+
         let turnPacket = new TurnPacket(angle);
 
         return this.communication.send(turnPacket);
+    }
+
+
+    setTunings(kp, ki, kd, dt) {
+        log.debug('Tunings !');
+
+        let tuningsPacket = new TuningsPacket(kp, ki, kd, dt);
+
+        return this.communication.send(tuningsPacket);
+    }
+
+
+    setOdometry(point, orientation) {
+        log.debug('Set odometry !');
+
+        let setOdometryPacket = new SetOdometryPacket(point, orientation);
+
+        return this.communication.send(setOdometryPacket);
     }
 }
 

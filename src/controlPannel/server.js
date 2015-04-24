@@ -9,6 +9,8 @@ let app       = express().use(express.static(path.join(__dirname, 'public')));
 let server    = promisify(require('http').Server(app), ['listen']);
 let io        = require('socket.io')(server);
 
+const ODOMETRY_REFRESH = 50; //ms
+
 
 /**
  * Socket io is set up, we can pass the object
@@ -21,10 +23,10 @@ let modules = null;
 
 let port = 8080;
 let data = {
-  kp: 5,
-  ki: 6,
-  kd: 7,
-  dt: 10,
+  kp: 0,
+  ki: 0,
+  kd: 0,
+  dt: 50,
   items: [
     ['ball',     'Balle',     100],
     ['cylinder', 'Cylindre',  200],
@@ -93,6 +95,28 @@ io.on('connection', function(socket) {
             log.warn(err.message);
           });
       })
+
+      .on('setTunings', function(data) {
+        modules.motorController.setTunings(data.kp, data.ki, data.kd, data.dt)
+          .then(() => {
+            log.info(util.format('Tunings set to kp:%d, ki:%d, kd:%d, dt:%d',
+              data.kp, data.ki, data.kd, data.dt));
+          })
+          .catch((err) => {
+            log.warn(err.message);
+          })
+      })
+
+      .on('resetOdometry', function() {
+        modules.motorController.setOdometry({x: 0, y: 0}, 0)
+          .then(() => {
+            log.info('Odometry reset');
+          })
+          .catch((err) => {
+            log.warn(err.message);
+          })
+      })
+
       .on('eval', function(data) {
         /*
           Shortcuts
@@ -109,7 +133,6 @@ io.on('connection', function(socket) {
         }
       });
 
-
     /*
       Init interface
      */
@@ -118,7 +141,13 @@ io.on('connection', function(socket) {
     socket.emit('init', data);
 });
 
-
+// Odometry updates
+setInterval(function() {
+  modules.motorController.getPosition()
+    .then(function(status) {
+      io.sockets.emit('getPosition', status);
+    });
+}, ODOMETRY_REFRESH);
 
 /**
  * Start the webServer

@@ -13,11 +13,12 @@
       window.robotik.items[i][2] = parseFloat($('#' + window.robotik.items[i][0] + ' > input').val());
     }
 
-    window.robotik.io.emit('data', {
-      kp: window.robotik.kp,
-      ki: window.robotik.ki,
-      kd: window.robotik.kd,
-      dt: window.robotik.dt,
+    window.robotik.io.emit('setTunings', {
+      kp: window.robotik.kp, ki: window.robotik.ki,
+      kd: window.robotik.kd, dt: window.robotik.dt
+    });
+
+    window.robotik.io.emit('setClamp', {
       items: window.robotik.items
     });
   });

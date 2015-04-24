@@ -1,7 +1,7 @@
 import Packet from './Packet';
 
 
-const PACKET_NUMBER = 2;
+const PACKET_NUMBER = 9;
 const PACKET_LENGTH = 12;
 
 
@@ -14,30 +14,30 @@ class OdometryPacket extends Packet {
     /**
      * Constructor
      */
-    constructor() {
+    constructor(point = {x: 0, y: 0}, orientation = 0) {
         super();
 
         this.packetNumber = PACKET_NUMBER;
         this.packetLength = PACKET_LENGTH;
 
-        this.point = {
-            x: 0,
-            y: 0
-        };
-        this.orientation = 0;
+        this.point = point;
+        this.orientation = orientation;
     }
 
 
     serialize() {
-        // Request packet only with no arguments
-        return new Buffer(0);
+        let data = new Buffer(this.packetLength);
+
+        data.writeFloatBE(this.point.x, 0);
+        data.writeFloatBE(this.point.y, 4);
+        data.writeFloatBE(this.orientation, 8);
+
+        return data;
     }
 
 
     deserialize(data) {
-        this.point.x = data.readFloatBE(0);
-        this.point.y = data.readFloatBE(4);
-        this.orientation = data.readFloatBE(8);
+
     }
 
 

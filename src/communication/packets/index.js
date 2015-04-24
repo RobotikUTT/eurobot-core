@@ -5,6 +5,7 @@ import MotorStopPacket from './MotorStopPacket';
 import MotorRunPacket from './MotorRunPacket';
 import EncoderPacket from './EncoderPacket';
 import TurnPacket from './TurnPacket';
+import SetOdometryPacket from './SetOdometryPacket';
 
 
 var packetsByNumber = {
@@ -14,7 +15,8 @@ var packetsByNumber = {
     3: MotorStopPacket,
     4: MotorRunPacket,
     5: EncoderPacket,
-    6: TurnPacket
+    7: TurnPacket,
+    8: SetOdometryPacket
 };
 
 export default packetsByNumber;
