@@ -1,6 +1,8 @@
 import Communication from '../communication/Communication';
 import MovePacket from '../communication/packets/MovePacket';
 import MotorStopPacket from '../communication/packets/MotorStopPacket';
+import MotorRunPacket from '../communication/packets/MotorRunPacket';
+import TurnPacket from '../communication/packets/TurnPacket';
 import * as random from '../helpers/random';
 
 let log = require('../libs/logger').getLogger(module);
@@ -129,7 +131,7 @@ class MotorController {
         if (motor !== 'left' && motor !== 'right') {
             return Promise.reject(new TypeError('motor must be either left or right'));
         }
-        if (abs(pwm) > 255) {
+        if (Math.abs(pwm) > 255) {
             return Promise.reject(new RangeError('abs(pwm) must be < 255'));
         }
 
@@ -137,6 +139,13 @@ class MotorController {
         let runPacket = new MotorRunPacket(packetNumber, pwm);
 
         return this.communication.send(runPacket);
+    }
+
+
+    turn(angle) {
+        let turnPacket = new TurnPacket(angle);
+
+        return this.communication.send(turnPacket);
     }
 }
 

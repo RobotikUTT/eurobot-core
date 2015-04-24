@@ -27,7 +27,7 @@
   function doSend (code) {
     if (code) {
       history.push(code);
-      index++;
+      index = history.length;
 
       window.robotik.io.emit('eval', code);
       $eval.val('');

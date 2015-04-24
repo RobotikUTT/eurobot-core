@@ -61,13 +61,13 @@ io.on('connection', function(socket) {
 
       .on('goToMotor', function(data) {
         log.info(util.format('goToMotor request (%d, %d) forceFace: %s',
-              data.x, data.y, data.forceFace));
+              data.point.x, data.point.y, data.forceFace));
 
         modules.motorController
-          .goTo(data.x, data.y, Boolean(data.forceFace))
+          .goTo(data.point, Boolean(data.forceFace))
           .then(() => {
             log.info(util.format('Arrived in (%d, %d) forceFace: %s',
-              data.x, data.y, data.forceFace));
+              data.point.x, data.point.y, data.forceFace));
           })
           .catch((err) => {
             log.warn(err.message);
@@ -84,6 +84,15 @@ io.on('connection', function(socket) {
           });
       })
 
+      .on('turnMotor', function(data) {
+        modules.motorController.turn(data.angle)
+          .then(() => {
+            log.info(util.format('Tun %d', data.angle));
+          })
+          .catch((err) => {
+            log.warn(err.message);
+          });
+      })
       .on('eval', function(data) {
         /*
           Shortcuts
@@ -96,7 +105,7 @@ io.on('connection', function(socket) {
           log.info('[EVAL]: ' + eval(data));
         }
         catch(err) {
-          log.warn(err.message);
+          log.warn('[EVAL]: ' + err.message);
         }
       });
 
