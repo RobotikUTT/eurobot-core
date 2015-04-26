@@ -1,4 +1,6 @@
 #!/bin/bash
 
 gulp build
-bower install ./build/src/controlPannel/public/
+gulp copy
+cd ./build/src/controlPannel/public
+bower install
