@@ -1,29 +1,33 @@
 (function () {
   'use strict';
+  
+  var map = $('#map');
+  var mapElement = map[0];
+  var context = mapElement.getContext('2d');
 
-  var $map = $('#map');
-  var ctx  = $map[0].getContext('2d');
-
-  window.robotik.mapPoints = [
-    [10, 10, 'red', 4],
-    [10, 14, null, 4],
-    [10, 15],
-    [10, 16],
-    [10, 17],
-    [10, 18],
-    [10, 19],
-    [10, 20]
-  ];
-
-  window.robotik.map = function () {
-    var points = window.robotik.mapPoints;
-    for (var i = points.length - 1; i >= 0; i--) {
-      var size = (points[i].length >= 4 && points[i][3]) ? points[i][3] : 1;
-      ctx.fillStyle = (points[i].length >= 3 && points[i][2]) ? points[i][2] : 'black';
-
-      console.log('drawing', points[i][0], points[i][1], size, size);
-      ctx.fillRect(points[i][0], points[i][1], size, size);
-    }
+  var loadImage = function(mapData, callback) {
+      var image = new Image();
+      image.onload = function() {
+          callback(mapData, image);
+      };
+      image.src = mapData.tileSet.image.source;
   };
+
+  var drawMap = function(mapData, image) {
+      mapElement.width = mapData.map.width*mapData.map.tileWidth;
+      mapElement.height = mapData.map.height*mapData.map.tileHeight;
+      map.width(1000);
+      var t = 0;
+      for(var h = 0;h < mapData.map.height;h++) {
+          for(var w = 0;w < mapData.map.width;w++) {
+              context.drawImage(image, mapData.tiles[t].id*mapData.map.tileWidth, 0, mapData.map.tileWidth, mapData.map.tileHeight, w*mapData.map.tileWidth, h*mapData.map.tileHeight, mapData.map.tileWidth, mapData.map.tileHeight);
+              t++;
+          }
+      }
+  };
+
+  window.robotik.io.on('map', function (data) {
+      loadImage(data, drawMap);
+  });
 
 }());

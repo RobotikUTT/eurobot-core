@@ -26,6 +26,7 @@
     "node-robot": "^0.2.0",
     "node-static": "^0.7.6",
     "socket.io": "^1.3.4",
+    "tmx-parser": "^1.2.3",
     "winston": "^0.9.0"
   },
   "devDependencies": {

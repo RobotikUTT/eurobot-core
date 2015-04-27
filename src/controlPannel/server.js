@@ -8,6 +8,7 @@ let express   = require('express');
 let app       = express().use(express.static(path.join(__dirname, 'public')));
 let server    = promisify(require('http').Server(app), ['listen']);
 let io        = require('socket.io')(server);
+let tmx       = require('tmx-parser');
 
 const ODOMETRY_REFRESH = 50; //ms
 
@@ -139,6 +140,15 @@ io.on('connection', function(socket) {
 
     data.messages = logger.getHistory();
     socket.emit('init', data);
+
+    tmx.parseFile('./ROBOT.tmx', function(err, map) {
+      try {
+        socket.emit('map', {map: {width: map.width, height:map.height, tileWidth: map.tileWidth, tileHeight: map.tileHeight}, tiles: map.layers[0].tiles, tileSet: map.tileSets[0]});
+      }
+      catch(err) {
+        log.error('[MAP]: ' + err.message);
+      }
+    });
 });
 
 // Odometry updates
