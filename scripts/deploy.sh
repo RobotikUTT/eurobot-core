@@ -7,7 +7,7 @@ prodIp=${EUROBOT_PRODIP:-robotProd}
 echo "To set destination IP, use :"
 echo "export EUROBOT_PRODIP=192.168.0.1"
 echo "----------- Deploy destination : $prodIp -----------"
-rsync -v --exclude '*.map' -a --delete build/src package.json prod@"$prodIp":dev/
+rsync -v --exclude '*.map' -a --delete build/src gulpfile.js package.json scripts prod@"$prodIp":dev/
 echo "----------- Deploy over, start script -----------"
 ssh prod@"$prodIp" "cd /home/prod/dev/ & node /home/prod/dev/src/main.js"
 echo "----------- Kill script -----------"
