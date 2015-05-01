@@ -135,16 +135,6 @@ io.on('connection', function(socket) {
         }
       });
 
-    setInterval(function () {
-      socket.emit('getPosition', {
-        point: {
-          x: Math.random() * (40) - 20,
-          y: Math.random() * (40) - 20
-        },
-        orientation: Math.random() * (2 * Math.PI)
-      });
-    }, 400);
-
     /*
       Init interface
      */
