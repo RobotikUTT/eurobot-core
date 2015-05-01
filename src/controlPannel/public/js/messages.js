@@ -3,6 +3,7 @@
 
   var $btns              = $('.sidebar.left .buttons .btn');
   var $messagesContainer = $('.sidebar.left .messages');
+  var $clearLog          = $('#clearLog');
 
   var mapIcons = {
     'info': 'mdi-action-info',
@@ -50,6 +51,10 @@
       $messages.slideUp('fast');
       hidden[toFilter] = true;
     }
+  });
+
+  $clearLog.click(function () {
+    $messagesContainer.empty();
   });
 
   window.robotik.io.on('log', window.robotik.addMessage);
