@@ -5,6 +5,7 @@ import MotorRunPacket from '../communication/packets/MotorRunPacket';
 import TurnPacket from '../communication/packets/TurnPacket';
 import TuningsPacket from '../communication/packets/TuningsPacket';
 import SetOdometryPacket from '../communication/packets/SetOdometryPacket';
+import ResetEncoderPacket from '../communication/packets/ResetEncoderPacket';
 import random from '../helpers/random';
 import logger from '../libs/logger';
 
@@ -199,6 +200,16 @@ class MotorController {
             .then(function(packet) {
                 resolve(packet.leftTicks, packet.rightTicks);
             })
+    }
+
+
+    /**
+     * Reset encoders ticks
+     */
+    resetEncoderTicks() {
+        let resetEncoderPacket = new ResetEncoderPacket();
+
+        return this.communication;send(resetEncoderPacket);
     }
 }
 
