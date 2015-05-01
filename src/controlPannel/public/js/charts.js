@@ -54,6 +54,18 @@
                   color: '#808080'
               }]
           },
+          plotOptions: {
+              spline: {
+                  marker: {
+                      enabled: false,
+                      states: {
+                          hover: {
+                              enabled: false
+                          }
+                      }
+                  }
+              }
+          },
           series: values,
           chart: {
             events: {
