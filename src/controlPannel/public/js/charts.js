@@ -66,12 +66,13 @@
                 console.dir(self.series[0]);
                 robotik.io.on('getPosition', function (status) {
                   var value = parseFloat(status.orientation) * 57.2957795;
-                  self.series[0].addPoint([i, value], true, false);
-                  ++i;
 
-                  if (i === 10000) {
-                    $jqEmitter.trigger('resetPoints');
+                  if (i > 100) {
+                    self.series[0].addPoint([i, value], true, true);
+                  } else {
+                    self.series[0].addPoint([i, value], true, false);
                   }
+                  ++i;
                 });
 
                 $jqEmitter.on('resetPoints', function () {
