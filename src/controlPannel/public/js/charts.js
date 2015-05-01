@@ -7,9 +7,14 @@
     ],
   ];
 
+  var highcharts = [];
+
   var $jqEmitter = $({});
+  $jqEmitter.data('paused', false);
 
   window.robotik.chart = function () {
+    highcharts = [];
+
     var points = window.robotik.chartPoints;
 
     // Organize by series
@@ -39,7 +44,7 @@
         datasets: values
       };
 
-      $('#chart' + graphN).highcharts({
+      highcharts.push($('#chart' + graphN).highcharts({
           title: { text: '' },
           xAxis: {
             categories: labels
@@ -54,17 +59,26 @@
                   color: '#808080'
               }]
           },
-          plotOptions: {
-              spline: {
-                  marker: {
-                      enabled: false,
-                      states: {
-                          hover: {
-                              enabled: false
-                          }
-                      }
-                  }
+          tooltip: {
+            formatter: function () {
+              if ($jqEmitter.data('paused')) {
+                return '[ <b>' + this.x + '</b> ; <b>' + this.y + '</b> ]';
+              } else {
+                return false;
               }
+            }
+          },
+          plotOptions: {
+            series: {
+              marker: {
+                enabled: false,
+                states: {
+                  hover: {
+                    enabled: false
+                  }
+                }
+              }
+            }
           },
           series: values,
           chart: {
@@ -72,19 +86,16 @@
               load: function () {
                 var self = this;
 
-                console.log('call');
                 // Initial amount of points
                 var i = this.series[0].data.length;
                 console.dir(self.series[0]);
                 robotik.io.on('getPosition', function (status) {
                   var value = parseFloat(status.orientation) * 57.2957795;
 
-                  if (i > 100) {
-                    self.series[0].addPoint([i, value], true, true);
-                  } else {
-                    self.series[0].addPoint([i, value], true, false);
+                  if (!$jqEmitter.data('paused')) {
+                    self.series[0].addPoint([i, value], true, i > 100);
+                    ++i;
                   }
-                  ++i;
                 });
 
                 $jqEmitter.on('resetPoints', function () {
@@ -94,14 +105,25 @@
               }
             }
           }
-      });
+      }));
     });
 
     $(window).resize();
   };
 
-  $('#resetContainer').click(function () {
+  $('#resetContainer a').click(function () {
     $jqEmitter.trigger('resetPoints');
+  });
+
+  $('#pauseContainer a').click(function () {
+    $jqEmitter.data('paused', !$jqEmitter.data('paused'));
+
+    var $self = $(this);
+    if ($jqEmitter.data('paused')) {
+      $self.text('Reprise graphiques');
+    } else {
+      $self.text('Pause graphiques');
+    }
   });
 
   function unique (array) {
