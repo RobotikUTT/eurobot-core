@@ -184,6 +184,22 @@ class MotorController {
 
         return this.communication.send(setOdometryPacket);
     }
+
+
+    /**
+     * Get leftTicks and rightTicks essentially for wire debugging purposes
+     * @return {Promise} Resolved when ticks are received
+     */
+    getEncoderTicks() {
+        log.debug('getEncoder !');
+
+        let encoderPacket = new EncoderPacket();
+
+        return this.communication.request(5)
+            .then(function(packet) {
+                resolve(packet.leftTicks, packet.rightTicks);
+            })
+    }
 }
 
 export default MotorController;

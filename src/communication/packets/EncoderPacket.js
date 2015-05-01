@@ -22,7 +22,7 @@ class EncoderPacket extends Packet {
 
 
     serialize() {
-        return null;
+        return new Buffer(this.packetLength).fill(0);
     }
 
 
