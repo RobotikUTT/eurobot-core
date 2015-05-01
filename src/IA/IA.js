@@ -37,7 +37,7 @@ class IA {
 
 
         this.mainSsequence = this.scheduler.sequence((done) => {
-            this.motorController.init()
+            this.motorController.ping()
                 .then(() => {
                     log.info('Connected to motorController');
                     done();

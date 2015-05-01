@@ -5,11 +5,11 @@ import MotorRunPacket from '../communication/packets/MotorRunPacket';
 import TurnPacket from '../communication/packets/TurnPacket';
 import TuningsPacket from '../communication/packets/TuningsPacket';
 import SetOdometryPacket from '../communication/packets/SetOdometryPacket';
-import * as random from '../helpers/random';
+import random from '../helpers/random';
+import logger from '../libs/logger';
 
-let log = require('../libs/logger').getLogger(module);
 
-
+let log = logger.getLogger(module)
 
 const GOTO_TIMEOUT = 15 * 1000; //ms
 
@@ -37,17 +37,6 @@ class MotorController {
                 log.error('Cannot connect to motorController: ' + err);
             }
         }
-    }
-
-
-    init() {
-        // Avoid overflow when incrementing
-        let number1 = random.randRange(0, 254);
-        let number2 = random.randRange(-128, 126);
-        let number3 = random.randRange(0, 65536);
-        let number4 = random.randRange(-32768, 33766);
-
-        return this.ping(number1, number2, number3, number4);
     }
 
 
@@ -107,6 +96,10 @@ class MotorController {
     }
 
 
+    /**
+     * Update MotorController position
+     * @return {Promise} Resolved when position is updated
+     */
     getPosition() {
         return this.communication.request(2)
             .then(function(packet) {
@@ -118,6 +111,10 @@ class MotorController {
     }
 
 
+    /**
+     * Stop all motors
+     * @return {Promise} Resolved when packet is sent
+     */
     stop() {
         log.debug('stop !');
 
@@ -144,6 +141,11 @@ class MotorController {
     }
 
 
+    /**
+     * Make the motors turn a given angle
+     * @param  {Int} angle in degrees
+     * @return {Promise}       Resolved when packet is sent
+     */
     turn(angle) {
         log.debug('turn !');
 
@@ -153,6 +155,13 @@ class MotorController {
     }
 
 
+    /**
+     * Set enslavement tunings
+     * @param {Float} kp Proportional gain
+     * @param {Float} ki Integral gain
+     * @param {Float} kd Derivative gain
+     * @param {UInt} dt  enslavement period
+     */
     setTunings(kp, ki, kd, dt) {
         log.debug('Tunings !');
 
@@ -162,9 +171,15 @@ class MotorController {
     }
 
 
+    /**
+     * Set motorController actual position
+     * @param {Object} point       (x,y) in meters
+     * @param {Int} orientation orientation in degrees
+     */
     setOdometry(point, orientation) {
         log.debug('Set odometry !');
 
+        //TODO: convert in rad
         let setOdometryPacket = new SetOdometryPacket(point, orientation);
 
         return this.communication.send(setOdometryPacket);

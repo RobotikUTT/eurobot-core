@@ -1,60 +1,50 @@
-'use strict';
-
-var winston = require('winston');
-var util = require('util');
+import winston from 'winston';
+import util from 'util';
+import {getModuleName} from '../helpers/module';
 
 
 /**
  * Socket io object
  */
-
 var io = null;
-
 var history = [];
-
-
-/**
- * @brief Retreive filename given a module name
- * 
- * @param  module module name
- * @return filename
- */
-
-function getModuleName(module) {
-    return module.filename.split('/').slice(-2).join('/').split('.js')[0];
-};
 
 
 /**
  * Transports through socket io to the control pannel for web debugging
  */
+class WebLogger extends winston.Transport {
 
-var WebLogger = winston.transports.WebLogger = function(options) {
-    this.name = 'webLogger';
-    this.level = options.level || 'info';
-};
-
-util.inherits(WebLogger, winston.Transport);
-
-WebLogger.prototype.log = function (level, msg, meta, callback) {
-    var message = { level: level, msg: msg, meta: meta };
-    history.push(message);
-
-    if (io)
-    {
-        io.emit('log', message);
-        callback(null, true);
+    constructor(options) {
+        super();
+        this.name = 'webLogger';
+        this.level = options.level || 'info';
     }
-};
+
+    log(level, msg, meta, callback) {
+        var message = { level: level, msg: msg, meta: meta };
+        history.push(message);
+
+        if (io)
+        {
+            io.emit('log', message);
+            callback(null, true);
+        }
+    }
+}
+
+// Register webLogger to winston
+winston.transports.WebLogger = WebLogger;
+
+
 
 
 /**
  * Get a logger including the module path
- * @param  module 
+ * @param  module
  * @return {Object} Logger object
  */
-
-export function getLogger(module) {
+function getLogger(module) {
     var path = getModuleName(module);
     var options = {
         "colorize": true,
@@ -73,16 +63,26 @@ export function getLogger(module) {
 
 
 /**
- * @brief Set the io object
- * 
- * @param  io_ socket.io instance 
+ * Set the io object
+ *
+ * @param  io_ socket.io instance
  */
-
-export function initIO(io_) {
+function initIO(io_) {
     io = io_;
 }
 
 
-export function getHistory() {
+/**
+ * Global history getter
+ * @return {Array} All messages logged since program launch
+ */
+function getHistory() {
     return history;
 }
+
+
+export default {
+        getLogger: getLogger,
+        initIO: initIO,
+        getHistory: getHistory
+};

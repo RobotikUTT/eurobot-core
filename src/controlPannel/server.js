@@ -1,14 +1,17 @@
-import * as logger from '../libs/logger';
+import util from 'util';
+import path from 'path';
+import http from 'http';
+import express from 'express';
+import socketIO from 'socket.io';
+import tmxParser from 'tmx-parser';
+import promisify from 'native-promisify';
+import logger from '../libs/logger';
 
 
-let util      = require('util');
-var promisify = require('native-promisify');
-let path      = require('path');
-let express   = require('express');
 let app       = express().use(express.static(path.join(__dirname, 'public')));
-let server    = promisify(require('http').Server(app), ['listen']);
-let io        = require('socket.io')(server);
-let tmx       = promisify(require('tmx-parser'));
+let server    = promisify(http.Server(app), ['listen']);
+let io        = socketIO(server);
+let tmx       = promisify(tmxParser);
 
 const ODOMETRY_REFRESH = 50; //ms
 
@@ -158,16 +161,23 @@ setInterval(function() {
     });
 }, ODOMETRY_REFRESH);
 
+
 /**
  * Start the webServer
  */
 
-export function start(modules_) {
+function start(modules_) {
     log.info('[WEB] Server listening on *:' + port);
 
     return server.listen(port);
 }
 
-export function bind(modules_) {
+function bind(modules_) {
     modules = modules_;
 }
+
+
+export default {
+  start: start,
+  bind: bind
+};

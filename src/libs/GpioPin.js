@@ -1,4 +1,7 @@
-var sysExec = require('child_process').exec;
+import childProcess from 'child_process';
+
+
+var sysExec = childProcess.exec;
 
 /**
  * @brief Gpio pin manager that use the `gpio` command provided by wiring pi.

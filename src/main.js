@@ -1,12 +1,11 @@
 import MotorController from './modules/MotorController';
 import IA from './IA/IA';
-import * as controlPannel from './controlPannel/server';
+import server from './controlPannel/server';
 
 
 let log = require('./libs/logger').getLogger(module);
 
-
-controlPannel
+server
     .start()
     .then(function() {
         let modules = {};
@@ -15,5 +14,5 @@ controlPannel
         modules.motorController = motorController;
 
         let ia = new IA(modules);
-        controlPannel.bind(modules);
+        server.bind(modules);
     });
