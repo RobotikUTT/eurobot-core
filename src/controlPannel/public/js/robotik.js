@@ -30,6 +30,8 @@
       window.robotik.addMessage(message);
     });
 
+    window.robotik.chart();
+
     $('select').material_select();
     $('ul.tabs').tabs();
     $('.modal-trigger').leanModal();
