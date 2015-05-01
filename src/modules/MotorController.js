@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import Communication from '../communication/Communication';
 import MovePacket from '../communication/packets/MovePacket';
 import MotorStopPacket from '../communication/packets/MotorStopPacket';
@@ -19,13 +20,15 @@ const GOTO_TIMEOUT = 15 * 1000; //ms
  * Interface with eurobot-motorController module
  * over I²C
  */
-class MotorController {
+class MotorController extends EventEmitter {
 
     /**
      * Constructor
      * @param  {Int} address I2C slave address
      */
     constructor(address) {
+        super();
+
         try {
             this.communication = new Communication(address, 11);
             this.communication.open();
@@ -38,6 +41,29 @@ class MotorController {
                 log.error('Cannot connect to motorController: ' + err);
             }
         }
+
+        this.point = {
+            x: 0,
+            y: 0
+        };
+        this.orientation = 0;
+
+        /*
+            Update motorController position
+         */
+        this.updatePosPeriod = 100; //ms
+
+        setInterval(() => {
+            this.updatePosition()
+                .then(() => {
+                    this.emit('newPosition');
+                })
+                .catch(function(err) {
+                    if (err.code !== 'ENOENT') {
+                        log.error(err);
+                    }
+                });
+        }, this.updatePosPeriod);
     }
 
 
@@ -101,13 +127,11 @@ class MotorController {
      * Update MotorController position
      * @return {Promise} Resolved when position is updated
      */
-    getPosition() {
+    updatePosition() {
         return this.communication.request(2)
-            .then(function(packet) {
-                let status = packet.getPoint();
-                status.orientation = packet.getOrientation();
-
-                return Promise.resolve(status);
+            .then((packet) => {
+                this.point = packet.point;
+                this.position = packet.position;
             });
     }
 
@@ -209,7 +233,19 @@ class MotorController {
     resetEncoderTicks() {
         let resetEncoderPacket = new ResetEncoderPacket();
 
-        return this.communication;send(resetEncoderPacket);
+        return this.communication.send(resetEncoderPacket);
+    }
+
+
+    /**
+     * Position getter
+     * @return {Object} Position
+     */
+    getPosition() {
+        return {
+            point: this.point,
+            orientation: this.orientation
+        };
     }
 }
 

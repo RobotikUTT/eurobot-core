@@ -37,8 +37,8 @@
 
   robotik.io.on('getPosition', function(status) {
     $('#status').html(
-      '<strong>x:</strong> ' + status.x + '<br>' +
-      '<strong>y:</strong> ' + status.y + '<br>' +
+      '<strong>x:</strong> ' + status.point.x + '<br>' +
+      '<strong>y:</strong> ' + status.point.y + '<br>' +
       '<strong>rad:</strong> ' + status.orientation + '<br>' +
       '<strong>deg:</strong> ' + (parseFloat(status.orientation) * 57.2957795).toString());
   });

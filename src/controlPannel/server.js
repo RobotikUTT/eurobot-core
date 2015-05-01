@@ -13,8 +13,6 @@ let server    = promisify(http.Server(app), ['listen']);
 let io        = socketIO(server);
 let tmx       = promisify(tmxParser);
 
-const ODOMETRY_REFRESH = 50; //ms
-
 
 /**
  * Socket io is set up, we can pass the object
@@ -153,14 +151,6 @@ io.on('connection', function(socket) {
       });
 });
 
-// Odometry updates
-setInterval(function() {
-  modules.motorController.getPosition()
-    .then(function(status) {
-      io.sockets.emit('getPosition', status);
-    });
-}, ODOMETRY_REFRESH);
-
 
 /**
  * Start the webServer
@@ -174,6 +164,14 @@ function start(modules_) {
 
 function bind(modules_) {
     modules = modules_;
+
+    if (modules.motorController)
+    {
+      // Odometry updates
+      modules.motorController.on('newPosition', function() {
+        io.sockets.emit('getPosition', modules.motorController.getPosition());
+      });
+    }
 }
 
 

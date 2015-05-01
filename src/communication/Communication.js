@@ -19,6 +19,7 @@ class Communication extends EventEmitter {
      * @param  {Byte} dataAvaiblePin Pin that well be up when data is up on slave
      */
     constructor(address, dataAvailablePin) {
+        super();
         this.address = address;
         this.dataAvailablePin = new GpioPin(dataAvailablePin);
         this.bus = null;
