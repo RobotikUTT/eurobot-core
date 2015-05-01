@@ -66,6 +66,16 @@
   margin-left: 247.5px;
 }
 
+.sidebar.left #status strong {
+  float: left;
+  margin-left: 20px;
+}
+
+.sidebar.left #status span {
+  float: right;
+  margin-right: 20px;
+}
+
 /* Right sidebar */
 .sidebar.right {
 
