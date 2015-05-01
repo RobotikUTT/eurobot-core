@@ -68,6 +68,10 @@
                   var value = parseFloat(status.orientation) * 57.2957795;
                   self.series[0].addPoint([i, value], true, false);
                   ++i;
+
+                  if (i === 10000) {
+                    $jqEmitter.trigger('resetPoints');
+                  }
                 });
 
                 $jqEmitter.on('resetPoints', function () {
