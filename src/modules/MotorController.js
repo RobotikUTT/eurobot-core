@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import Module from './Module';
 import Communication from '../communication/Communication';
 import MovePacket from '../communication/packets/MovePacket';
 import MotorStopPacket from '../communication/packets/MotorStopPacket';
@@ -7,40 +7,28 @@ import TurnPacket from '../communication/packets/TurnPacket';
 import TuningsPacket from '../communication/packets/TuningsPacket';
 import SetOdometryPacket from '../communication/packets/SetOdometryPacket';
 import ResetEncoderPacket from '../communication/packets/ResetEncoderPacket';
-import random from '../helpers/random';
 import logger from '../libs/logger';
 
 
 let log = logger.getLogger(module)
 
 const GOTO_TIMEOUT = 15 * 1000; //ms
-
+const UPDATE_POS_PERIOD = 100; //ms
 
 /**
  * Interface with eurobot-motorController module
  * over I²C
  */
-class MotorController extends EventEmitter {
+class MotorController extends Module {
+
 
     /**
      * Constructor
      * @param  {Int} address I2C slave address
+     * @param  {Int} data available pin
      */
-    constructor(address) {
-        super();
-
-        try {
-            this.communication = new Communication(address, 11);
-            this.communication.open();
-        }
-        catch(err) {
-            if (err.message.indexOf('ENOENT') != -1) {
-                log.error('MotorController: I2C bus unavailable');
-            }
-            else {
-                log.error('Cannot connect to motorController: ' + err);
-            }
-        }
+    constructor(address, availablePin) {
+        super(address, availablePin);
 
         this.point = {
             x: 0,
@@ -51,7 +39,6 @@ class MotorController extends EventEmitter {
         /*
             Update motorController position
          */
-        this.updatePosPeriod = 100; //ms
 
         setInterval(() => {
             this.updatePosition()
@@ -63,29 +50,7 @@ class MotorController extends EventEmitter {
                         log.warn(err.message);
                     }
                 });
-        }, this.updatePosPeriod);
-    }
-
-
-    /**
-     * Test communication with the module
-     * All four number will be incremented
-     * @param {UInt8}  number1 first number
-     * @param {Int8}   number2 second number
-     * @param {UInt16} number3 third number
-     * @param {Int16}  number4 forth number
-     * @return {Promise}  reolved with the new nember sent back by the module
-     */
-    ping(number1, number2, number3, number4) {
-        log.debug('Ping !');
-
-        return this.communication.request(0, number1, number2, number3, number4)
-            .then(function(packet) {
-                if (!(number1 === packet.number1-1 && number2 === packet.number2-1 &&
-                    number3 === packet.number3-1 && number4 === packet.number4-1)) {
-                    throw new Error('Ping test failed');
-                }
-            });
+        }, UPDATE_POS_PERIOD);
     }
 
 

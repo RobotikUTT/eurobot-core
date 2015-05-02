@@ -11,10 +11,10 @@ server
     .then(function() {
         let modules = {};
 
-        let motorController = new MotorController(0x2);
+        let motorController = new MotorController(0x2, 11);
         modules.motorController = motorController;
 
-        let clampController = new ClampController(0x3);
+        let clampController = new ClampController(0x3, 13);
         modules.clampController = clampController;
 
         let ia = new IA(modules);
