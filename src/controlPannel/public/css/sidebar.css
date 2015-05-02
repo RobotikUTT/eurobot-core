@@ -81,6 +81,12 @@
 
 }
 
+.sidebar.sidebarGraphs #resetContainer, .sidebar.sidebarGraphs #pauseContainer {
+  padding: 0 12.5px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
 .sidebar.sidebarGraphs {
   display: none;
 }

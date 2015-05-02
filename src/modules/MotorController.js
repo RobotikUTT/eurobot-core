@@ -60,7 +60,7 @@ class MotorController extends EventEmitter {
                 })
                 .catch(function(err) {
                     if (err.code !== 'ENOENT') {
-                        log.error(err);
+                        log.warn(err.message);
                     }
                 });
         }, this.updatePosPeriod);
@@ -131,7 +131,7 @@ class MotorController extends EventEmitter {
         return this.communication.request(2)
             .then((packet) => {
                 this.point = packet.point;
-                this.position = packet.position;
+                this.orientation = packet.orientation;
             });
     }
 

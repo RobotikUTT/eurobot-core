@@ -12,7 +12,6 @@ let log = logger.getLogger(module)
 
 const GOTO_TIMEOUT = 15 * 1000; //ms
 
-
 /**
  * Interface with eurobot-clampController module
  * over I²C

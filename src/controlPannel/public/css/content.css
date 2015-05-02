@@ -25,7 +25,11 @@ main .map canvas, main .chart canvas {
   display: block;
 }
 
-main #chart {
+main .chartTracer {
   height: 300px;
   width: 950px;
+}
+
+main svg > :last-child {
+  display: none;
 }

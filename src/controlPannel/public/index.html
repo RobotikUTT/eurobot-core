@@ -15,9 +15,10 @@
 
     <header class="teal">
       <div class="statusIcons left">
-        <i class="mdi-action-settings-applications green-text" id="motorStatus"></i>
-        <i class="mdi-device-wifi-tethering red-text" id="sensorsStatus"></i>
-        <i class="mdi-maps-local-parking green-text" id="clampStatus"></i>
+        <i class="mdi-action-settings-input-hdmi green-text tooltipped" data-position="right" data-tooltip="Serveur" id="socketStatus"></i>
+        <i class="mdi-action-settings-applications green-text tooltipped" data-position="right" data-tooltip="Moteurs" id="motorStatus"></i>
+        <i class="mdi-device-wifi-tethering red-text tooltipped" data-position="right" data-tooltip="Capteurs" id="sensorsStatus"></i>
+        <i class="mdi-maps-local-parking green-text tooltipped" data-position="right" data-tooltip="Pinces" id="clampStatus"></i>
       </div>
       <h1>Robotik</h1>
     </header>
@@ -69,7 +70,7 @@
           <canvas id="map" height="300" width="950"></canvas>
         </div>
         <div class="row contentPart chart">
-          <div id="chart"></div>
+          <div class="chartTracer" id="chart0"></div>
         </div>
         <div class="row constantsContainer">
           <table>
@@ -235,6 +236,12 @@
 
       </div> <!-- .sidebar -->
       <div class="sidebar right teal sidebarGraphs lighten-3">
+        <div class="col s12" id="resetContainer">
+          <a href="#" class="btn orange waves-effect waves-light">Reset graphiques</a>
+        </div>
+        <div class="col s12" id="pauseContainer">
+          <a href="#" class="btn lime waves-effect waves-light">Pause graphiques</a>
+        </div>
         <div class="card blue-grey darken-1">
           <div class="card-content white-text">
             <span class="card-title">Vitesse</span>

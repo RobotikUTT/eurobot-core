@@ -24,7 +24,7 @@ gulp.task('copy', function() {
         .pipe(gulp.dest('build/src/controlPannel/public'));
 });
 
-gulp.task('default', ['build'], function() {
+gulp.task('default', ['build', 'copy'], function() {
     gulp.watch('src/**/*.js', ['build']);
     gulp.watch('src/controlPannel/public/**', ['copy']);
 });
