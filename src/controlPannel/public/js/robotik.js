@@ -42,4 +42,12 @@
       '<strong>rad:</strong> ' + status.orientation + '<br>' +
       '<strong>deg:</strong> ' + (parseFloat(status.orientation) * 57.2957795).toString());
   });
+
+  robotik.io.on('clampPos', function(data) {
+    $('#elev > input').val(data.elev);
+    $('#clamp > input').val(data.clamp);
+  });
+
+
+  
 }());
