@@ -8,6 +8,7 @@ let log = require('./libs/logger').getLogger(module);
 server
     .start()
     .then(function() {
+        log.info('[WEB] Server listening on *:8080');
         let modules = {};
 
         let motorController = new MotorController(0x2);
@@ -15,4 +16,7 @@ server
 
         let ia = new IA(modules);
         server.bind(modules);
+    })
+    .catch(function(err) {
+        log.error(err);
     });

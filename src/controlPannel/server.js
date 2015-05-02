@@ -157,8 +157,6 @@ io.on('connection', function(socket) {
  */
 
 function start(modules_) {
-    log.info('[WEB] Server listening on *:' + port);
-
     return server.listen(port);
 }
 
