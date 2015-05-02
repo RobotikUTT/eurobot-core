@@ -30,6 +30,18 @@
       window.robotik.addMessage(message);
     });
 
+    /* Status icons */
+    var $socketStatus = $('#socketStatus');
+    (function checkServer () {
+      console.log('check');
+      if (!window.robotik.io.connected) {
+        $socketStatus.removeClass('green-text').addClass('red-text');
+      } else {
+        $socketStatus.removeClass('red-text').addClass('green-text');
+      }
+      setTimeout(checkServer, 400);
+    }());
+
     window.robotik.chart();
 
     $('select').material_select();
