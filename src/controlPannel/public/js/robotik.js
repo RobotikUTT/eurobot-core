@@ -36,6 +36,8 @@
       console.log('check');
       if (!window.robotik.io.connected) {
         $socketStatus.removeClass('green-text').addClass('red-text');
+      } else {
+        $socketStatus.removeClass('red-text').addClass('green-text');
       }
       setTimeout(checkServer, 400);
     }());
