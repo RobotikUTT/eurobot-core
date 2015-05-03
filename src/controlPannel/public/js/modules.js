@@ -29,7 +29,7 @@
 
   // GoTo
   $goToBtn.click(function() {
-    io.emit('goToMotor', { point: { x: $xPos.val(), y: $yPos.val() },
+    io.emit('goToMotor', { point: { x: parseFloat($xPos.val()), y: parseFloat($yPos.val()) },
       forceFace: $forceFace.is(':checked') });
   });
 

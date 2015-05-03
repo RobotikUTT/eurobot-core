@@ -2,7 +2,7 @@ import Packet from './Packet';
 
 
 const PACKET_NUMBER = 1;
-const PACKET_LENGTH = 5;
+const PACKET_LENGTH = 9;
 
 
 /**
@@ -31,14 +31,14 @@ class MovePacket extends Packet {
     serialize() {
         let data = new Buffer(this.packetLength);
 
-        data.writeInt16BE(this.point.x, 0);
-        data.writeInt16BE(this.point.y, 2);
+        data.writeFloatBE(this.point.x, 0);
+        data.writeFloatBE(this.point.y, 4);
 
         if (this.forceFace) {
-            data.writeUInt8(0xFF, 4);
+            data.writeUInt8(0xFF, 8);
         }
         else {
-            data.writeUInt8(0x00, 4);
+            data.writeUInt8(0x00, 8);
         }
 
         return data;
