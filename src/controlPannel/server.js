@@ -33,10 +33,10 @@ let data = {
   kd: 0,
   dt: 50,
   items: [
-    ['ball',     'Balle',     100],
-    ['cylinder', 'Cylindre',  200],
-    ['bottle',   'Bouteille', 300],
-    ['cube',     'Cube',      400]
+    // ['ball',     'Balle',     100],
+    // ['cylinder', 'Cylindre',  200],
+    // ['bottle',   'Bouteille', 300],
+    // ['cube',     'Cube',      400]
   ]
 };
 

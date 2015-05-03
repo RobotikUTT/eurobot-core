@@ -33,7 +33,6 @@
     /* Status icons */
     var $socketStatus = $('#socketStatus');
     (function checkServer () {
-      console.log('check');
       if (!window.robotik.io.connected) {
         $socketStatus.removeClass('green-text').addClass('red-text');
       } else {
