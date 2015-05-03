@@ -41,6 +41,11 @@
       }
       setTimeout(checkServer, 400);
     }());
+    robotik.io.on('updateStatus', function(data) {
+      
+    });
+    
+
 
     window.robotik.chart();
 
