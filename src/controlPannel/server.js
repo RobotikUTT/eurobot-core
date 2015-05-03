@@ -28,9 +28,16 @@ const UPDATE_STATUS_PERIOD = 110; //ms
 
 let port = 8080;
 let data = {
-  kp: 0,
-  ki: 0,
-  kd: 0,
+  distance: {
+    kp: 0.9,
+    ki: 0,
+    kd: 0.1
+  },
+  orientation: {
+    kp: 2.3,
+    ki: 0,
+    kd: 0.25
+  },
   dt: 50,
   items: [
     // ['ball',     'Balle',     100],
