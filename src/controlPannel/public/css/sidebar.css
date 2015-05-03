@@ -48,6 +48,7 @@
 }
 
 .sidebar.left .ace_editor {
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, monospace, serif;
   height: 200px;
   margin: 10px auto;
   text-align: left;
