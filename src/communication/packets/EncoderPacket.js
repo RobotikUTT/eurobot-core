@@ -28,7 +28,7 @@ class EncoderPacket extends Packet {
 
     deserialize(data) {
         this.leftTicks = data.readInt16BE(0);
-        this.rightTicks = data.readInt16BE(1);
+        this.rightTicks = data.readInt16BE(2);
     }
 }
 

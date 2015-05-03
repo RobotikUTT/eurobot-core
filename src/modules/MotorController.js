@@ -6,7 +6,9 @@ import MotorRunPacket from '../communication/packets/MotorRunPacket';
 import TurnPacket from '../communication/packets/TurnPacket';
 import TuningsPacket from '../communication/packets/TuningsPacket';
 import SetOdometryPacket from '../communication/packets/SetOdometryPacket';
+import EncoderPacket from '../communication/packets/EncoderPacket';
 import ResetEncoderPacket from '../communication/packets/ResetEncoderPacket';
+import SetModePacket from '../communication/packets/SetModePacket';
 import logger from '../libs/logger';
 
 
@@ -187,7 +189,7 @@ class MotorController extends Module {
 
         return this.communication.request(5)
             .then(function(packet) {
-                resolve(packet.leftTicks, packet.rightTicks);
+                return Promise.resolve({ left: packet.leftTicks, right: packet.rightTicks });
             })
     }
 
@@ -211,6 +213,13 @@ class MotorController extends Module {
             point: this.point,
             orientation: this.orientation
         };
+    }
+
+
+    setMode(mode) {
+        let setModePacket = new SetModePacket(mode);
+
+        return this.communication.send(setModePacket);
     }
 }
 
