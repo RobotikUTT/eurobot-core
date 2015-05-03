@@ -102,10 +102,10 @@ io.on('connection', function(socket) {
       })
 
       .on('setTunings', function(data) {
-        modules.motorController.setTunings(data.kp, data.ki, data.kd, data.dt)
+        console.log(data);
+        modules.motorController.setTunings(data.orientation, data.distance, data.dt)
           .then(() => {
-            log.info(util.format('Tunings set to kp:%d, ki:%d, kd:%d, dt:%d',
-              data.kp, data.ki, data.kd, data.dt));
+            log.info('Tunings set');
           })
           .catch((err) => {
             log.warn(err.message);
