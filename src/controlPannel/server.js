@@ -133,7 +133,27 @@ io.on('connection', function(socket) {
         catch(err) {
           log.warn('[EVAL]: ' + err.message);
         }
+      })
+      /*
+        Step motors/Clamp
+      */
+      .on('stepGetpos', function(data) {
+        modules.clampController.updatePosition()
+        .catch((err) =>{log.warn(err.message);});
+      })
+      .on('stepGoto', function(data) {
+        modules.clampController.goTo(data.motor, data.pos)
+        .catch((err) =>{log.warn(err.message);});
+      })
+      .on('stepStop', function(data) {
+        modules.clampController.stop(data.motor)
+        .catch((err) =>{log.warn(err.message);});
+      })
+      .on('stepInit', function(data) {
+        modules.clampController.init(data.motor)
+        .catch((err) =>{log.warn(err.message);});
       });
+
 
     /*
       Init interface
@@ -168,6 +188,13 @@ function bind(modules_) {
       // Odometry updates
       modules.motorController.on('newPosition', function() {
         io.sockets.emit('getPosition', modules.motorController.getPosition());
+      });
+    }
+    if (modules.clampController)
+    {
+      // Odometry updates
+      modules.clampController.on('clampPos', function(data) {
+        io.sockets.emit('clampPos', data);
       });
     }
 }

@@ -7,6 +7,10 @@ import EncoderPacket from './EncoderPacket';
 import TurnPacket from './TurnPacket';
 import SetOdometryPacket from './SetOdometryPacket';
 import ResetEncoderPacket from './ResetEncoderPacket';
+import ClampGetPosPacket from './ClampGetPosPacket';
+import ClampGoToPacket from './ClampGoToPacket';
+import ClampStopPacket from './ClampStopPacket';
+import ClampInitPacket from './ClampInitPacket';
 
 
 var packetsByNumber = {
@@ -18,7 +22,12 @@ var packetsByNumber = {
     5: EncoderPacket,
     6: ResetEncoderPacket,
     7: TurnPacket,
-    8: SetOdometryPacket
+    8: SetOdometryPacket,
+
+    0x30: ClampGoToPacket,
+    0x31: ClampInitPacket,
+    0x32: ClampGetPosPacket,
+    0x33: ClampStopPacket,
 };
 
 export default packetsByNumber;

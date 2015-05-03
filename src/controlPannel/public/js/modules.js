@@ -41,5 +41,48 @@
   // Odometry
   $resetOdoBtn.click(function() {
     io.emit('resetOdometry');
-  })
+  });
+
+
+  /*
+    Clamp
+   */
+
+  $('#elevInit').click(function() {
+    io.emit('stepInit', { motor: 'elev' });
+  });
+  $('#clampInit').click(function() {
+    io.emit('stepInit', { motor: 'clamp' });
+  });
+
+  $('#elevValid').click(function() {
+    $('#elev').submit();
+  });
+  $('#clampValid').click(function() {
+    $('#clamp').submit();
+  });
+
+  $('#elev').submit(function() {
+    io.emit('stepGoto', { motor: 'elev', pos: $('#elev > input').val() });
+    return false;
+  });
+  $('#clamp').submit(function() {
+    io.emit('stepGoto', { motor: 'clamp', pos: $('#clamp > input').val() });
+    return false;
+  });
+
+  $('#elevStop').click(function() {
+    io.emit('stepStop', { motor: 'elev' });
+  });
+  $('#clampStop').click(function() {
+    io.emit('stepStop', { motor: 'clamp' });
+  });
+
+  $('#elevUpdate').click(function() {
+    io.emit('stepGetpos');
+  });
+  $('#clampUpdate').click(function() {
+    io.emit('stepGetpos');
+  });
+
 }());
