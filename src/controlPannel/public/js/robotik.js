@@ -7,18 +7,33 @@
   };
 
   robotik.io.on('init', function (data) {
-    robotik.kp = data.kp;
-    robotik.ki = data.ki;
-    robotik.kd = data.kd;
-    robotik.dt = data.dt;
+    robotik.distance = {
+      kp: data.distance.kp,
+      ki: data.distance.ki,
+      kd: data.distance.kd,
+      dt: data.distance.dt
+    };
+
+    robotik.orientation = {
+      kp: data.orientation.kp,
+      ki: data.orientation.ki,
+      kd: data.orientation.kd,
+      dt: data.orientation.dt
+    };
 
     robotik.items = data.items;
 
     /* Consts */
-    $('#ki > input').val(robotik.ki);
-    $('#kp > input').val(robotik.kp);
-    $('#kd > input').val(robotik.kd);
-    $('#dt > input').val(robotik.dt);
+    $('#ki > input').val(robotik.distance.ki);
+    $('#kp > input').val(robotik.distance.kp);
+    $('#kd > input').val(robotik.distance.kd);
+    $('#dt > input').val(robotik.distance.dt);
+
+    /* Consts */
+    $('#kiOrient > input').val(robotik.orientation.ki);
+    $('#kpOrient > input').val(robotik.orientation.kp);
+    $('#kdOrient > input').val(robotik.orientation.kd);
+    $('#dtOrient > input').val(robotik.orientation.dt);
 
     /* Items */
     robotik.items.forEach(function (item) {

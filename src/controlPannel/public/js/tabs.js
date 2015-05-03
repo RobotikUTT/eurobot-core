@@ -15,11 +15,6 @@
       $contentParts.filter('.active').removeClass('active').fadeOut(function () {
         $target.fadeIn().addClass('active');
       });
-
-      // Use not to avoid animation bug
-      $sidebars.not($sidebar).fadeOut(function () {
-        $sidebar.fadeIn();
-      });
     }
   });
 }());
