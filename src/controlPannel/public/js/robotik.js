@@ -2,7 +2,8 @@
   'use strict';
 
   window.robotik = {
-    io: io()
+    io: io(),
+    isPaused: false
   };
 
   robotik.io.on('init', function (data) {
@@ -40,11 +41,10 @@
       }
       setTimeout(checkServer, 400);
     }());
-    robotik.io.on('updateStatus', function(data) {
-      
-    });
-    
 
+    robotik.io.on('updateStatus', function(data) {
+
+    });
 
     window.robotik.chart();
 
@@ -59,6 +59,22 @@
       '<strong>y:</strong> ' + status.point.y + '<br>' +
       '<strong>rad:</strong> ' + status.orientation + '<br>' +
       '<strong>deg:</strong> ' + (parseFloat(status.orientation) * 57.2957795).toString());
+
+    var orientationTarget = robotik.highcharts[0].highcharts().series[0];
+    var orientationValue  = parseFloat(status.orientation) * 57.2957795;
+    if (!robotik.isPaused) {
+      var i = robotik.highcharts[0].i;
+      orientationTarget.addPoint([i, orientationValue], true, i > 100);
+      ++robotik.highcharts[0].i;
+    }
+
+    var doneTarget = robotik.highcharts[1].highcharts().series[0];
+    var doneValue  = Math.sqrt(Math.pow(status.point.x, 2) + Math.pow(status.point.y, 2));
+    if (!robotik.isPaused) {
+      var i = robotik.highcharts[1].i;
+      doneTarget.addPoint([i, doneValue], true, i > 100);
+      ++robotik.highcharts[1].i;
+    }
   });
 
   robotik.io.on('clampPos', function(data) {
@@ -66,6 +82,4 @@
     $('#clamp > input').val(data.clamp);
   });
 
-
-  
 }());
