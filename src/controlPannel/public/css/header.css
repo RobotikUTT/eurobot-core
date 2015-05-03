@@ -30,3 +30,7 @@ header .statusIcons i {
   position: relative;
   top: -5px;
 }
+
+#resetContainer {
+  margin-right: 100px;
+}

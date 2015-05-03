@@ -21,6 +21,10 @@
         <i class="mdi-device-wifi-tethering red-text tooltipped" data-position="right" data-tooltip="Capteurs" id="sensorStatus"></i>
       </div>
       <h1>Robotik</h1>
+      <div class="graphsButtons">
+        <a href="#" class="btn waves-effect waves-light orange" id="pauseContainer">Pause</a>
+        <a href="#" class="btn waves-effect waves-light orange" id="resetContainer">Reset</a>
+      </div>
     </header>
 
     <main>
@@ -88,13 +92,13 @@
 
               <tbody>
                 <tr>
-                  <td id="orientationKp">
+                  <td id="kpDistance">
                     <input type="text" placeholder="kp">
                   </td>
-                  <td id="orientationKi">
+                  <td id="kiDistance">
                     <input type="text" placeholder="ki">
                   </td>
-                  <td id="orientationKd">
+                  <td id="kdDistance">
                     <input type="text" placeholder="kd">
                   </td>
                   <td id="dt">
@@ -116,24 +120,20 @@
                   <td>KP (orientation)</td>
                   <td>KI (orientation)</td>
                   <td>KD (orientation)</td>
-                  <td>&Delta;t (orientation)</td>
                   <td>Valider</td>
                 </tr>
               </thead>
 
               <tbody>
                 <tr>
-                  <td id="kpOrient">
+                  <td id="kpOrientation">
                     <input type="text" placeholder="kp (orientation)">
                   </td>
-                  <td id="kiOrient">
+                  <td id="kiOrientation">
                     <input type="text" placeholder="ki (orientation)">
                   </td>
-                  <td id="kdOrient">
+                  <td id="kdOrientation">
                     <input type="text" placeholder="kd (orientation)">
-                  </td>
-                  <td id="dtOrient">
-                    <input type="text" placeholder="dt (orientation)">
                   </td>
                   <td class="update-tb">
                     <button class="btn waves-effect waves-light blue saveConsts">Valider</button>
@@ -279,6 +279,8 @@
     <script src="bower_components/materialize/dist/js/materialize.min.js"></script>
     <script src="bower_components/socket.io-client/socket.io.js"></script>
     <script src="bower_components/highcharts-release/highcharts.js"></script>
+    <script src="bower_components/ace-builds/src-min/ace.js"></script>
+    <script src="bower_components/ace-builds/src-min/mode-javascript.js"></script>
 
     <script src="js/robotik.js"></script>
     <script src="js/messages.js"></script>

@@ -10,30 +10,27 @@
     robotik.distance = {
       kp: data.distance.kp,
       ki: data.distance.ki,
-      kd: data.distance.kd,
-      dt: data.distance.dt
+      kd: data.distance.kd
     };
 
     robotik.orientation = {
       kp: data.orientation.kp,
       ki: data.orientation.ki,
-      kd: data.orientation.kd,
-      dt: data.orientation.dt
+      kd: data.orientation.kd
     };
+
+    robotik.dt = data.dt;
 
     robotik.items = data.items;
 
     /* Consts */
-    $('#ki > input').val(robotik.distance.ki);
-    $('#kp > input').val(robotik.distance.kp);
-    $('#kd > input').val(robotik.distance.kd);
-    $('#dt > input').val(robotik.distance.dt);
-
-    /* Consts */
-    $('#kiOrient > input').val(robotik.orientation.ki);
-    $('#kpOrient > input').val(robotik.orientation.kp);
-    $('#kdOrient > input').val(robotik.orientation.kd);
-    $('#dtOrient > input').val(robotik.orientation.dt);
+    $('#kiDistance > input').val(robotik.distance.ki);
+    $('#kpDistance > input').val(robotik.distance.kp);
+    $('#kdDistance > input').val(robotik.distance.kd);
+    $('#kiOrientation > input').val(robotik.orientation.ki);
+    $('#kpOrientation > input').val(robotik.orientation.kp);
+    $('#kdOrientation > input').val(robotik.orientation.kd);
+    $('#dt > input').val(robotik.dt);
 
     /* Items */
     robotik.items.forEach(function (item) {
@@ -47,11 +44,16 @@
     });
 
     /* Status icons */
+    var hasBeenDown = false;
     var $socketStatus = $('#socketStatus');
     (function checkServer () {
       if (!window.robotik.io.connected) {
+        hasBeenDown = true;
         $socketStatus.removeClass('green-text').addClass('red-text');
       } else {
+        if (hasBeenDown) {
+          location.reload();
+        }
         $socketStatus.removeClass('red-text').addClass('green-text');
       }
       setTimeout(checkServer, 400);
@@ -96,5 +98,8 @@
     $('#elev > input').val(data.elev);
     $('#clamp > input').val(data.clamp);
   });
+
+  robotik.editor = ace.edit('eval');
+  robotik.editor.getSession().setMode('ace/mode/javascript');
 
 }());

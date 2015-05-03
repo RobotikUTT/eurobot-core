@@ -41,8 +41,6 @@
           values.push(tempValues[tempValue]);
         });
 
-        console.log(values);
-
         window.robotik.highcharts.push($('#chart' + graphN).highcharts({
             title: { text: '' },
             xAxis: {
@@ -89,6 +87,8 @@
 
                   $jqEmitter.on('resetPoints', function () {
                     self.series[0].setData([], true);
+                    var i = $(self.container).parent().index();
+                    window.robotik.highcharts[i].i = 0;
                   });
                 }
               },
@@ -102,20 +102,20 @@
     $(window).resize();
   };
 
-  $('#resetContainer a').click(function () {
+  $('#resetContainer').click(function () {
     $jqEmitter.trigger('resetPoints');
   });
 
-  $('#pauseContainer a').click(function () {
+  $('#pauseContainer').click(function () {
     $jqEmitter.data('paused', !$jqEmitter.data('paused'));
 
     window.robotik.isPaused = $jqEmitter.data('paused');
 
     var $self = $(this);
     if ($jqEmitter.data('paused')) {
-      $self.text('Reprise graphiques');
+      $self.text('Reprise');
     } else {
-      $self.text('Pause graphiques');
+      $self.text('Pause');
     }
   });
 
