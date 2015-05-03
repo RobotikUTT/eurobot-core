@@ -1,4 +1,4 @@
-import TestPacket from './TestPacket';
+import PingPacket from './PingPacket';
 import MovePacket from './MovePacket';
 import OdometryPacket from './OdometryPacket';
 import MotorStopPacket from './MotorStopPacket';
@@ -14,7 +14,7 @@ import ClampInitPacket from './ClampInitPacket';
 
 
 var packetsByNumber = {
-    0: TestPacket,
+    0: PingPacket,
     1: MovePacket,
     2: OdometryPacket,
     3: MotorStopPacket,
@@ -23,7 +23,6 @@ var packetsByNumber = {
     6: ResetEncoderPacket,
     7: TurnPacket,
     8: SetOdometryPacket,
-
     0x30: ClampGoToPacket,
     0x31: ClampInitPacket,
     0x32: ClampGetPosPacket,

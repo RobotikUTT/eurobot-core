@@ -29,6 +29,8 @@ class Communication extends EventEmitter {
         this.dataAvailablePin.mode('out');
         this.previousDataState = 'low';
 
+        this.lastValidAnswere = 0;
+
         // Constantly update dataAvailable state
         setInterval(() => {
             this.dataAvailablePin.read()
@@ -169,6 +171,7 @@ class Communication extends EventEmitter {
                 if (newCheck === frame.readUInt8(offset)) {
                     packet.deserialize(data);
 
+                    this.lastValidAnswere = (new Date()).getTime();
                     return Promise.resolve(packet);
                 }
                 else {

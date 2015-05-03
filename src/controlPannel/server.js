@@ -23,6 +23,9 @@ logger.initIO(io);
 let log = logger.getLogger(module);
 let modules = null;
 
+const UPDATE_STATUS_PERIOD = 110; //ms
+
+
 let port = 8080;
 let data = {
   kp: 0,
@@ -30,10 +33,10 @@ let data = {
   kd: 0,
   dt: 50,
   items: [
-    ['ball',     'Balle',     100],
-    ['cylinder', 'Cylindre',  200],
-    ['bottle',   'Bouteille', 300],
-    ['cube',     'Cube',      400]
+    // ['ball',     'Balle',     100],
+    // ['cylinder', 'Cylindre',  200],
+    // ['bottle',   'Bouteille', 300],
+    // ['cube',     'Cube',      400]
   ]
 };
 
@@ -189,13 +192,72 @@ function bind(modules_) {
       modules.motorController.on('newPosition', function() {
         io.sockets.emit('getPosition', modules.motorController.getPosition());
       });
+
+      //Update status icons
+      let motorStatus = false;
+      setInterval(() => {
+        modules.motorController.isAlive()
+        .then(() => {
+          if(!motorStatus) {
+            socket.emit('updateStatus', {board : 'motor', status : true});
+            motorStatus = true;
+          }
+        })
+        .catch(() => {
+          if(motorStatus) {
+            socket.emit('updateStatus', {board : 'motor', status : false});
+            motorStatus = false;
+          }
+        });
+      }, UPDATE_STATUS_PERIOD);
+
     }
+
     if (modules.clampController)
     {
       // Odometry updates
       modules.clampController.on('clampPos', function(data) {
         io.sockets.emit('clampPos', data);
       });
+
+      //Update status icons
+      let clampStatus = false;
+      setInterval(() => {
+        modules.clampController.isAlive()
+        .then(() => {
+          if(!status.clamp) {
+            socket.emit('updateStatus', {board : 'clamp', status : true});
+            status.clamp = true;
+          }
+        })
+        .catch(() => {
+          if(status.clamp) {
+            socket.emit('updateStatus', {board : 'clamp', status : false});
+            status.clamp = false;
+          }
+        });
+      }, UPDATE_STATUS_PERIOD);
+    }
+
+    if (modules.sensorsController)
+    {
+      //Update status icons
+      let sensorStatus = false;
+      setInterval(() => {
+        modules.sensorController.isAlive()
+        .then(() => {
+          if(!status.sensor) {
+            socket.emit('updateStatus', {board : 'sensor', status : true});
+            status.sensor = true;
+          }
+        })
+        .catch(() => {
+          if(status.sensor) {
+            socket.emit('updateStatus', {board : 'sensor', status : false});
+            status.sensor = false;
+          }
+        });
+      }, UPDATE_STATUS_PERIOD);
     }
 }
 
