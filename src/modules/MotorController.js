@@ -48,9 +48,7 @@ class MotorController extends Module {
                     this.emit('newPosition');
                 })
                 .catch(function(err) {
-                    if (err.code !== 'ENOENT') {
-                        log.warn(err.message);
-                    }
+                    log.warn('MotorController: ' + err.message);
                 });
         }, UPDATE_POS_PERIOD);
     }
@@ -217,6 +215,16 @@ class MotorController extends Module {
 
 
     setMode(mode) {
+        if (mode === 'distance') {
+            mode = 1;
+        }
+        else if (mode === 'orientation') {
+            mode = 0;
+        }
+        else {
+            mode = 2;
+        }
+
         let setModePacket = new SetModePacket(mode);
 
         return this.communication.send(setModePacket);

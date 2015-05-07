@@ -13,24 +13,26 @@ import ClampGetPosPacket from './ClampGetPosPacket';
 import ClampGoToPacket from './ClampGoToPacket';
 import ClampStopPacket from './ClampStopPacket';
 import ClampInitPacket from './ClampInitPacket';
+import SensorsGetPosPacket from './SensorsGetPosPacket';
 
 
 var packetsByNumber = {
-    0: PingPacket,
-    1: MovePacket,
-    2: OdometryPacket,
-    3: MotorStopPacket,
-    4: MotorRunPacket,
-    5: EncoderPacket,
-    6: ResetEncoderPacket,
-    7: TurnPacket,
-    8: TuningsPacket,
-    9: SetOdometryPacket,
-    10: SetModePacket,
+    0x00: PingPacket,
+    0x01: MovePacket,
+    0x02: OdometryPacket,
+    0x03: MotorStopPacket,
+    0x04: MotorRunPacket,
+    0x05: EncoderPacket,
+    0x06: ResetEncoderPacket,
+    0x07: TurnPacket,
+    0x08: TuningsPacket,
+    0x09: SetOdometryPacket,
+    0xA: SetModePacket,
     0x30: ClampGoToPacket,
     0x31: ClampInitPacket,
     0x32: ClampGetPosPacket,
     0x33: ClampStopPacket,
+    0x50: SensorsGetPosPacket
 };
 
 export default packetsByNumber;
