@@ -1,6 +1,8 @@
 import EventEmitter from 'events';
 import packetsByNumber from './packets/';
 import GpioPin from '../libs/GpioPin';
+import PromiseQueue from 'promise-queue';
+
 
 let promisify = require('native-promisify');
 let i2c       = require('i2c-bus');
@@ -20,9 +22,11 @@ class Communication extends EventEmitter {
      */
     constructor(address, dataAvailablePin) {
         super();
+
         this.address = address;
         this.dataAvailablePin = new GpioPin(dataAvailablePin);
         this.bus = null;
+        this.sendQueue = new PromiseQueue(1, Infinity);
 
         this.lastRcvCheck = -1;
 
@@ -95,7 +99,7 @@ class Communication extends EventEmitter {
         let frame = Buffer.concat([ header, data, new Buffer([newCheck]) ]);
 
         if (this.bus) {
-            return this.bus.i2cWrite(this.address, frame.length, frame);
+            return this.sendQueue.add(this.bus.i2cWrite(this.address, frame.length, frame));
         }
         else {
             return Promise.reject(new Error('Bus non open'));
@@ -120,14 +124,15 @@ class Communication extends EventEmitter {
 
 
         // Send request packet
-        return this.send(packet)
+        return this.sendQueue.add(new Promise((resolve, reject) => {
+            this.send(packet)
             .then(() => {
                 // When perfomance become an issue...
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve_) => {
                     setTimeout(() => {
                         this.bus.i2cRead(this.address, frame.length, frame)
                             .then(() => {
-                                resolve();
+                                resolve_();
                             });
                     }, 1);
                 });
@@ -172,12 +177,13 @@ class Communication extends EventEmitter {
                     packet.deserialize(data);
 
                     this.lastValidAnswere = (new Date()).getTime();
-                    return Promise.resolve(packet);
+                    resolve(packet);
                 }
                 else {
-                    throw new Error("Check not valid: " + newCheck + " vs " + frame.readUInt8(offset));
+                    reject(new Error("Check not valid: " + newCheck + " vs " + frame.readUInt8(offset)));
                 }
             });
+        }));
     }
 }
 
