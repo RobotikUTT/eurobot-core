@@ -217,21 +217,21 @@ function bind(modules_) {
 
       //Update status icons
       let motorStatus = false;
-      setInterval(() => {
-        modules.motorController.isAlive()
-        .then(() => {
-          if(!motorStatus) {
-            socket.emit('updateStatus', {board : 'motor', status : true});
-            motorStatus = true;
-          }
-        })
-        .catch(() => {
-          if(motorStatus) {
-            socket.emit('updateStatus', {board : 'motor', status : false});
-            motorStatus = false;
-          }
-        });
-      }, UPDATE_STATUS_PERIOD);
+      // setInterval(() => {
+      //   modules.motorController.isAlive()
+      //   .then(() => {
+      //     if(!motorStatus) {
+      //       socket.emit('updateStatus', {board : 'motor', status : true});
+      //       motorStatus = true;
+      //     }
+      //   })
+      //   .catch(() => {
+      //     if(motorStatus) {
+      //       socket.emit('updateStatus', {board : 'motor', status : false});
+      //       motorStatus = false;
+      //     }
+      //   });
+      // }, UPDATE_STATUS_PERIOD);
 
     }
 
@@ -244,42 +244,42 @@ function bind(modules_) {
 
       //Update status icons
       let clampStatus = false;
-      setInterval(() => {
-        modules.clampController.isAlive()
-        .then(() => {
-          if(!status.clamp) {
-            socket.emit('updateStatus', {board : 'clamp', status : true});
-            status.clamp = true;
-          }
-        })
-        .catch(() => {
-          if(status.clamp) {
-            socket.emit('updateStatus', {board : 'clamp', status : false});
-            status.clamp = false;
-          }
-        });
-      }, UPDATE_STATUS_PERIOD);
+      // setInterval(() => {
+      //   modules.clampController.isAlive()
+      //   .then(() => {
+      //     if(!status.clamp) {
+      //       socket.emit('updateStatus', {board : 'clamp', status : true});
+      //       status.clamp = true;
+      //     }
+      //   })
+      //   .catch(() => {
+      //     if(status.clamp) {
+      //       socket.emit('updateStatus', {board : 'clamp', status : false});
+      //       status.clamp = false;
+      //     }
+      //   });
+      // }, UPDATE_STATUS_PERIOD);
     }
 
     if (modules.sensorsController)
     {
       //Update status icons
       let sensorStatus = false;
-      setInterval(() => {
-        modules.sensorController.isAlive()
-        .then(() => {
-          if(!status.sensor) {
-            socket.emit('updateStatus', {board : 'sensor', status : true});
-            status.sensor = true;
-          }
-        })
-        .catch(() => {
-          if(status.sensor) {
-            socket.emit('updateStatus', {board : 'sensor', status : false});
-            status.sensor = false;
-          }
-        });
-      }, UPDATE_STATUS_PERIOD);
+      // setInterval(() => {
+      //   modules.sensorController.isAlive()
+      //   .then(() => {
+      //     if(!status.sensor) {
+      //       socket.emit('updateStatus', {board : 'sensor', status : true});
+      //       status.sensor = true;
+      //     }
+      //   })
+      //   .catch(() => {
+      //     if(status.sensor) {
+      //       socket.emit('updateStatus', {board : 'sensor', status : false});
+      //       status.sensor = false;
+      //     }
+      //   });
+      // }, UPDATE_STATUS_PERIOD);
     }
 }
 
