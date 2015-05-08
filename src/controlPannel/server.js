@@ -174,6 +174,21 @@ io.on('connection', function(socket) {
 
     tmx.parseFile(path.join(__dirname, 'public/ROBOT.tmx'))
       .then(function(map) {
+        for(key in map.layers[0].tiles) {
+          if(map.layers[1].tiles[key]) collclip = map.layers[1].tiles[key].id;
+          else collclip = null;
+
+          if(collclip) {
+            map.layers[0].tiles[key] = {
+              id: map.layers[0].tiles[key].id,
+              collclip: collclip
+            }
+          } else {
+            map.layers[0].tiles[key] = {
+              id: map.layers[0].tiles[key].id
+            }
+          }
+        }
         socket.emit('map', {map: {width: map.width, height:map.height, tileWidth: map.tileWidth, tileHeight: map.tileHeight}, tiles: map.layers[0].tiles, tileSet: map.tileSets[0]});
       })
       .catch(function(err) {
