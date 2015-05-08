@@ -24,8 +24,8 @@ class ClampController extends Module {
     {
         switch(name)
         {
-            case 'clamp': return 0;
-            case 'elev': return 1;
+            case 'clamp': return 1;
+            case 'elev': return 0;
             default: return -1;
         }
     }
