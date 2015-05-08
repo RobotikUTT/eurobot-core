@@ -26,7 +26,7 @@ class Communication extends EventEmitter {
         this.address = address;
         this.dataAvailablePin = new GpioPin(dataAvailablePin);
         this.bus = null;
-        this.sendQueue = new PromiseQueue(1, Infinity);
+        this.queue = new PromiseQueue(1, Infinity);
 
         this.lastRcvCheck = -1;
 
@@ -41,13 +41,13 @@ class Communication extends EventEmitter {
                 .then((level)  => {
                     // Emit only RISING event
                     if (level === 'high' &&
-                        level != this.previousDataState) {
+                        this.previousDataState === 'low') {
                         this.emit('data');
                     }
 
                     this.previousDataState = level;
-                })
-        }, 2);
+                });
+        }, 5);
     }
 
     /**
@@ -68,11 +68,15 @@ class Communication extends EventEmitter {
         return this.bus.close();
     }
 
+    send(packet) {
+        return this.queue.add(this.sendBuffer(packet));
+    }
+
     /**
      * Send a packet
      * @param  {Packet} packet Packet to send
      */
-    send(packet) {
+    sendBuffer(packet) {
         let newCheck;
         let header = new Buffer(2);
 
@@ -99,7 +103,7 @@ class Communication extends EventEmitter {
         let frame = Buffer.concat([ header, data, new Buffer([newCheck]) ]);
 
         if (this.bus) {
-            return this.sendQueue.add(this.bus.i2cWrite(this.address, frame.length, frame));
+            return this.bus.i2cWrite(this.address, frame.length, frame);
         }
         else {
             return Promise.reject(new Error('Bus non open'));
@@ -124,8 +128,8 @@ class Communication extends EventEmitter {
 
 
         // Send request packet
-        return this.sendQueue.add(new Promise((resolve, reject) => {
-            this.send(packet)
+        return new Promise((resolve, reject) => {
+            this.sendBuffer(packet)
             .then(() => {
                 // When perfomance become an issue...
                 return new Promise((resolve_) => {
@@ -183,7 +187,7 @@ class Communication extends EventEmitter {
                     reject(new Error("Check not valid: " + newCheck + " vs " + frame.readUInt8(offset)));
                 }
             });
-        }));
+        });
     }
 }
 

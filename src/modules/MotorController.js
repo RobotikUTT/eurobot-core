@@ -9,6 +9,8 @@ import SetOdometryPacket from '../communication/packets/SetOdometryPacket';
 import EncoderPacket from '../communication/packets/EncoderPacket';
 import ResetEncoderPacket from '../communication/packets/ResetEncoderPacket';
 import SetModePacket from '../communication/packets/SetModePacket';
+import StartEntraxePacket from '../communication/packets/StartEntraxePacket';
+import StopEntraxePacket from '../communication/packets/StopEntraxePacket';
 import logger from '../libs/logger';
 
 
@@ -54,17 +56,10 @@ class MotorController extends Module {
     }
 
 
-    /**
-     * Make the robot go to a (x,y) point
-     * @param {Object} point Carthesian coordinates. x,y {Int16}
-     * @param  {Bool} forceFace set to true if the robot must go front
-     * @return {Promise}           resolved when the robot finished.
-     * rejected after a GOTO_TIMEOUT milliseconds timeout.
-     */
-    goTo(point, forceFace) {
+    goTo(distance) {
         log.debug('goTo !');
 
-        let movePacket = new MovePacket(point, forceFace);
+        let movePacket = new MovePacket(distance);
 
         return this.communication.send(movePacket)
             .then(() => {
@@ -228,6 +223,18 @@ class MotorController extends Module {
         let setModePacket = new SetModePacket(mode);
 
         return this.communication.send(setModePacket);
+    }
+
+
+    startEntraxe() {
+        let startEntraxePacket = new StartEntraxePacket();
+        return this.communication.send(startEntraxePacket);
+    }
+
+
+    stopEntraxe() {
+        let stopEntraxePacket = new StopEntraxePacket();
+        return this.communication.send(stopEntraxePacket);
     }
 }
 

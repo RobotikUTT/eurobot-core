@@ -14,6 +14,8 @@ import ClampGoToPacket from './ClampGoToPacket';
 import ClampStopPacket from './ClampStopPacket';
 import ClampInitPacket from './ClampInitPacket';
 import SensorsGetPosPacket from './SensorsGetPosPacket';
+import StartEntraxePacket from './StartEntraxePacket';
+import StopEntraxePacket from './StopEntraxePacket';
 
 
 var packetsByNumber = {
@@ -28,6 +30,8 @@ var packetsByNumber = {
     0x08: TuningsPacket,
     0x09: SetOdometryPacket,
     0xA: SetModePacket,
+    0xB: StartEntraxePacket,
+    0xC: StopEntraxePacket,
     0x30: ClampGoToPacket,
     0x31: ClampInitPacket,
     0x32: ClampGetPosPacket,
