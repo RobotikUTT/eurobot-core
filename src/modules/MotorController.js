@@ -10,7 +10,6 @@ import EncoderPacket from '../communication/packets/EncoderPacket';
 import ResetEncoderPacket from '../communication/packets/ResetEncoderPacket';
 import SetModePacket from '../communication/packets/SetModePacket';
 import StartEntraxePacket from '../communication/packets/StartEntraxePacket';
-import StopEntraxePacket from '../communication/packets/StopEntraxePacket';
 import logger from '../libs/logger';
 
 
@@ -233,8 +232,10 @@ class MotorController extends Module {
 
 
     stopEntraxe() {
-        let stopEntraxePacket = new StopEntraxePacket();
-        return this.communication.send(stopEntraxePacket);
+        return this.communication.request(0xC)
+            .then(function(packet) {
+                return Promise.resolve(packet.entraxe);
+            });
     }
 }
 

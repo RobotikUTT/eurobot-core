@@ -69,22 +69,20 @@ io.on('connection', function(socket) {
             log.info('Motors stopped');
           })
           .catch((err) => {
-            log.warn(err.message);
+            log.warn('stopMotor: ' + err.message);
           });
       })
 
       .on('goToMotor', function(data) {
-        log.info(util.format('goToMotor request (%d, %d) forceFace: %s',
-              data.point.x, data.point.y, data.forceFace));
+        log.info('goToMotor request');
 
         modules.motorController
-          .goTo(data.point, Boolean(data.forceFace))
+          .goTo(data.distance)
           .then(() => {
-            log.info(util.format('Arrived in (%d, %d) forceFace: %s',
-              data.point.x, data.point.y, data.forceFace));
+            log.info('Arrived');
           })
           .catch((err) => {
-            log.warn(err.message);
+            log.warn('goToMotor: ' + err.message);
           });
       })
 
@@ -94,7 +92,7 @@ io.on('connection', function(socket) {
             log.info(util.format('%s run at %d', data.motor, data.pwm));
           })
           .catch((err) => {
-            log.warn(err.message);
+            log.warn('runMotor: ' + err.message);
           });
       })
 
@@ -104,18 +102,17 @@ io.on('connection', function(socket) {
             log.info(util.format('Tun %d', data.angle));
           })
           .catch((err) => {
-            log.warn(err.message);
+            log.warn('turnMotor: ' + err.message);
           });
       })
 
       .on('setTunings', function(data) {
-        console.log(data);
         modules.motorController.setTunings(data.orientation, data.distance, data.dt)
           .then(() => {
             log.info('Tunings set');
           })
           .catch((err) => {
-            log.warn(err.message);
+            log.warn('setTunings: ' + err.message);
           })
       })
 
@@ -125,10 +122,29 @@ io.on('connection', function(socket) {
             log.info('Odometry reset');
           })
           .catch((err) => {
-            log.warn(err.message);
+            log.warn('resetOdometry: ' + err.message);
           })
       })
 
+      .on('entraxeStart', function() {
+        modules.motorController.startEntraxe()
+          .then(() => {
+            log.info('startEntraxe');
+          })
+          .catch((err) => {
+            log.warn('startEntraxe: ' + err.message);
+          })
+      })
+
+      .on('entraxeStop', function() {
+        modules.motorController.stopEntraxe()
+          .then((entraxe) => {
+            io.sockets.emit('entraxeValue', { entraxe: entraxe });
+          })
+          .catch((err) => {
+            log.warn('stopEntraxe: ' + err.message);
+          })
+      })
       .on('eval', function(data) {
         /*
           Shortcuts
@@ -149,19 +165,19 @@ io.on('connection', function(socket) {
       */
       .on('stepGetpos', function(data) {
         modules.clampController.updatePosition()
-        .catch((err) =>{log.warn(err.message);});
+        .catch((err) =>{log.warn('stepGetPos: ' + err.message);});
       })
       .on('stepGoto', function(data) {
         modules.clampController.goTo(data.motor, data.pos)
-        .catch((err) =>{log.warn(err.message);});
+        .catch((err) =>{log.warn('stepGoTo: ' + err.message);});
       })
       .on('stepStop', function(data) {
         modules.clampController.stop(data.motor)
-        .catch((err) =>{log.warn(err.message);});
+        .catch((err) =>{log.warn('stepStop: ' + err.message);});
       })
       .on('stepInit', function(data) {
         modules.clampController.init(data.motor)
-        .catch((err) =>{log.warn(err.message);});
+        .catch((err) =>{log.warn('stepInit: ' + err.message);});
       });
 
 
@@ -172,28 +188,28 @@ io.on('connection', function(socket) {
     data.messages = logger.getHistory();
     socket.emit('init', data);
 
-    tmx.parseFile(path.join(__dirname, 'public/ROBOT.tmx'))
-      .then(function(map) {
-        for(key in map.layers[0].tiles) {
-          if(map.layers[1].tiles[key]) collclip = map.layers[1].tiles[key].id;
-          else collclip = null;
+    // tmx.parseFile(path.join(__dirname, 'public/ROBOT.tmx'))
+    //   .then(function(map) {
+    //     for(key in map.layers[0].tiles) {
+    //       if(map.layers[1].tiles[key]) collclip = map.layers[1].tiles[key].id;
+    //       else collclip = null;
 
-          if(collclip) {
-            map.layers[0].tiles[key] = {
-              id: map.layers[0].tiles[key].id,
-              collclip: collclip
-            }
-          } else {
-            map.layers[0].tiles[key] = {
-              id: map.layers[0].tiles[key].id
-            }
-          }
-        }
-        socket.emit('map', {map: {width: map.width, height:map.height, tileWidth: map.tileWidth, tileHeight: map.tileHeight}, tiles: map.layers[0].tiles, tileSet: map.tileSets[0]});
-      })
-      .catch(function(err) {
-        log.error('[MAP]: ' + err.message);
-      });
+    //       if(collclip) {
+    //         map.layers[0].tiles[key] = {
+    //           id: map.layers[0].tiles[key].id,
+    //           collclip: collclip
+    //         }
+    //       } else {
+    //         map.layers[0].tiles[key] = {
+    //           id: map.layers[0].tiles[key].id
+    //         }
+    //       }
+    //     }
+    //     socket.emit('map', {map: {width: map.width, height:map.height, tileWidth: map.tileWidth, tileHeight: map.tileHeight}, tiles: map.layers[0].tiles, tileSet: map.tileSets[0]});
+    //   })
+    //   .catch(function(err) {
+    //     log.error('[MAP]: ' + err.message);
+    //   });
 });
 
 

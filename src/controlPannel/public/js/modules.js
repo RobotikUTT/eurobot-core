@@ -8,19 +8,22 @@
     Motors
    */
 
-  var $stopBtn   = $('.motorStop'),
-    $goToBtn     = $('#motorGoTo'),
-    $turnBtn     = $('#motorTurn'),
-    $tuningsBtn  = $('#setTunings'),
-    $resetOdoBtn = $('#resetOdometry'),
-    $xPos        = $('#xPos'),
-    $yPos        = $('#yPos'),
-    $forceFace   = $('#forceFace'),
-    $angle       = $('#angle'),
-    $KP          = $('#kp > input'),
-    $KI          = $('#ki > input'),
-    $KD          = $('#kd > input'),
-    $DT          = $('#dt > input');
+  var $stopBtn  = $('.motorStop'),
+  $goToBtn      = $('#motorGoTo'),
+  $turnBtn      = $('#motorTurn'),
+  $tuningsBtn   = $('#setTunings'),
+  $resetOdoBtn  = $('#resetOdometry'),
+  $distance     = $('#distance'),
+  $forceFace    = $('#forceFace'),
+  $angle        = $('#angle'),
+  $KP           = $('#kp > input'),
+  $KI           = $('#ki > input'),
+  $KD           = $('#kd > input'),
+  $DT           = $('#dt > input'),
+  $entraxeStart = $('#entraxStart'),
+  $entraxeStop  = $('#entraxStop'),
+  $entraxeVal   = $('#entraxVal')
+  ;
 
    // Stop
   $stopBtn.click(function() {
@@ -29,8 +32,7 @@
 
   // GoTo
   $goToBtn.click(function() {
-    io.emit('goToMotor', { point: { x: parseFloat($xPos.val()), y: parseFloat($yPos.val()) },
-      forceFace: $forceFace.is(':checked') });
+    io.emit('goToMotor', { distance : parseFloat($distance.val()) });
   });
 
   // Turn
@@ -43,6 +45,19 @@
     io.emit('resetOdometry');
   });
 
+  // Entraxe
+  $entraxeStart.click(function() {
+    io.emit('entraxeStart');
+  });
+
+  $entraxeStop.click(function() {
+    io.emit('entraxeStop');
+  });
+
+  io.on('entraxeValue', function(data) {
+    console.log(data.entraxe);
+    $entraxeVal.html(data.entraxe);
+  });
 
   /*
     Clamp
