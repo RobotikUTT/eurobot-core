@@ -48,9 +48,9 @@ class MotorController extends Module {
                 .then(() => {
                     this.emit('newPosition');
                 })
-                .catch(function(err) {
-                    log.warn('MotorController: ' + err.message);
-                });
+                // .catch(function(err) {
+                //     log.warn('MotorController: ' + err.message);
+                // });
         }, UPDATE_POS_PERIOD);
     }
 
