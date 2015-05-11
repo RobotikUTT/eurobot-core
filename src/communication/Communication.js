@@ -132,12 +132,15 @@ class Communication extends EventEmitter {
             this.sendBuffer(packet)
             .then(() => {
                 // When perfomance become an issue...
-                return new Promise((resolve_) => {
+                return new Promise((resolve_, reject_) => {
                     setTimeout(() => {
                         this.bus.i2cRead(this.address, frame.length, frame)
-                            .then(() => {
-                                resolve_();
-                            });
+                        .then(() => {
+                            resolve_();
+                        })
+                        .catch((err) => {
+                            reject_(err);
+                        });
                     }, 1);
                 });
                 // return this.bus.i2cRead(this.address, frame.length, frame)
@@ -186,6 +189,9 @@ class Communication extends EventEmitter {
                 else {
                     reject(new Error("Check not valid: " + newCheck + " vs " + frame.readUInt8(offset)));
                 }
+            })
+            .catch((err) => {
+                reject(err);
             });
         });
     }
