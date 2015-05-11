@@ -15,15 +15,19 @@ class SensorsController extends Module {
      */
     constructor(address, availablePin) {
         super(address, availablePin);
-        this.pos = 0;
+        this.frontPos = 0;
+        this.leftPos = 0;
+        this.rightPos = 0;
 
         this.communication.on('data', () => {
             this.emit('obstacle');
 
             this.getDistance()
                 .then((pos) => {
-                    log.info('Sonar pos: ' + pos);
-                    this.pos = pos;
+                    this.frontPos = pos.front;
+                    this.leftPos = pos.left;
+                    this.rightPos = pos.right;
+
                     this.communication.previousDataState = 'low';
                 })
                 .catch((err) => {
@@ -36,7 +40,11 @@ class SensorsController extends Module {
     getDistance() {
         return this.communication.request(0x50)
             .then(function(packet) {
-                return Promise.resolve(packet.pos);
+                return Promise.resolve({
+                    front: packet.frontPos,
+                    left: packet.leftPos,
+                    right: packet.rightPos
+                });
             });
     }
 }

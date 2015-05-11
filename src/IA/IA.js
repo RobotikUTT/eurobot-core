@@ -2,6 +2,8 @@ import * as util from 'util';
 
 let Scheduler = require('node-robot').Scheduler;
 let log       = require('../libs/logger').getLogger(module);
+let Button    = require('../io/Button');
+let GpioPin   = require('../libs/GpioPin');
 
 
 class IA {
@@ -13,72 +15,77 @@ class IA {
      */
     constructor(modules) {
         this.motorController = modules.motorController;
+        this.sensorsController = modules.sensorsController;
         this.scheduler = new Scheduler();
+        this.startButton = new Button(23, 'high');
+        this.sideSelector = new GpioPin(12);
 
         /**
          * Events
          */
 
-        this.scheduler
-            .on('start', () => {
-                log.info('Sequence started !');
-            })
-            .on('sequenceFinished', () => {
-                log.info('Sequence finished !');
-            });
+        this.startButton.once('start', () => {
+            this.start();
+        });
 
-        // this.sensors.sonar.on('obstacle', () => {
-        //     this.scheduler.interrupt(() => {
-        //         this.scheduler.sequence(function() {
-        //            log.debug('Reaction sequence !');
-        //         });
-        //     }):
-        // });
+        this.mainSequence = this.scheduler.sequence((done) => {
+            this.sideSelector.read()
+                .then((level) => {
+                    if (level === 'high') {
+                        // Left
+                        this.leftSequence.schedule();
+                    }
+                    else if (level === 'low') {
+                        // Right
+                        this.rightSequence.schedule();
+                    }
 
+                    this.sensorsController.once('obstacle', () => {
+                        log.warn('obstacle !');
+                        this.motorController.stop();
 
-        this.mainSsequence = this.scheduler.sequence((done) => {
-            this.motorController.ping()
-                .then(() => {
-                    log.info('Connected to motorController');
+                        this.scheduler.interrupt(() => {
+                            this.scheduler.sequence(() => {
+                               log.debug('Reaction sequence !');
+                            }).schedule();
+                        });
+                    });
+
                     done();
                 })
                 .catch((err) => {
                     log.error(err.stack);
+                    done();
                 });
-            })
-            .after(0, (done) => {
-                this.motorController.getPosition()
-                    .then(function(status) {
-                        log.info('Actual position x: '+status.x+', y: '+status.y+
-                            ', orientation: ' + status.orientation);
-                        done();
-                    })
-                    .catch((err) => {
-                        log.error(err.stack);
-                    })
-            })
-            .after(0, (done) => {
-                this.motorController.goTo(1, 0)
-                    .then(() => {
-                        log.info('Arrived in 1,0');
-                        done();
-                    })
-                    .catch((err) => {
-                        log.error(err.stack);
-                    });
+        });
+
+        this.leftSequence = this.scheduler.sequence((done) => {
+            log.info('Left sequence !');
+
+            this.motorController.goTo(1)
+                .then(() => {
+                    log.info('Arrived in 1');
+                    done();
+                })
+                .catch((err) => {
+                    log.error(err.stack);
+                    done();
+                });
             });
-            // .after(1000, (done) => {
-            //     this.motorController.goTo(0, 0)
-            //         .then(() => {
-            //             log.info('Arrived in 0,0');
-            //             done();
-            //         })
-            //         .catch((err) => {
-            //             log.error(err.stack);
-            //         });
-            // });
 
+        this.rightSequence = this.scheduler.sequence((done) => {
+            log.info('Right sequence !');
 
+            this.motorController.goTo(1)
+                .then(() => {
+                    log.info('Arrived in 1');
+                    done();
+                })
+                .catch((err) => {
+                    log.error(err.stack);
+                    done();
+                });
+        });
     }
 
 
@@ -87,7 +94,8 @@ class IA {
      */
     start() {
         // Schedule main sequence
-        this.mainSsequence.schedule();
+        log.info('Start robot !');
+        this.mainSequence.schedule();
         this.scheduler.start();
     }
 

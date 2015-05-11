@@ -16,7 +16,7 @@ import logger from '../libs/logger';
 let log = logger.getLogger(module)
 
 const GOTO_TIMEOUT = 15 * 1000; //ms
-const UPDATE_POS_PERIOD = 100; //ms
+const UPDATE_POS_PERIOD = 50; //ms
 
 /**
  * Interface with eurobot-motorController module
@@ -66,8 +66,15 @@ class MotorController extends Module {
                     let resolved = false;
 
                     // Rising dataAvailable means that enslavement is finished
-                    this.communication.on('data', function() {
+                    this.communication.once('data', function() {
                         log.info('info !');
+                        this.communication.previousDataState = 'low';
+                        resolve();
+                    });
+
+                    // Stopped
+                    this.once('stop', () => {
+                        resolved = true;
                         resolve();
                     });
 
@@ -104,7 +111,10 @@ class MotorController extends Module {
 
         let stopPacket = new MotorStopPacket();
 
-        return this.communication.send(stopPacket);
+        return this.communication.send(stopPacket)
+            .then(() => {
+                this.emit('stop');
+            });
     }
 
 

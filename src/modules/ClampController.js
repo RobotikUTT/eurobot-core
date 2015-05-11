@@ -4,6 +4,7 @@ import ClampGetPosPacket from '../communication/packets/ClampGetPosPacket';
 import ClampGoToPacket from '../communication/packets/ClampGoToPacket';
 import ClampStopPacket from '../communication/packets/ClampStopPacket';
 import ClampInitPacket from '../communication/packets/ClampInitPacket';
+import MoveServoPacket from '../communication/packets/MoveServoPacket';
 import logger from '../libs/logger';
 
 
@@ -97,6 +98,13 @@ class ClampController extends Module {
         }
 
         return this.communication.send(initPacket);
+    }
+
+
+    moveServo(servo, command) {
+        let moveServoPacket = new MoveServoPacket(servo, command);
+
+        return this.communication.send(moveServoPacket);
     }
 }
 

@@ -16,6 +16,7 @@ import ClampInitPacket from './ClampInitPacket';
 import SensorsGetPosPacket from './SensorsGetPosPacket';
 import StartEntraxePacket from './StartEntraxePacket';
 import StopEntraxePacket from './StopEntraxePacket';
+import MoveServoPacket from './MoveServoPacket';
 
 
 var packetsByNumber = {
@@ -36,6 +37,7 @@ var packetsByNumber = {
     0x31: ClampInitPacket,
     0x32: ClampGetPosPacket,
     0x33: ClampStopPacket,
+    0x34: MoveServoPacket,
     0x50: SensorsGetPosPacket
 };
 
