@@ -2,7 +2,7 @@ import Packet from './Packet';
 
 
 const PACKET_NUMBER = 0x50;
-const PACKET_LENGTH = 8;
+const PACKET_LENGTH = 12;
 
 
 /**
@@ -18,7 +18,10 @@ class SensorsGetPosPacket extends Packet {
         super();
         this.packetNumber = PACKET_NUMBER;
         this.packetLength = PACKET_LENGTH;
-        this.pos = 0;
+
+        this.frontPos = 0;
+        this.leftPos = 0;
+        this.rightPos = 0;
     }
 
 
@@ -29,7 +32,9 @@ class SensorsGetPosPacket extends Packet {
 
 
     deserialize(data) {
-        this.pos = data.readUInt16BE();
+        this.frontPos = data.readFloatBE(0);
+        this.leftPos = data.readFloatBE(4);
+        this.rightPos = data.readFloatBE(8);
     }
 }
 

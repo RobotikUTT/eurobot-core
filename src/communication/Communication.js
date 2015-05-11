@@ -69,7 +69,9 @@ class Communication extends EventEmitter {
     }
 
     send(packet) {
-        return this.queue.add(this.sendBuffer(packet));
+        return this.queue.add(() => {
+            return this.sendBuffer(packet);
+        });
     }
 
     /**
