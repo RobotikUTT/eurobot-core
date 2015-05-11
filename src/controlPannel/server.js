@@ -254,7 +254,6 @@ function bind(modules_) {
             io.sockets.emit('updateStatus', {board : 'motor', status : false});
             motorStatus = false;
             forceMotorUpdate = false;
-            log.warn('MotorController disconnected : ' + err);
           }
         });
       }, UPDATE_STATUS_PERIOD);
@@ -284,7 +283,6 @@ function bind(modules_) {
             io.sockets.emit('updateStatus', {board : 'clamp', status : false});
             clampStatus = false;
             forceMotorUpdate = false;
-            log.warn('ClampController disconnected : ' + err);
           }
         });
       }, UPDATE_STATUS_PERIOD);
@@ -308,7 +306,6 @@ function bind(modules_) {
             io.sockets.emit('updateStatus', {board : 'sensor', status : false});
             sensorStatus = false;
             forceSensorUpdate = false;
-            log.warn('SensorController disconnected : ' + err);
           }
         });
       }, UPDATE_STATUS_PERIOD);
