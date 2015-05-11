@@ -60,7 +60,11 @@
     }());
 
     robotik.io.on('updateStatus', function(data) {
-
+     if (data.status) {
+       $('#'+ data.board +'Status').removeClass('red-text').addClass('green-text');
+     } else {
+       $('#'+ data.board +'Status').removeClass('green-text').addClass('red-text');
+     }
     });
 
     window.robotik.chart();

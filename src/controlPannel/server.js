@@ -23,7 +23,7 @@ logger.initIO(io);
 let log = logger.getLogger(module);
 let modules = null;
 
-const UPDATE_STATUS_PERIOD = 110; //ms
+const UPDATE_STATUS_PERIOD = 150; //ms
 
 
 let port = 8080;
@@ -47,9 +47,16 @@ let data = {
   ]
 };
 
+let forceMotorUpdate = true;
+let forceClampUpdate = true;
+let forceSensorUpdate = true;
 
 io.on('connection', function(socket) {
     log.info('[WEB] New client connected');
+   
+    forceMotorUpdate = true;
+    forceClampUpdate = true;
+    forceSensorUpdate = true;
 
     /*
       Setup handlers
@@ -231,23 +238,26 @@ function bind(modules_) {
         io.sockets.emit('getPosition', modules.motorController.getPosition());
       });
 
-      //Update status icons
+      // Update status icons
       let motorStatus = false;
-      // setInterval(() => {
-      //   modules.motorController.isAlive()
-      //   .then(() => {
-      //     if(!motorStatus) {
-      //       socket.emit('updateStatus', {board : 'motor', status : true});
-      //       motorStatus = true;
-      //     }
-      //   })
-      //   .catch(() => {
-      //     if(motorStatus) {
-      //       socket.emit('updateStatus', {board : 'motor', status : false});
-      //       motorStatus = false;
-      //     }
-      //   });
-      // }, UPDATE_STATUS_PERIOD);
+      setInterval(() => {
+        modules.motorController.isAlive()
+        .then(() => {
+          if(!motorStatus || forceMotorUpdate) {
+            io.sockets.emit('updateStatus', {board : 'motor', status : true});
+            motorStatus = true;
+            forceMotorUpdate = false;
+          }
+        })
+        .catch((err) => {
+          if(motorStatus || forceMotorUpdate) {
+            io.sockets.emit('updateStatus', {board : 'motor', status : false});
+            motorStatus = false;
+            forceMotorUpdate = false;
+            log.warn('MotorController disconnected : ' + err);
+          }
+        });
+      }, UPDATE_STATUS_PERIOD);
 
     }
 
@@ -260,42 +270,48 @@ function bind(modules_) {
 
       //Update status icons
       let clampStatus = false;
-      // setInterval(() => {
-      //   modules.clampController.isAlive()
-      //   .then(() => {
-      //     if(!status.clamp) {
-      //       socket.emit('updateStatus', {board : 'clamp', status : true});
-      //       status.clamp = true;
-      //     }
-      //   })
-      //   .catch(() => {
-      //     if(status.clamp) {
-      //       socket.emit('updateStatus', {board : 'clamp', status : false});
-      //       status.clamp = false;
-      //     }
-      //   });
-      // }, UPDATE_STATUS_PERIOD);
+      setInterval(() => {
+        modules.clampController.isAlive()
+        .then(() => {
+          if(!clampStatus || forceClampUpdate) {
+            io.sockets.emit('updateStatus', {board : 'clamp', status : true});
+            clampStatus = true;
+            forceMotorUpdate = false;
+          }
+        })
+        .catch((err) => {
+          if(clampStatus || forceClampUpdate) {
+            io.sockets.emit('updateStatus', {board : 'clamp', status : false});
+            clampStatus = false;
+            forceMotorUpdate = false;
+            log.warn('ClampController disconnected : ' + err);
+          }
+        });
+      }, UPDATE_STATUS_PERIOD);
     }
 
     if (modules.sensorsController)
     {
-      //Update status icons
+      // Update status icons
       let sensorStatus = false;
-      // setInterval(() => {
-      //   modules.sensorController.isAlive()
-      //   .then(() => {
-      //     if(!status.sensor) {
-      //       socket.emit('updateStatus', {board : 'sensor', status : true});
-      //       status.sensor = true;
-      //     }
-      //   })
-      //   .catch(() => {
-      //     if(status.sensor) {
-      //       socket.emit('updateStatus', {board : 'sensor', status : false});
-      //       status.sensor = false;
-      //     }
-      //   });
-      // }, UPDATE_STATUS_PERIOD);
+      setInterval(() => {
+        modules.sensorsController.isAlive()
+        .then(() => {
+          if(!sensorStatus || forceSensorUpdate) {
+            io.sockets.emit('updateStatus', {board : 'sensor', status : true});
+            sensorStatus = true;
+            forceSensorUpdate = false;
+          }
+        })
+        .catch(() => {
+          if(sensorStatus || forceSensorUpdate) {
+            io.sockets.emit('updateStatus', {board : 'sensor', status : false});
+            sensorStatus = false;
+            forceSensorUpdate = false;
+            log.warn('SensorController disconnected : ' + err);
+          }
+        });
+      }, UPDATE_STATUS_PERIOD);
     }
 }
 
