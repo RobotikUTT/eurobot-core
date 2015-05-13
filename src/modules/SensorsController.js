@@ -31,7 +31,7 @@ class SensorsController extends Module {
                     this.communication.previousDataState = 'low';
                 })
                 .catch((err) => {
-                    // log.error('SensorsController getDistance fail: '+err);
+                    log.error('SensorsController getDistance fail: '+err);
                     this.communication.previousDataState = 'low';
                 });
         });

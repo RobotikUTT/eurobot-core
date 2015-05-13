@@ -48,42 +48,42 @@ class Module extends EventEmitter {
      * @return {Promise}  reolved with the new nember sent back by the module
      */
     isAlive() {
-        let now = (new Date()).getTime(); 
-        if(this.communication.lastValidAnswere > this.lastPing)
-        {
-            this.lastPing = this.communication.lastValidAnswere;
-        }
+        // let now = (new Date()).getTime(); 
+        // if(this.communication.lastValidAnswere > this.lastPing)
+        // {
+        //     this.lastPing = this.communication.lastValidAnswere;
+        // }
 
-        if(this.lastPing + this.pingPeriod <= now)
-        {
-            this.lastPing = (new Date()).getTime();
-            return new Promise((resolve, reject) => {
-                this.communication.request(0)
-                .then((packet) => {
-                    if (this.communication.address !== packet.number) {
-                        this.setAlive(false);
-                        this.communication.lastValidAnswere = 0;
-                        return reject(new Error('Bad ping answer : ' + packet.number + ' instead of ' + this.communication.address));
-                    }
-                    else {
-                        this.setAlive(true);
-                        return resolve();
-                    }
-                })
-                .catch((err) => 
-                {
-                    this.setAlive(false);
-                    return reject(new Error('Cannot send/read ping : ' + err));
-                });
-            });
-        }
-        //if the last ping time is short, take the cache value
-        else if(this.aliveState) {
-            return Promise.resolve();
-        }
-        else {
-            return Promise.reject(new Error('Déjà vu'));
-        }
+        // if(this.lastPing + this.pingPeriod <= now)
+        // {
+        //     this.lastPing = (new Date()).getTime();
+        //     return new Promise((resolve, reject) => {
+        //         this.communication.request(0)
+        //         .then((packet) => {
+        //             if (this.communication.address !== packet.number) {
+        //                 this.setAlive(false);
+        //                 this.communication.lastValidAnswere = 0;
+        //                 return reject(new Error('Bad ping answer : ' + packet.number + ' instead of ' + this.communication.address));
+        //             }
+        //             else {
+        //                 this.setAlive(true);
+        //                 return resolve();
+        //             }
+        //         })
+        //         .catch((err) => 
+        //         {
+        //             this.setAlive(false);
+        //             return reject(new Error('Cannot send/read ping : ' + err));
+        //         });
+        //     });
+        // }
+        // //if the last ping time is short, take the cache value
+        // else if(this.aliveState) {
+        //     return Promise.resolve();
+        // }
+        // else {
+        //     return Promise.reject(new Error('Déjà vu'));
+        // }
     }
 
     /**
