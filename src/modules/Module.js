@@ -6,7 +6,7 @@ import random from '../helpers/random';
 
 let log = logger.getLogger(module)
 
-const PING_PERIOD = 1000; //ms
+const PING_PERIOD = 3000; //ms
 
 /**
  * Interface with a module

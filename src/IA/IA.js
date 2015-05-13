@@ -14,37 +14,52 @@ class IA {
      * @param modules modules
      */
     constructor(modules) {
+        // Set modules
         this.motorController = modules.motorController;
         this.sensorsController = modules.sensorsController;
-        this.scheduler = new Scheduler();
+
+        // IO
         this.startButton = new Button(23, 'high');
         this.sideSelector = new GpioPin(12);
+
+        this.scheduler = new Scheduler();
 
         /**
          * Events
          */
 
+         // Start robot
         this.startButton.once('start', () => {
             this.start();
         });
 
+
+        /**
+         * Sequences
+         */
+
+         // Called on start
         this.mainSequence = this.scheduler.sequence((done) => {
+
+            // Determine the start zone
             this.sideSelector.read()
                 .then((level) => {
                     if (level === 'high') {
-                        // Left
-                        this.leftSequence.schedule();
+                        // Yellow side
+                        this.yellowSequence.schedule();
                     }
                     else if (level === 'low') {
-                        // Right
-                        this.rightSequence.schedule();
+                        // Green side
+                        this.greenSequence.schedule();
                     }
 
-                    this.sensorsController.once('obstacle', () => {
-                        log.warn('obstacle !');
+                    // Register sequence on sensor alert
+                    this.sensorsController.on('obstacle', () => {
+                        log.warn('Obstacle detected');
                         this.motorController.stop();
 
                         this.scheduler.interrupt(() => {
+                            // Schedule reaction sequence
                             this.scheduler.sequence(() => {
                                log.debug('Reaction sequence !');
                             }).schedule();
@@ -54,13 +69,16 @@ class IA {
                     done();
                 })
                 .catch((err) => {
+                    log.error('Side selector error: ');
                     log.error(err.stack);
                     done();
                 });
         });
 
-        this.leftSequence = this.scheduler.sequence((done) => {
-            log.info('Left sequence !');
+
+        // Called on yellow side
+        this.yellowSequence = this.scheduler.sequence((done) => {
+            log.info('Yellow sequence started');
 
             this.motorController.goTo(1)
                 .then(() => {
@@ -73,8 +91,9 @@ class IA {
                 });
             });
 
-        this.rightSequence = this.scheduler.sequence((done) => {
-            log.info('Right sequence !');
+        // Called on green side
+        this.greenSequence = this.scheduler.sequence((done) => {
+            log.info('Green sequence started');
 
             this.motorController.goTo(1)
                 .then(() => {
@@ -94,7 +113,7 @@ class IA {
      */
     start() {
         // Schedule main sequence
-        log.info('Start robot !');
+        log.info('Robot started');
         this.mainSequence.schedule();
         this.scheduler.start();
     }
