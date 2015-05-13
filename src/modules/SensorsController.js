@@ -20,10 +20,10 @@ class SensorsController extends Module {
         this.rightPos = 0;
 
         this.communication.on('data', () => {
-            this.emit('obstacle');
 
             this.getDistance()
                 .then((pos) => {
+                    this.emit('obstacle');
                     this.frontPos = pos.front;
                     this.leftPos = pos.left;
                     this.rightPos = pos.right;

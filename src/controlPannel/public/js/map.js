@@ -16,7 +16,9 @@
   var drawMap = function(mapData, image) {
       mapElement.width = mapData.map.width*mapData.map.tileWidth;
       mapElement.height = mapData.map.height*mapData.map.tileHeight;
-      map.width(1000);
+      map.width(map.width()/5);
+      $('#overlay').width($('#overlay').width()/5);
+      $('#overlay').height($('#overlay').height()/5);
       var t = 0;
       for(var h = 0;h < mapData.map.height;h++) {
           for(var w = 0;w < mapData.map.width;w++) {
@@ -25,6 +27,13 @@
           }
       }
   };
+
+  var changePosition = function(left, top) {
+    $('#overlay').animate({
+      left: left,
+      top: top
+    }, 1000);
+  }
 
   window.robotik.io.on('map', function (data) {
       loadImage(data, drawMap);

@@ -16,7 +16,7 @@ import logger from '../libs/logger';
 let log = logger.getLogger(module)
 
 const GOTO_TIMEOUT = 15 * 1000; //ms
-const UPDATE_POS_PERIOD = 50; //ms
+const UPDATE_POS_PERIOD = 25; //ms
 
 /**
  * Interface with eurobot-motorController module
