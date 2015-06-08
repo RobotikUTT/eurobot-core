@@ -74,8 +74,7 @@ class MotorController extends Module {
 
                     // Stopped
                     this.once('stop', () => {
-                        resolved = true;
-                        resolve();
+                        reject(new Error('motor Stopped'));
                     });
 
                     // Timeout on enslavement
@@ -110,6 +109,9 @@ class MotorController extends Module {
         log.debug('stop !');
 
         let stopPacket = new MotorStopPacket();
+
+        // this.motorController.run('left', -20);
+        // return this.motorController.run('right', -20);
 
         return this.communication.send(stopPacket)
             .then(() => {
@@ -242,8 +244,11 @@ class MotorController extends Module {
 
 
     stopEntraxe() {
+        log.debug('ici');
         return this.communication.request(0xC)
             .then(function(packet) {
+                log.debug('la');
+                console.log(packet);
                 return Promise.resolve(packet.entraxe);
             });
     }

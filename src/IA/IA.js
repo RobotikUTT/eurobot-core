@@ -16,6 +16,7 @@ class IA {
     constructor(modules) {
         // Set modules
         this.motorController = modules.motorController;
+        this.clampController = modules.clampController;
         this.sensorsController = modules.sensorsController;
 
         // IO
@@ -23,6 +24,7 @@ class IA {
         this.sideSelector = new GpioPin(12);
 
         this.scheduler = new Scheduler();
+        this.actualGoTo = 0;
 
         /**
          * Events
@@ -53,16 +55,29 @@ class IA {
                         this.greenSequence.schedule();
                     }
 
+                    this.sensorsController.previousDataState = 'low';
+
                     // Register sequence on sensor alert
-                    this.sensorsController.on('obstacle', () => {
+                    this.sensorsController.on('stop', () => {
                         log.warn('Obstacle detected');
                         this.motorController.stop();
 
                         this.scheduler.interrupt(() => {
                             // Schedule reaction sequence
-                            this.scheduler.sequence(() => {
-                               log.debug('Reaction sequence !');
-                            }).schedule();
+                            this.scheduler
+                                .sequence(function(done_) {
+                                    done_();
+                                })
+                                .wait(() => {
+                                   log.debug('Reaction sequence !');
+
+                                   return this.sensorsController.previousDataState === 'high';
+                                })
+                                .do((done_) => {
+                                    log.debug('finished');
+                                    done_();
+                                })
+                                .schedule();
                         });
                     });
 
@@ -81,92 +96,70 @@ class IA {
             log.info('Yellow sequence started');
 
             this.motorController.goTo(0.6)
-                .then(() => {
-                    log.info('Arrived');
-                    done();
-                })
-                .catch((err) => {
-                    log.error('Cant goTo');
-                    log.error(err.stack);
-                    done();
-                });
-            })
-
-        .after(0, (done) => {
-            this.clampController.goTo('clamp', 1000)
-                 .then(() => {
-                    log.info('Object got');
-                    done();
-                 })
-                 .catch((err) => {
-                    log.error('Cant got object');
-                    log.error(err.stack);
-                    done();
-                 });
+            done();
         })
-
-        .after(1000, (done) => {
-            this.clampController.goTo('elev', 10000)
-                .then(() => {
-                    log.info('Object lifted');
-                    done();
-                })
-                .catch((err) => {
-                    log.error('Cant lift object');
-                    log.error(err.stack);
-                    done();
-                });
-        })
-
         .after(2000, (done) => {
-            this.motorController.turn(180)
-                .then(() => {
-                    log.info('Rotation finished');
-                    done();
-                })
-                .catch((err) => {
-                    log.error('Cant rotate');
-                    log.error(err.stack);
-                    done();
-                });
+            this.motorController.turn(90);
+            done();
         })
-
-        .after(0, (done) => {
-            this.motorController.goTo(0.6)
-                .then(() => {
-                    log.info('Arrived');
-                    done();
-                })
-                .catch((err) => {
-                    log.error('Cant goTo');
-                    log.error(err.stack);
-                    done();
-                });
-        })
-
-        .after(0, (done) => {
-            this.clampController.goTo('elvel', -10000)
-                .then(() => {
-                    log.info('Object down');
-                    done();
-                })
-                .catch((err) => {
-                    log.error('Cant down object');
-                    log.error(err.stack);
-                    done();
-                });
-        })
-
         .after(2000, (done) => {
-            this.motorController.turn(180)
-                .then(() => {
-                    log.info('Rotation finished');
-                })
-                .catch((err) => {
-                    log.error('Cant rotate');
-                    log.error(err);
-                });
-        });
+            this.clampController.goTo('clamp', 1000);
+            done();
+        })
+        .after(2000, (done) => {
+            this.clampController.goTo('elev', 10000);
+            done();
+        })
+
+        // .after(2000, (done) => {
+        //     this.motorController.turn(180)
+        //         .then(() => {
+        //             log.info('Rotation finished');
+        //             done();
+        //         })
+        //         .catch((err) => {
+        //             log.error('Cant rotate');
+        //             log.error(err.stack);
+        //             done();
+        //         });
+        // })
+
+        // .after(0, (done) => {
+        //     this.motorController.goTo(0.6)
+        //         .then(() => {
+        //             log.info('Arrived');
+        //             done();
+        //         })
+        //         .catch((err) => {
+        //             log.error('Cant goTo');
+        //             log.error(err.stack);
+        //             done();
+        //         });
+        // })
+
+        // .after(0, (done) => {
+        //     this.clampController.goTo('elvel', -10000)
+        //         .then(() => {
+        //             log.info('Object down');
+        //             done();
+        //         })
+        //         .catch((err) => {
+        //             log.error('Cant down object');
+        //             log.error(err.stack);
+        //             done();
+        //         });
+        // })
+
+        // .after(2000, (done) => {
+        //     this.motorController.turn(180)
+        //         .then(() => {
+        //             log.info('Rotation finished');
+        //         })
+        //         .catch((err) => {
+        //             log.error('Cant rotate');
+        //             log.error(err);
+        //         });
+        // });
 
         // Called on green side
         this.greenSequence = this.scheduler.sequence((done) => {
@@ -206,4 +199,4 @@ class IA {
 
 export default IA;
 
-// 0.00803915411233902
+// 0.00803915411233902é

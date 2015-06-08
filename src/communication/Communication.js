@@ -47,7 +47,7 @@ class Communication extends EventEmitter {
 
                     this.previousDataState = level;
                 });
-        }, 5);
+        }, 100);
     }
 
     /**
@@ -148,6 +148,7 @@ class Communication extends EventEmitter {
                 // return this.bus.i2cRead(this.address, frame.length, frame)
             })
             .then(() => {
+                // console.log(frame);
                 let offset = 0;
                 let newCheck;
 
