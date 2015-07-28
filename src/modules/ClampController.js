@@ -38,7 +38,7 @@ class ClampController extends Module {
      * @return {Promise} resolved when the robot finished.
      */
     goTo(motor, pos) {
-        log.debug('Step goto !');
+        // log.debug('Step goto !');
         let motorNumber = this.getMotorId(motor);
         let gotoPacket = new ClampGoToPacket(motorNumber, pos);
 
@@ -69,7 +69,7 @@ class ClampController extends Module {
      * @return {Promise} Resolved when packet is sent
      */
     stop(motor) {
-        log.debug('Step stop !');
+        // log.debug('Step stop !');
         let motorNumber = this.getMotorId(motor);
         let stopPacket = new ClampStopPacket(motorNumber);
 

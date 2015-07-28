@@ -121,7 +121,7 @@ class MotorController extends Module {
 
 
     run(motor, pwm) {
-        log.debug('run !');
+        // log.debug('run !');
 
         if (motor !== 'left' && motor !== 'right') {
             return Promise.reject(new TypeError('motor must be either left or right'));

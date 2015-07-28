@@ -96,7 +96,7 @@ io.on('connection', function(socket) {
       .on('runMotor', function(data) {
         modules.motorController.run(data.motor, data.pwm)
           .then(() => {
-            log.info(util.format('%s run at %d', data.motor, data.pwm));
+            // log.info(util.format('%s run at %d', data.motor, data.pwm));
           })
           .catch((err) => {
             log.warn('runMotor: ' + err.message);
