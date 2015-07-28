@@ -17,7 +17,7 @@ class IA {
         // Set modules
         this.motorController = modules.motorController;
         this.clampController = modules.clampController;
-        this.sensorsController = modules.sensorsController;
+        // this.sensorsController = modules.sensorsController;
 
         // IO
         this.startButton = new Button(23, 'high');
@@ -55,31 +55,31 @@ class IA {
                         this.greenSequence.schedule();
                     }
 
-                    this.sensorsController.previousDataState = 'low';
+                    // this.sensorsController.previousDataState = 'low';
 
                     // Register sequence on sensor alert
-                    this.sensorsController.on('stop', () => {
-                        log.warn('Obstacle detected');
-                        this.motorController.stop();
+                    // this.sensorsController.on('stop', () => {
+                    //     log.warn('Obstacle detected');
+                    //     this.motorController.stop();
 
-                        this.scheduler.interrupt(() => {
-                            // Schedule reaction sequence
-                            this.scheduler
-                                .sequence(function(done_) {
-                                    done_();
-                                })
-                                .wait(() => {
-                                   log.debug('Reaction sequence !');
+                    //     this.scheduler.interrupt(() => {
+                    //         // Schedule reaction sequence
+                    //         this.scheduler
+                    //             .sequence(function(done_) {
+                    //                 done_();
+                    //             })
+                    //             .wait(() => {
+                    //                log.debug('Reaction sequence !');
 
-                                   return this.sensorsController.previousDataState === 'high';
-                                })
-                                .do((done_) => {
-                                    log.debug('finished');
-                                    done_();
-                                })
-                                .schedule();
-                        });
-                    });
+                    //                return this.sensorsController.previousDataState === 'high';
+                    //             })
+                    //             .do((done_) => {
+                    //                 log.debug('finished');
+                    //                 done_();
+                    //             })
+                    //             .schedule();
+                    //     });
+                    // });
 
                     done();
                 })

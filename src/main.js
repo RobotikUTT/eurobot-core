@@ -19,8 +19,8 @@ server
         let clampController = new ClampController(0x03, 13);
         modules.clampController = clampController;
 
-        let sensorsController = new SensorsController(0x04, 11);
-        modules.sensorsController = sensorsController;
+        // let sensorsController = new SensorsController(0x04, 11);
+        // modules.sensorsController = sensorsController;
 
         let ia = new IA(modules);
         server.bind(modules);
