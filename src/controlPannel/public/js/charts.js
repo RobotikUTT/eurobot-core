@@ -13,7 +13,7 @@
   window.robotik.highcharts = [];
 
   var $jqEmitter = $({});
-  $jqEmitter.data('paused', false);
+  $jqEmitter.data('paused', true);
 
   window.robotik.chart = function () {
     window.robotik.highcharts = [];
