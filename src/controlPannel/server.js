@@ -234,9 +234,9 @@ function bind(modules_) {
     if (modules.motorController)
     {
       // Odometry updates
-      modules.motorController.on('newPosition', function() {
-        io.sockets.emit('getPosition', modules.motorController.getPosition());
-      });
+      // modules.motorController.on('newPosition', function() {
+      //   io.sockets.emit('getPosition', modules.motorController.getPosition());
+      // });
 
       // Update status icons
       let motorStatus = false;
