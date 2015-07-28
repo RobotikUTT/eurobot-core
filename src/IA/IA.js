@@ -31,9 +31,9 @@ class IA {
          */
 
          // Start robot
-        this.startButton.once('start', () => {
-            this.start();
-        });
+        // this.startButton.once('start', () => {
+        //     this.start();
+        // });
 
 
         /**
