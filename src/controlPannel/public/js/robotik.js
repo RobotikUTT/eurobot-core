@@ -3,7 +3,7 @@
 
   window.robotik = {
     io: io(),
-    isPaused: false
+    isPaused: true
   };
 
   robotik.io.on('init', function (data) {
