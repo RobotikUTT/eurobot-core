@@ -172,8 +172,10 @@
 					key.x = true;
 					break;
 				case 176: //²
+				case 192: //²
 					key.square = true;
 					break;
+				case 187: //=
 				case 61: //=
 					key.eq = true;
 					break;
@@ -325,8 +327,10 @@
 					key.x = false;
 					break;
 				case 176: //²
+				case 192: //²
 					key.square = false;
 					break;
+				case 187: //=
 				case 61: //=
 					key.eq = false;
 					break;
