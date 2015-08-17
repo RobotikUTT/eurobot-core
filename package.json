@@ -40,6 +40,23 @@
     "nodemon": "^1.3.7"
   },
   "jshintConfig": {
-    "esnext" : true
+    "esnext" : true,
+    "curly" : true,
+    "eqeqeq" : true,
+    "futurehostile" : true,
+    "latedef" : true,
+    "maxcomplexity" : 15,
+    "noarg" : true,
+    "nocomma" : true,
+    "nonbsp" : true,
+    "nonew" : true,
+    "singleGroups" : true,
+    "strict" : true,
+    "undef" : true,
+    "unused" : true,
+    "varstmt" : true,
+    "jquery" : true,
+    "browser" : true,
+    "node" : true
   }
 }
