@@ -1,4 +1,6 @@
 node_modules
 build
 npm-debug.log
-src/controlPannel/public/bower_components
+src/controlPanel/public/js/lib
+src/controlPanel/public/css/lib
+src/controlPanel/public/css/fonts
