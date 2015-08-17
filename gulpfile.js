@@ -1,32 +1,42 @@
-var gulp = require('gulp');
+var gulp       = require('gulp');
+var babel      = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
-var babel = require('gulp-babel');
-var watch = require('gulp-watch');
-var plumber = require('gulp-plumber');
+var plumber    = require('gulp-plumber');
+var changed    = require('gulp-changed');
+var nodemon    = require('gulp-nodemon');
 
 
 gulp.task('build', function () {
-    gulp.src(['src/**/*.js', '!src/controlPannel/public/**/*.js'])
+    return gulp.src(['src/**/*.js', '!src/controlPanel/public/**/*.js'])
         .pipe(plumber({
             handleError: function (err) {
                 console.log(err);
                 this.emit('end');
             }
         }))
+        .pipe(changed('build'))
         .pipe(sourcemaps.init())
         .pipe(babel())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('build/src'));
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('copy', function() {
-    gulp.src('src/controlPannel/public/**')
-        .pipe(gulp.dest('build/src/controlPannel/public'));
+    return gulp.src('src/controlPanel/public/**')
+        .pipe(changed('build/controlPanel/public'))
+        .pipe(gulp.dest('build/controlPanel/public'));
 });
 
-gulp.task('default', ['build', 'copy'], function() {
-    gulp.watch('src/**/*.js', ['build']);
-    gulp.watch('src/controlPannel/public/**', ['copy']);
+gulp.task('dev', ['build', 'copy'], function() {
+    gulp.watch('src/controlPanel/public/**', ['copy']);
+
+    nodemon({
+      script: 'build/main.js',
+      tasks: ['build'],
+      watch: 'src',
+      ignore: 'src/controlPanel/public/'
+    })
 });
 
 
+gulp.task('default', ['build', 'copy']);
