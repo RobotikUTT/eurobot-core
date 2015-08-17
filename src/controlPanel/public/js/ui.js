@@ -48,6 +48,16 @@ function initUI() {
         }
     });
 
+    // Keyboard shortcuts
+    $('body').on('keydown', function(e) {
+        if ((e.target !== this) || (shortcuts.indexOf(e.keyCode) == -1)) {
+            return;
+        }
+
+        e.preventDefault();
+        $allLinks[e.keyCode - 49].click();
+    });
+
     // Form submit
     $('input[type=text]').on('keydown', function(e) {
         var parentForm = $(this.form);
