@@ -46,7 +46,7 @@
             </li>
             <li>
               <a href="#">
-                <i id"sensorIcon" class="fa fa-bullseye disconnected"></i>
+                <i id="sensorIcon" class="fa fa-bullseye disconnected"></i>
               </a>
             </li>
             <li>
@@ -98,6 +98,10 @@
             <h1 class="page-header">
               Control center
             </h1>
+            <div class="col-lg-6">
+            </div>
+            <div class="col-lg-6">
+            </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="motionSettingsContainer">
             <h1 class="page-header">
@@ -105,232 +109,232 @@
             </h1>
             <form class="form-horizontal" id="motionSettingsForm">
               <h2 class="page-header">
-                Constants
-            </h2>
-            <div class="form-group">
-              <label for="centerDistanceInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
-                Center distance
-              </label>
-              <div class="col-xs-7 col-sm-6 col-lg-2">
-                <input type="text" class="form-control" id="centerDistanceInput" placeholder="mm">
+                  Constants
+              </h2>
+              <div class="form-group">
+                <label for="centerDistanceInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
+                  Center distance
+                </label>
+                <div class="col-xs-7 col-sm-6 col-lg-2">
+                  <input type="text" class="form-control" id="centerDistanceInput" placeholder="mm">
+                </div>
+                <button type="button" class="btn btn-default" id ="centerDistanceBtn">
+                  Calibrate
+                </button>
               </div>
-              <button type="button" class="btn btn-default" id ="centerDistanceBtn">
-                Calibrate
-              </button>
-            </div>
-            <div class="form-group">
-              <label for="wheelRadiusInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
-                Wheel radius
-              </label>
-              <div class="col-xs-7 col-sm-6 col-lg-2">
-                <input type="text" class="form-control" id="wheelRadiusInput" placeholder="mm">
+              <div class="form-group">
+                <label for="wheelRadiusInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
+                  Wheel radius
+                </label>
+                <div class="col-xs-7 col-sm-6 col-lg-2">
+                  <input type="text" class="form-control" id="wheelRadiusInput" placeholder="mm">
+                </div>
+                <button type="button" class="btn btn-default" id="wheelRadiusBtn">
+                  Calibrate
+                </button>
               </div>
-              <button type="button" class="btn btn-default" id="wheelRadiusBtn">
-                Calibrate
-              </button>
-            </div>
-            <div class="form-group">
-              <label for="tickSpinInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
-                Encoder
-              </label>
-              <div class="col-xs-7 col-sm-6 col-lg-2">
-                <input type="text" class="form-control" id="tickSpinInput" placeholder="tick/spin">
+              <div class="form-group">
+                <label for="tickSpinInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
+                  Encoder
+                </label>
+                <div class="col-xs-7 col-sm-6 col-lg-2">
+                  <input type="text" class="form-control" id="tickSpinInput" placeholder="tick/spin">
+                </div>
               </div>
-            </div>
 
-            <h2 class="page-header">
-              Speed and acceleration
-            </h2>
-            <div class="form-group placeholders">
-              <label for="orientSpeedInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
-                Angle speed
-              </label>
-              <div class="col-xs-12 col-sm-6 col-lg-2">
-                <input type="text" class="form-control" id="orientSpeedInput" placeholder="rad/s">
-              </div>
-              <label for="oriAccInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
-                Orientation acceleration
-              </label>
-              <div class="col-xs-12 col-sm-6 col-lg-2">
-                <input type="text" class="form-control" id="oriAccInput" placeholder="rad/s²">
-              </div>
-            </div>
-            <div class="form-group placeholders">
-              <label for="distSpeedInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
-                Distance speed
-              </label>
-              <div class="col-xs-12 col-sm-6 col-lg-2">
-                <input type="text" class="form-control" id="distSpeedInput" placeholder="mm/s">
-              </div>
-              <label for="distAccInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
-                Distance acceleration
-              </label>
-              <div class="col-xs-12 col-sm-6 col-lg-2">
-                <input type="text" class="form-control" id="distAccInput" placeholder="mm/s²">
-              </div>
-            </div>
-
-            <h2 class="page-header">
-              Distance control
-            </h2>
-            <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active">
-                <a href="#distPPID" aria-controls="distVPID" role="tab" data-toggle="tab">
-                  Position
-                </a>
-              </li>
-              <li role="presentation">
-                <a href="#distVPID" aria-controls="oriVPID" role="tab" data-toggle="tab">
-                  Velocity
-                </a>
-              </li>
-            </ul>
-
-            <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="distPPID">
-                <div class="form-group">
-                  <br>
-                  <label for="PDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                    P
-                  </label>
-                  <div class="col-xs-11 col-sm-3 col-lg-2">
-                    <input type="text" class="form-control" id="PDistPInput" placeholder="">
-                  </div>
-                  <label for="IDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                    I
-                  </label>
-                  <div class="col-xs-11 col-sm-3 col-lg-2">
-                    <input type="text" class="form-control" id="IDistPInput" placeholder="">
-                  </div>
-                  <label for="DDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                    D
-                  </label>
-                  <div class="col-xs-11 col-sm-3 col-lg-2">
-                    <input type="text" class="form-control" id="DDistPInput" placeholder="">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="dtDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                    dt
-                  </label>
-                  <div class="col-xs-11 col-sm-3 col-lg-2">
-                    <input type="text" class="form-control" id="dtDistPInput" placeholder="">
-                  </div>
-                </div>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="distVPID">
-                <br>
-                <div class="form-group">
-                  <label for="PDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                    P
-                  </label>
-                  <div class="col-xs-11 col-sm-3 col-lg-2">
-                    <input type="text" class="form-control" id="PDistVInput" placeholder="">
-                  </div>
-                  <label for="IDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                    I
-                  </label>
-                  <div class="col-xs-11 col-sm-3 col-lg-2">
-                    <input type="text" class="form-control" id="IDistVInput" placeholder="">
-                  </div>
-                  <label for="DDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                    D
-                  </label>
-                  <div class="col-xs-11 col-sm-3 col-lg-2">
-                    <input type="text" class="form-control" id="DDistVInput" placeholder="">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="dtDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                    dt
-                  </label>
-                  <div class="col-xs-11 col-sm-3 col-lg-2">
-                    <input type="text" class="form-control" id="dtDistVInput" placeholder="">
-                  </div>
-                </div>
-              </div>
               <h2 class="page-header">
-                Orientation Control
+                Speed and acceleration
+              </h2>
+              <div class="form-group">
+                <label for="orientSpeedInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
+                  Angle speed
+                </label>
+                <div class="col-xs-12 col-sm-6 col-lg-2">
+                  <input type="text" class="form-control" id="orientSpeedInput" placeholder="rad/s">
+                </div>
+                <label for="oriAccInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
+                  Orientation acceleration
+                </label>
+                <div class="col-xs-12 col-sm-6 col-lg-2">
+                  <input type="text" class="form-control" id="oriAccInput" placeholder="rad/s²">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="distSpeedInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
+                  Distance speed
+                </label>
+                <div class="col-xs-12 col-sm-6 col-lg-2">
+                  <input type="text" class="form-control" id="distSpeedInput" placeholder="mm/s">
+                </div>
+                <label for="distAccInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
+                  Distance acceleration
+                </label>
+                <div class="col-xs-12 col-sm-6 col-lg-2">
+                  <input type="text" class="form-control" id="distAccInput" placeholder="mm/s²">
+                </div>
+              </div>
+
+              <h2 class="page-header">
+                Distance control
               </h2>
               <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active">
-                  <a href="#oriPPID" aria-controls="oriPPID" role="tab" data-toggle="tab">
+                  <a href="#distPPID" aria-controls="distVPID" role="tab" data-toggle="tab">
                     Position
                   </a>
                 </li>
                 <li role="presentation">
-                  <a href="#oriVPID" aria-controls="oriVPID" role="tab" data-toggle="tab">
+                  <a href="#distVPID" aria-controls="oriVPID" role="tab" data-toggle="tab">
                     Velocity
                   </a>
                 </li>
               </ul>
 
               <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="oriPPID">
+                <div role="tabpanel" class="tab-pane active" id="distPPID">
                   <div class="form-group">
                     <br>
-                    <label for="POriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                    <label for="PDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                       P
                     </label>
                     <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="POriPInput" placeholder="">
+                      <input type="text" class="form-control" id="PDistPInput" placeholder="">
                     </div>
-                    <label for="IOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                    <label for="IDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                       I
                     </label>
                     <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="IOriPInput" placeholder="">
+                      <input type="text" class="form-control" id="IDistPInput" placeholder="">
                     </div>
-                    <label for="DOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                    <label for="DDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                       D
                     </label>
                     <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="DOriPInput" placeholder="">
+                      <input type="text" class="form-control" id="DDistPInput" placeholder="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="dtOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                    <label for="dtDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                       dt
                     </label>
                     <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="dtOriPInput" placeholder="">
+                      <input type="text" class="form-control" id="dtDistPInput" placeholder="">
                     </div>
                   </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="oriVPID">
+                <div role="tabpanel" class="tab-pane" id="distVPID">
                   <br>
                   <div class="form-group">
-                    <label for="POriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                    <label for="PDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                       P
                     </label>
                     <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="POriVInput" placeholder="">
+                      <input type="text" class="form-control" id="PDistVInput" placeholder="">
                     </div>
-                    <label for="IOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                    <label for="IDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                       I
                     </label>
                     <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="IOriVInput" placeholder="">
+                      <input type="text" class="form-control" id="IDistVInput" placeholder="">
                     </div>
-                    <label for="DOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                    <label for="DDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                       D
                     </label>
                     <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="DOriVInput" placeholder="">
+                      <input type="text" class="form-control" id="DDistVInput" placeholder="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="dtOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                    <label for="dtDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                       dt
                     </label>
                     <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="dtOriVInput" placeholder="">
+                      <input type="text" class="form-control" id="dtDistVInput" placeholder="">
+                    </div>
+                  </div>
+                </div>
+                <h2 class="page-header">
+                  Orientation Control
+                </h2>
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#oriPPID" aria-controls="oriPPID" role="tab" data-toggle="tab">
+                      Position
+                    </a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#oriVPID" aria-controls="oriVPID" role="tab" data-toggle="tab">
+                      Velocity
+                    </a>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="oriPPID">
+                    <div class="form-group">
+                      <br>
+                      <label for="POriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                        P
+                      </label>
+                      <div class="col-xs-11 col-sm-3 col-lg-2">
+                        <input type="text" class="form-control" id="POriPInput" placeholder="">
+                      </div>
+                      <label for="IOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                        I
+                      </label>
+                      <div class="col-xs-11 col-sm-3 col-lg-2">
+                        <input type="text" class="form-control" id="IOriPInput" placeholder="">
+                      </div>
+                      <label for="DOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                        D
+                      </label>
+                      <div class="col-xs-11 col-sm-3 col-lg-2">
+                        <input type="text" class="form-control" id="DOriPInput" placeholder="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="dtOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                        dt
+                      </label>
+                      <div class="col-xs-11 col-sm-3 col-lg-2">
+                        <input type="text" class="form-control" id="dtOriPInput" placeholder="">
+                      </div>
+                    </div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="oriVPID">
+                    <br>
+                    <div class="form-group">
+                      <label for="POriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                        P
+                      </label>
+                      <div class="col-xs-11 col-sm-3 col-lg-2">
+                        <input type="text" class="form-control" id="POriVInput" placeholder="">
+                      </div>
+                      <label for="IOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                        I
+                      </label>
+                      <div class="col-xs-11 col-sm-3 col-lg-2">
+                        <input type="text" class="form-control" id="IOriVInput" placeholder="">
+                      </div>
+                      <label for="DOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                        D
+                      </label>
+                      <div class="col-xs-11 col-sm-3 col-lg-2">
+                        <input type="text" class="form-control" id="DOriVInput" placeholder="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="dtOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                        dt
+                      </label>
+                      <div class="col-xs-11 col-sm-3 col-lg-2">
+                        <input type="text" class="form-control" id="dtOriVInput" placeholder="">
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </form>
-            </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="motionMonitorContainer">
           <h1 class="page-header">
