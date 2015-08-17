@@ -1,8 +1,9 @@
+import 'source-map-support/register';
 import MotorController from './modules/MotorController';
 import ClampController from './modules/ClampController';
 import SensorsController from './modules/SensorsController';
 import IA from './IA/IA';
-import server from './controlPannel/server';
+import server from './controlPanel/server';
 
 
 let log = require('./libs/logger').getLogger(module);
@@ -10,7 +11,7 @@ let log = require('./libs/logger').getLogger(module);
 server
     .start()
     .then(function() {
-        log.info('[WEB] Server listening on *:8080');
+        log.info('WebServer listening on *:8080');
         let modules = {};
 
         let motorController = new MotorController(0x02, 15);
