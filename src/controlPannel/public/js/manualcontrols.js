@@ -247,7 +247,7 @@
 						emit = true;
 						key.q = false;
 						right -= 80;
-						left += Math.ceil(40*leftCoef);
+						left += Math.ceil(60*leftCoef);
 					}
 					break;
 
@@ -267,7 +267,7 @@
 						emit = true;
 						key.d = false;
 						left -= Math.ceil(80*leftCoef);
-						right += 40;
+						right += 60;
 					}
 					break;
 
