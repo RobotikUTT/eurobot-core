@@ -63,7 +63,7 @@
 		var emit = false;
 		var tag = event.target.tagName.toLowerCase();
 		if(tag != 'input' && tag != 'textarea') {
-			console.log("Key: " + event.which);
+			// console.log("Key: " + event.which);
 			switch(event.which)
 			{
 				case 90: // Z
