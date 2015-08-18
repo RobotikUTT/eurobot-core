@@ -91,6 +91,12 @@ var MotionChart = function($container) {
         this.data.velocity = this.data.velocity.slice(1);
     }
 
+    this.resize = function() {
+        this.$container.width(this.$container.parent().width());
+        this.$container.height($(window).height()/2);
+        this.init();
+    }
+
     setInterval(function() {
         that.render();
     }, that.refreshPeriod);
@@ -102,4 +108,10 @@ $(function() {
 
     charts.distanceChart = new MotionChart($('#distanceChart'));
     charts.orientationChart = new MotionChart($('#orientationChart'));
+
+    $(window).on('resize', function() {
+        console.log('ici');
+        charts.distanceChart.resize();
+        charts.orientationChart.resize();
+    });
 });

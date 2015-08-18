@@ -1,14 +1,3 @@
-function resizeCharts() {
-    var distChartContainer = charts.distanceChart.$container;
-    var oriChartContainer = charts.orientationChart.$container;
-
-    distChartContainer.width(distChartContainer.parent().width());
-    oriChartContainer.width(oriChartContainer.parent().width());
-    distChartContainer.height($(window).height() / 2);
-    oriChartContainer.height($(window).height() / 2);
-}
-
-
 function initUI() {
     var $allLinks = $('a', '.nav-sidebar');
     var $allPages = $('.main').hide();
@@ -37,15 +26,7 @@ function initUI() {
         $allLinks.parent().removeClass('active');
         $link.parent().addClass('active');
 
-        switch($page.attr('id')) {
-            case 'motionMonitorContainer':
-                resizeCharts();
-                charts.distanceChart.init();
-                charts.orientationChart.init();
-                break;
-
-            default:
-        }
+        $(window).trigger('resize');
     });
 
     // Keyboard shortcuts
