@@ -1,360 +1,229 @@
 (function () {
 	'use strict';
 
+	// Key codes to improve readability
+	var k = {
+		'esc' : 27,
+		'del' : 46,
+		'alt' : 18,
+		'A' : 65,
+		'D' : 68,
+		'E' : 69,
+		'F' : 70,
+		'I' : 73,
+		'O' : 79,
+		'P' : 80,
+		'Q' : 81,
+		'R' : 82,
+		'S' : 83,
+		'U' : 85,
+		'W' : 87,
+		'Z' : 90,
+		'up' : 38,
+		'down' : 40,
+		'left' : 37,
+		'right' : 39
+	};
+	// Same for modes
+	var m = { 'DEFAULT' : 0, 'POWER' : 1, 'ROTATE' : 2, 'CLAMP' : 3, 'INIT' : -1};
+
+	// Keys action and status definition
 	var key = {};
-	var left = 0;
-	var right = 0;
-	var leftCoef = 1.3;
-	var controlMode = 'init';
+	key[k.esc] = { 		action : false, 		pressed : false };
+	key[k.del] = { 		action : false, 		pressed : false };
+	key[k.alt] = { 		action : false, 		pressed : false };
+	key[k.A] = { 		action : 'turnLeft', 	pressed : false };
+	key[k.D] = { 		action : 'turnRight', 	pressed : false };
+	key[k.E] = { 		action : 'clampOpen', 	pressed : false };
+	key[k.F] = { 		action : 'clampClose',	pressed : false };
+	key[k.I] = { 		action : false, 		pressed : false };
+	key[k.O] = { 		action : false, 		pressed : false };
+	key[k.P] = { 		action : false, 		pressed : false };
+	key[k.Q] = { 		action : 'turnLeft', 	pressed : false };
+	key[k.R] = { 		action : false, 		pressed : false };
+	key[k.S] = { 		action : 'backward', 	pressed : false };
+	key[k.U] = { 		action : false, 		pressed : false };
+	key[k.W] = { 		action : 'forward', 	pressed : false };
+	key[k.Z] = { 		action : 'forward', 	pressed : false };
+	key[k.up] = { 		action : 'clampUp', 	pressed : false };
+	key[k.down] = { 	action : 'clampDown', 	pressed : false };
+	key[k.left] = { 	action : 'clampClose',	pressed : false };
+	key[k.right] = { 	action : 'clampOpen', 	pressed : false };
 
+	// Set vars and init values
+	var controlMode = m.INIT;
 
-	function setMode(mode)
-	{
-		if(mode === 'normal')
-		{
-			if(controlMode !== 'init')
-			{
-				document.body.innerHTML = '<h1>Normal (Actualisez la page)</h1>'
-											+ '<i style="font-size:2em;">Touches : ZQSD + Flèches</i><br/>'
-											+ '<img src="images/robotik.jpg">';
-				document.body.style.textAlign = 'center';
-				document.body.style.color = 'gray';
-			}
-			controlMode = mode;
-			localStorage.setItem('controlmode', mode);
-		}
-		else if(mode === 'power')
-		{
-			document.body.innerHTML = '<h1>Puissance</h1>'
-											+ '<i style="font-size:2em;">Touches : Z et Q</i><br/>'
-											+ '<img src="images/robotik.jpg">';
-			document.body.style.textAlign = 'center';
-			document.body.style.color = 'gray';
-			controlMode = mode;
-			localStorage.setItem('controlmode', mode);
-		}
-		else if(mode === 'rotation')
-		{
-			document.body.innerHTML = '<h1>Rotation</h1>'
-											+ '<i style="font-size:2em;">Touches : Q et D</i><br/>'
-											+ '<img src="images/robotik.jpg">';
-			document.body.style.textAlign = 'center';
-			document.body.style.color = 'gray';
-			controlMode = mode;
-			localStorage.setItem('controlmode', mode);
-		}
-		else if(mode === 'clamp')
-		{
-			document.body.innerHTML = '<h1>Pince</h1>'
-											+ '<i style="font-size:2em;">Touches :</i><br/>'
-											+ '<i style="font-size:2em;">↑↓ pour monter et déscendre</i><br/>'
-											+ '<i style="font-size:2em;">←→ pour fermer et ouvrir</i><br/>'
-											+ '<img src="images/robotik.jpg">';
-			document.body.style.textAlign = 'center';
-			document.body.style.color = 'gray';
-			controlMode = mode;
-			localStorage.setItem('controlmode', mode);
-		}
-	}
+	// Init control mode
 	setMode(localStorage.getItem("controlmode"));
 
+	// Update key status
 	$(document).keydown(function(event) {
-		//filter textarea and input
-		var emit = false;
-		var tag = event.target.tagName.toLowerCase();
-		if(tag != 'input' && tag != 'textarea') {
-			// console.log("Key: " + event.which);
-			switch(event.which)
+
+		// Check if we care about that key
+		if(!(event.which in key)) {
+			return;
+		}
+
+		// Check if the event has not already been sent
+		if(key[event.which].pressed !== true)
+		{
+			// Update key status
+			key[event.which].pressed = true;
+
+			// Send control event
+			if(key[event.which].action !== false)
 			{
-				case 90: // Z
-					if(key.z !== true && (controlMode === 'normal' || controlMode === 'power'))
-					{
-						emit = true;
-						key.z = true;
-						left += Math.floor(100*leftCoef);
-						right += 100;
-						emit = true;
-					}
-					break;
-
-				case 81: // Q
-					if(key.q !== true && (controlMode === 'normal' || controlMode === 'rotation'))
-					{
-						emit = true;
-						key.q = true;
-						right += 80;
-						left -= Math.floor(60*leftCoef);
-					}
-					break;
-
-				case 83: // S
-					if(key.s !== true && (controlMode === 'normal' || controlMode === 'power'))
-					{
-						emit = true;
-						key.s = true;
-						left -= Math.floor(100*leftCoef);
-						right -= 100;
-					}
-					break;
-
-				case 68: // D
-					if(key.d !== true && (controlMode === 'normal' || controlMode === 'rotation'))
-					{
-						emit = true;
-						key.d = true;
-						left += Math.floor(80*leftCoef);
-						right -= 60;
-					}
-					break;
-
-				case 32: // Space
-					if(key.space !== true && controlMode === 'normal')
-					{
-						emit = true;
-						key.space = true;
-						left = 0;
-						right = 0;
-
-						key.z = false;
-						key.q = false;
-						key.s = false;
-						key.d = false;
-						window.robotik.io.emit('stepStop', { motor : 'elev' } );
-						window.robotik.io.emit('stepStop', { motor : 'clamp' } );
-					}
-					break;
-
-				case 38: // Up
-					if(key.up !== true && (controlMode === 'normal' || controlMode === 'clamp'))
-					{
-						key.up = true;
-						window.robotik.io.emit('stepGoto', { motor : 'elev', pos : 10000000 } );
-					}
-					break;
-				case 40: // Down
-					if(key.down !== true && (controlMode === 'normal' || controlMode === 'clamp'))
-					{
-						key.down = true;
-						window.robotik.io.emit('stepGoto', { motor : 'elev', pos : -10000000 } );
-					}
-					break;
-				case 37: // Left
-					if(key.left !== true && (controlMode === 'normal' || controlMode === 'clamp'))
-					{
-						key.left = true;
-						window.robotik.io.emit('stepGoto', { motor : 'clamp', pos : 10000000 } );
-					}
-					break;
-				case 39: // Right
-					if(key.right !== true && (controlMode === 'normal' || controlMode === 'clamp'))
-					{
-						key.right = true;
-						window.robotik.io.emit('stepGoto', { motor : 'clamp', pos : -10000000 } );
-					}
-					break;
-				// case 170: // *
-				// 	if(key.star !== true)
-				// 	{
-				// 		key.star = true;
-				// 		window.robotik.io.emit('stepInit', { motor : 'elev' } );
-				// 	}
-				// 	break;
-				// case 165: // ù
-				// 	if(key.ugrave !== true)
-				// 	{
-				// 		key.ugrave = true;
-				// 		window.robotik.io.emit('stepInit', { motor : 'clamp' } );
-				// 	}
-				// 	break;
-				//
-
-				case 88: //x
-					key.x = true;
-					break;
-				case 176: //²
-				case 192: //²
-					key.square = true;
-					break;
-				case 187: //=
-				case 61: //=
-					key.eq = true;
-					break;
-				case 85: //u
-					key.u = true;
-					break;
-				case 73: //i
-					key.i = true;
-					break;
-				case 79: //o
-					key.o = true;
-					break;
-				case 80: //p
-					key.p = true;
-					break;
+				window.robotik.io.emit('control', key[event.which]);
 			}
+		}
 
-			if(emit === true)
-			{
-				window.robotik.io.emit('runMotor', { motor : 'left', pwm : left } );
-				window.robotik.io.emit('runMotor', { motor : 'right', pwm : right } );
-				emit = false;
+		// Custom key combination
+		if(key[k.esc].pressed &&
+			key[k.del].pressed &&
+			key[k.alt].pressed &&
+			key[k.R].pressed)
+		{
+			if (key[k.U].pressed) {
+				setMode(m.DEFAULT);
 			}
-
-			// Manual control only mode
-			if(key.x === true && key.square === true && key.eq === true)
-			{
-				//Remove everithing on the screen and put a Robotik Logo
-   				if(key.u === true)
-   				{
-   					setMode('normal');
-   				}
-   				else if(key.i === true)
-   				{
-   					setMode('power');
-   				}
-   				else if(key.o === true)
-   				{
-   					setMode('rotation');
-   				}
-   				else if(key.p === true)
-   				{
-   					setMode('clamp');
-   				}
-
-   			}
-   		}
+			else if (key[k.I].pressed) {
+				setMode(m.POWER);
+			}
+			else if (key[k.O].pressed) {
+				setMode(m.ROTATE);
+			}
+			else if (key[k.P].pressed) {
+				setMode(m.CLAMP);
+			}
+		}
 	});
-
-
 	$(document).keyup(function(event) {
-		var emit = false;
-		//filter textarea and input
-		var tag = event.target.tagName.toLowerCase();
-		if(tag != 'input' && tag != 'textarea') {
-			switch(event.which)
+		// Check if we care about that key
+		if(!(event.which in key)) {
+			return;
+		}
+
+		// Check if the event has not already been sent
+		if(key[event.which].pressed !== false)
+		{
+			// Update key status
+			key[event.which].pressed = false;
+
+			// Send control event
+			if(key[event.which].action !== false)
 			{
-				case 90: // Z
-					if(key.z === true)
-					{
-						emit = true;
-						key.z = false;
-						left -= Math.ceil(100*leftCoef);
-						right -= 100;
-					}
-					break;
-
-				case 81: // Q
-					if(key.q === true)
-					{
-						emit = true;
-						key.q = false;
-						right -= 80;
-						left += Math.ceil(60*leftCoef);
-					}
-					break;
-
-				case 83: // S
-					if(key.s === true)
-					{
-						emit = true;
-						key.s = false;
-						left += Math.ceil(100*leftCoef);
-						right += 100;
-					}
-					break;
-
-				case 68: // D
-					if(key.d === true)
-					{
-						emit = true;
-						key.d = false;
-						left -= Math.ceil(80*leftCoef);
-						right += 60;
-					}
-					break;
-
-				case 32: // Space
-					if(key.space === true)
-					{
-						key.space = false;
-					}
-					break;
-
-
-				case 38: // Up
-					if(key.up === true)
-					{
-						key.up = false;
-						window.robotik.io.emit('stepStop', { motor : 'elev' } );
-					}
-					break;
-				case 40: // Down
-					if(key.down === true)
-					{
-						key.down = false;
-						window.robotik.io.emit('stepStop', { motor : 'elev' } );
-					}
-					break;
-				case 37: // Left
-					if(key.left === true)
-					{
-						key.left = false;
-						window.robotik.io.emit('stepStop', { motor : 'clamp' } );
-					}
-					break;
-				case 39: // Right
-					if(key.right === true)
-					{
-						key.right = false;
-						window.robotik.io.emit('stepStop', { motor : 'clamp' } );
-					}
-					break;
-				// case 170: // *
-				// 	if(key.star === true)
-				// 	{
-				// 		key.star = false;
-				// 	}
-				// 	break;
-				// case 165: // ù
-				// 	if(key.ugrave === true)
-				// 	{
-				// 		key.ugrave = false;
-				// 	}
-				// 	break;
-				//
-
-				case 88: //x
-					key.x = false;
-					break;
-				case 176: //²
-				case 192: //²
-					key.square = false;
-					break;
-				case 187: //=
-				case 61: //=
-					key.eq = false;
-					break;
-				case 85: //u
-					key.u = false;
-					break;
-				case 73: //i
-					key.i = false;
-					break;
-				case 79: //o
-					key.o = false;
-					break;
-				case 80: //p
-					key.p = false;
-					break;
-			}
-
-			if(emit === true)
-			{
-				window.robotik.io.emit('runMotor', { motor : 'left', pwm : left } );
-				window.robotik.io.emit('runMotor', { motor : 'right', pwm : right } );
-				emit = false;
+				window.robotik.io.emit('control', key[event.which]);
 			}
 		}
 	});
 
+	// Functions
+	function setMode(mode)
+	{
+		// Ignore null mode (when localStorage is empty)
+		if(mode === null)
+		{
+			return;
+		}
+
+		// Convert mode to int to match the switch
+		mode = parseInt(mode, 10);
+
+		// Dont lock the interface on init with default mode
+		if(controlMode === m.INIT && mode === m.DEFAULT) {
+			return;
+		}
+
+		// Lock the interface
+		$('main').remove();
+		$('header').remove();
+		$('#panelLock').css('display', 'block');
+
+		// Save mode
+		controlMode = mode;
+		localStorage.setItem('controlmode', mode);
+
+		// Set instructions on screen and disable keys
+		switch(mode)
+		{
+			case m.DEFAULT: {
+				$('#panelLock h1').text('Normal');
+				$('#panelLock span').html('Touches : <br/>' +
+											'ZQSD (ou WASD) pour déplacer le robot<br/>' +
+											'←→↑↓ pour monter ou ouvrir la pince<br/>' +
+											'Vous pouvez actualiser la page');
+				key[k.W].action = 'forward';
+				key[k.Z].action = 'forward';
+				key[k.S].action = 'backward';
+				key[k.A].action = 'turnLeft';
+				key[k.Q].action = 'turnLeft';
+				key[k.D].action = 'turnRight';
+				key[k.up].action = 'clampUp';
+				key[k.down].action = 'clampDown';
+				key[k.right].action = 'clampOpen';
+				key[k.E].action = 'clampOpen';
+				key[k.left].action = 'clampClose';
+				key[k.F].action = 'clampClose';
+				break;
+			}
+			case m.POWER: {
+				$('#panelLock h1').text('Puissance');
+				$('#panelLock span').html('Touches : <br/>' +
+											'Z et S (ou W et S) pour avancer ou reculer le robot');
+				key[k.W].action = 'forward';
+				key[k.Z].action = 'forward';
+				key[k.S].action = 'backward';
+				key[k.A].action = false;
+				key[k.Q].action = false;
+				key[k.D].action = false;
+				key[k.up].action = false;
+				key[k.down].action = false;
+				key[k.right].action = false;
+				key[k.E].action = false;
+				key[k.left].action = false;
+				key[k.F].action = false;
+				break;
+			}
+			case m.ROTATE: {
+				$('#panelLock h1').text('Rotation');
+				$('#panelLock span').html('Touches : <br/>' +
+											'Q et D (ou A et D) pour tourner le robot');
+				key[k.W].action = false;
+				key[k.Z].action = false;
+				key[k.S].action = false;
+				key[k.A].action = 'turnLeft';
+				key[k.Q].action = 'turnLeft';
+				key[k.D].action = 'turnRight';
+				key[k.up].action = false;
+				key[k.down].action = false;
+				key[k.right].action = false;
+				key[k.E].action = false;
+				key[k.left].action = false;
+				key[k.F].action = false;
+				break;
+			}
+			case m.CLAMP: {
+				$('#panelLock h1').text('Pince');
+				$('#panelLock span').html('Touches : <br/>' +
+											'↑↓ pour monter et déscendre la pince<br/>' +
+											'←→ pour fermer et ouvrir la pince<br/>');
+				key[k.W].action = false;
+				key[k.Z].action = false;
+				key[k.S].action = false;
+				key[k.A].action = false;
+				key[k.Q].action = false;
+				key[k.D].action = false;
+				key[k.up].action = 'clampUp';
+				key[k.down].action = 'clampDown';
+				key[k.right].action = 'clampOpen';
+				key[k.E].action = 'clampOpen';
+				key[k.left].action = 'clampClose';
+				key[k.F].action = 'clampClose';
+				break;
+			}
+			default:
+				$('#panelLock span').html('Mode demandé inconnu');
+				console.log('Unknown mode');
+		}
+	}
 }());

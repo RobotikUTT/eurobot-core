@@ -13,6 +13,16 @@ let server    = promisify(http.Server(app), ['listen']);
 let io        = socketIO(server);
 let tmx       = promisify(tmxParser);
 
+// Manual control vars
+let keyStatus = {};
+let pwmStatus = { left : 0, right : 0 };
+let clampStatus =
+{
+  elev : { move : false, up : false },
+  clamp : { move : false, up : false }
+};
+let clampTimeout = { elev : null, clamp : null };
+const PWM_LEFT_COEF = 1.3;
 
 /**
  * Socket io is set up, we can pass the object
@@ -65,6 +75,128 @@ io.on('connection', function(socket) {
     socket
       .on('disconnect', function() {
         log.info('[WEB] Client disconnected');
+      })
+      .on('control', function(key) {
+        // Update key status
+        keyStatus[key.action] = key.pressed;
+
+        // Calculate new pwm and new clamp status
+        let newPwm = { left : 0, right : 0 };
+        let newClamp =
+        {
+          elev : { move : false, up : false },
+          clamp : { move : false, up : false }
+        };
+
+        if(keyStatus.forward) {
+          newPwm.left += 100;
+          newPwm.right += 100;
+        }
+        if(keyStatus.backward) {
+          newPwm.left -= 100;
+          newPwm.right -= 100;
+        }
+        if((keyStatus.turnRight && !keyStatus.backward) ||
+            (keyStatus.turnLeft && keyStatus.backward)) {
+          newPwm.left += 80;
+          newPwm.right -= 60;
+        }
+        if((keyStatus.turnLeft && !keyStatus.backward) ||
+            (keyStatus.turnRight && keyStatus.backward)) {
+          newPwm.right += 80;
+          newPwm.left -= 60;
+        }
+        if(keyStatus.clampUp)
+        {
+          newClamp.elev.move = true;
+          newClamp.elev.up = true;
+        }
+        if(keyStatus.clampDown)
+        {
+          newClamp.elev.move = true;
+          newClamp.elev.up = false;
+        }
+        if(keyStatus.clampClose)
+        {
+          newClamp.clamp.move = true;
+          newClamp.clamp.up = true;
+        }
+        if(keyStatus.clampOpen)
+        {
+          newClamp.clamp.move = true;
+          newClamp.clamp.up = false;
+        }
+
+        // Apply coef to pwm and check maximums
+        newPwm.left = Math.floor(newPwm.left * PWM_LEFT_COEF);
+        if(newPwm.left > 255) {
+          newPwm.left = 255;
+        }
+        if(newPwm.right > 255) {
+          newPwm.right = 255;
+        }
+        if(newPwm.left < -255) {
+          newPwm.left = -255;
+        }
+        if(newPwm.right < -255) {
+          newPwm.right = -255;
+        }
+
+        // Update pwm value if needed
+        if(pwmStatus.left !== newPwm.left) {
+          pwmStatus.left = newPwm.left;
+          modules.motorController.run('left', newPwm.left);
+        }
+        if(pwmStatus.right !== newPwm.right) {
+          pwmStatus.right = newPwm.right;
+          modules.motorController.run('right', newPwm.right);
+        }
+
+        // Update clamp elevator status
+        if(clampStatus.elev.move !== newClamp.elev.move ||
+          clampStatus.elev.up !== newClamp.elev.up) {
+          clampStatus.elev = newClamp.elev;
+          if(clampStatus.elev.move) {
+            if(clampStatus.elev.up) {
+              clearTimeout(clampTimeout.elev);
+              modules.clampController.goTo('elev', 2000000000);
+            }
+            else {
+              clearTimeout(clampTimeout.elev);
+              modules.clampController.goTo('elev', -2000000000);
+            }
+          }
+          else {
+            modules.clampController.stop('elev');
+            clearTimeout(clampTimeout.elev);
+            clampTimeout.elev = setTimeout(function() {
+              modules.clampController.stop('elev');
+            }, 1000);
+          }
+        }
+
+        // Update clamp status
+        if(clampStatus.clamp.move !== newClamp.clamp.move ||
+          clampStatus.clamp.up !== newClamp.clamp.up) {
+          clampStatus.clamp = newClamp.clamp;
+          if(clampStatus.clamp.move) {
+            if(clampStatus.clamp.up) {
+              clearTimeout(clampTimeout.clamp);
+              modules.clampController.goTo('clamp', 2000000000); //2147483647
+            }
+            else {
+              clearTimeout(clampTimeout.clamp);
+              modules.clampController.goTo('clamp', -2000000000); //214747 3647
+            }
+          }
+          else {
+            modules.clampController.stop('clamp');
+            clearTimeout(clampTimeout.clamp);
+            clampTimeout.clamp = setTimeout(function() {
+              modules.clampController.stop('clamp');
+            }, 1000);
+          }
+        }
       })
 
       .on('stopMotor', function() {

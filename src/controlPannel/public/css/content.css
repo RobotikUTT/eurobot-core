@@ -35,3 +35,16 @@ main .chartTracer {
 main svg > :last-child {
   display: none;
 }
+
+
+#panelLock{
+  color: gray;
+  width: auto;
+  text-align: center;
+  display:none;
+}
+
+#panelLock span{
+  font-size:2em;
+  font-style: italic;
+}

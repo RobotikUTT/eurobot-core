@@ -95,7 +95,9 @@
               animation: false
             }
         }));
-        window.robotik.highcharts[window.robotik.highcharts.length - 1].i = 0;
+        if(window.robotik.highcharts[window.robotik.highcharts.length - 1] !== undefined) {
+          window.robotik.highcharts[window.robotik.highcharts.length - 1].i = 0;
+        }
       });
     });
 
