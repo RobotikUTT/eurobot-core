@@ -3,7 +3,11 @@
 CSS_LIB_DIST="src/controlPanel/public/css/lib"
 JS_LIB_DIST="src/controlPanel/public/js/lib"
 
+
 ## Copy client-side library into appropriate folder
+
+mkdir $CSS_LIB_DIST
+mkdir $JS_LIB_DIST
 
 # CSS libs
 cp node_modules/bootstrap/dist/css/bootstrap.min.css $CSS_LIB_DIST
