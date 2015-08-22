@@ -25,7 +25,7 @@ var MotionChart = function($container) {
 
     this.init = function() {
         // High res plot while avoiding more than one point per pixel
-        this.maximum = $container.outerWidth() / 2;
+        this.maximum = 10;
         // However, 3000 point min
         // this.maximum = (this.maximum > 3000) ? this.maximum : 3000;
 
@@ -74,10 +74,11 @@ var MotionChart = function($container) {
         if (!this.$plot)
             return
 
-        if (this.data.length >= this.maximum) {
+        if (this.data.position.length > this.maximum) {
             this.data.position = this.data.position.slice(1);
             this.data.velocity = this.data.velocity.slice(1);
         }
+
         this.data.position.push(newData.position);
         this.data.velocity.push(newData.velocity);
     }
