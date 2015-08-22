@@ -198,18 +198,28 @@ io.on('connection', function(socket) {
       // TODO
     });
 
+    socket.on('resetOdometry', function() {
+      modules.motorController.setOdometry({x: 0, y: 0}, 0)
+        .then(() => {
+          log.info('Odometry reset');
+        })
+        .catch((err) => {
+          log.warn('resetOdometry: ' +err);
+        })
+    });
+
 
     /*
       Socket.io listeners
      */
     socket.on('disconnect', function() {
       log.info('[WEB] Client disconnected');
-    })
+    });
 });
 
 
 /*
-  API
+  Server API
  */
 
 function startWebServer() {
@@ -219,9 +229,13 @@ function startWebServer() {
 function bindModules(_modules) {
   modules = _modules;
 
-  // Odometry updates
+
+  /*
+    Module listeners
+   */
+
   modules.motorController.on('newPosition', function() {
-    io.sockets.emit('newState', modules.motorController.getPosition());
+    io.sockets.emit('odometryUpdate', modules.motorController.getPosition());
   });
 }
 
