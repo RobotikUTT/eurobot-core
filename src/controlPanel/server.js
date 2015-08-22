@@ -26,12 +26,11 @@ let modules = null;
 io.on('connection', function(socket) {
     log.info('[WEB] New client connected');
 
+
     /*
-      Listeners
+      Motors control listeners
      */
 
-    // Control center
-      // Motor
     socket.on('stopMotor', function() {
       modules.motorController
         .stop()
@@ -44,14 +43,19 @@ io.on('connection', function(socket) {
     });
 
     socket.on('goToMotor', function(data) {
-      modules.motorController
-        .goTo(data.distance)
-        .then(() => {
-          log.info('goToMotor finished: ' + data.distance);
-        })
-        .catch((err) => {
-          log.warn('goToMotor failed: ' +err);
-        });
+      if (data.x && data.y) {
+        // TODO
+      }
+      else if (data.distance) {
+        modules.motorController
+          .goTo(data.distance)
+          .then(() => {
+            log.info('goToMotor finished: ' + data.distance);
+          })
+          .catch((err) => {
+            log.warn('goToMotor failed: ' +err);
+          });
+      }
     });
 
     socket.on('runMotor', function(data) {
@@ -84,8 +88,12 @@ io.on('connection', function(socket) {
         })
     });
 
-      // Clamp
-    socket.on('stepGetpos', function(data) {
+
+    /*
+      Clamp control listeners
+     */
+
+    socket.on('updateClamp', function(data) {
       modules.clampController
         .updatePosition()
         .catch((err) => {
@@ -93,7 +101,7 @@ io.on('connection', function(socket) {
         });
     });
 
-    socket.on('stepGoto', function(data) {
+    socket.on('clampGoTo', function(data) {
       modules.clampController
         .goTo(data.motor, data.pos)
         .then(() => {
@@ -104,29 +112,74 @@ io.on('connection', function(socket) {
         });
     });
 
-    socket.on('stepStop', function(data) {
+    socket.on('clampStop', function(data) {
       modules.clampController
         .stop(data.motor)
         .then(() => {
-          log.info('Step ' +data.motor+ ' stopped');
+          log.info('Clamp ' +data.motor+ ' stopped');
         })
         .catch((err) =>{
-          log.warn('Step ' +data.motor+ ' stop failed: '+err);
+          log.warn('Clamp ' +data.motor+ ' stop failed: '+err);
         });
     });
 
-    socket.on('stepInit', function(data) {
+    socket.on('resetClamp', function(data) {
       modules.clampController
-        .init(data.motor)
+        .init('elev')
         .then(() => {
-          log.info('Step: '+data.motor+ ' initialized');
+          log.info('Clamp elevator reset');
+          return modules.clampController.init('clamp');
+        })
+        .then(() => {
+          log.info('Clamp grab reset');
         })
         .catch((err) =>{
-          log.warn('Step '+data.motor+' init failed: ' +err);
+          log.warn('Clamp reset failed: ' +err);
         });
     });
 
-    // Motion settings
+
+    /*
+      Manual control listeners
+     */
+
+    socket.on('goForward', function(data) {
+      // TODO
+    });
+
+    socket.on('turnLeft', function(data) {
+      // TODO
+    });
+
+    socket.on('goBackward', function(data) {
+      // TODO
+    });
+
+    socket.on('turnRight', function(data) {
+      // TODO
+    });
+
+    socket.on('elevatorUp', function(data) {
+      // TODO
+    });
+
+    socket.on('elevatorDown', function(data) {
+      // TODO
+    });
+
+    socket.on('clampExpand', function(data) {
+      // TODO
+    });
+
+    socket.on('clampCompress', function(data) {
+      // TODO
+    });
+
+
+    /*
+      MotorController settings listeners
+     */
+
     socket.on('motionSettings', function(newSettings) {
       if (!modules.motorController)
         throw new Error("No motorController module bound");
@@ -137,10 +190,21 @@ io.on('connection', function(socket) {
       // TODO: implement others settings
     });
 
-    socket
-      .on('disconnect', function() {
-        log.info('[WEB] Client disconnected');
-      })
+    socket.on('calibrateCenterDistance', function() {
+      // TODO
+    });
+
+    socket.on('calibrateWheelRadius', function() {
+      // TODO
+    });
+
+
+    /*
+      Socket.io listeners
+     */
+    socket.on('disconnect', function() {
+      log.info('[WEB] Client disconnected');
+    })
 });
 
 

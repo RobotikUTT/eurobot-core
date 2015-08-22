@@ -114,6 +114,76 @@ h2 {
   padding-top: 20px;
 }
 
-#settings {
-  position: absolute; top: 50px; left: 50px
 
+/*
+ * Containers
+ */
+
+#mapContainer {
+  background-color: red;
+  width: 100%;
+}
+
+#videoContainer {
+  background-color: blue;
+  width: 100%;
+}
+
+#manualControlContainer {
+  position: relative;
+  width: 400px;
+  height: 250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*
+ * Manual control
+ */
+
+#goForward {
+  position: relative;
+  top: -7px;
+  left: 51px;
+}
+
+#goBackward {
+  position: relative;
+  top: 90px;
+  left: -5px;
+}
+
+#turnLeft {
+  position: relative;
+  top: 38px;
+  right: 110px;
+}
+
+#turnRight {
+  position: relative;
+  top: 38px;
+  right: 60px;
+}
+
+#elevatorUp {
+  position: relative;
+  left: 30px;
+}
+
+#elevatorDown {
+  position: relative;
+  top: 85px;
+  right: 4px;
+}
+
+#clampExpand {
+  position: relative;
+  top: 28px;
+  right: -30px;
+}
+
+#clampCompress {
+  top: 30px;
+  position: relative;
+  right: -40px;
+}

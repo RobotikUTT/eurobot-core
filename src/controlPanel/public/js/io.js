@@ -12,9 +12,13 @@ $(function() {
         charts.orientationChart.addPoints({ position: orientationPos, velocity: 0 });
     });
 
-    // Send forms through websockets
-    $("#motionSettingsForm").on('submit', function(e) {
-        e.preventDefault();
+
+    /*
+        Forms
+     */
+
+    // Motion settings
+    $('#motionSettingsForm').on('submit', function(e) {
         io.emit('motionSettings', {
             distance: {
                 position: {
@@ -43,5 +47,134 @@ $(function() {
                 dt: $('#dtOriVInput').val()
             }
         });
+
+        return false;
     });
-})
+
+    // Motors
+    $('#goToCarthForm').on('submit', function(e) {
+        io.emit('goToMotor', {
+            x: $('#xInput').val(),
+            y: $('#yInput').val()
+        });
+
+        return false;
+    });
+
+    $('#runMotorForm').on('submit', function(e) {
+        io.emit('runMotor', {
+            motor: $('#motorSelect').val(),
+            pwm: $('#PWMInput').val()
+        });
+
+        return false;
+    });
+
+    $('#goToForm').on('submit', function(e) {
+        io.emit('goToMotor', {
+            distance: $('#distanceInput').val()
+        });
+
+        return false;
+    });
+
+    $('#turnMotorForm').on('submit', function(e) {
+        io.emit('turnMotor', {
+            orientation: $('#oriInput').val()
+        });
+
+        return false;
+    });
+
+    // Clamp
+    $('#elevatorForm').on('submit', function(e) {
+        io.emit('clampGoTo', {
+            motor: 'elev',
+            pos: $('#elevatorStepInput').val()
+        });
+
+        return false;
+    });
+
+    $('#grabForm').on('submit', function(e) {
+        io.emit('clampGoTo', {
+            motor: 'clamp',
+            pos: $('#grabStepInput')
+        });
+
+        return false;
+    });
+
+
+    /*
+        Buttons
+     */
+
+     // Motors
+    $('#motorStopBtn').on('click', function(e) {
+        io.emit('stopMotor');
+    });
+
+    // Clamp
+    $('#updateClampBtn').on('click', function(e) {
+        io.emit('updateClamp');
+    });
+
+    $('#resetClampBtn').on('click', function(e) {
+        io.emit('resetClamp');
+    });
+
+    $('#elevatorStopBtn').on('click', function(e) {
+        io.emit('clampStop', {
+            motor: 'elev'
+        });
+    });
+
+    $('#grabStopBtn').on('click', function(e) {
+        io.emit('clampStop', {
+            motor: 'clamp'
+        });
+    });
+
+    // Manual control
+    $('#goForward').on('click', function(e) {
+        io.emit('goForward');
+    });
+
+    $('#turnLeft').on('click', function(e) {
+        io.emit('turnLeft');
+    });
+
+    $('#goBackward').on('click', function(e) {
+        io.emit('goBackward');
+    });
+
+    $('#turnRight').on('click', function(e) {
+        io.emit('turnRight');
+    });
+
+    $('#elevatorUp').on('click', function(e) {
+        io.emit('elevatorUp');
+    });
+
+    $('#elevatorDown').on('click', function(e) {
+        io.emit('elevatorDown');
+    });
+
+    $('#clampExpand').on('click', function(e) {
+        io.emit('clampExpand');
+    });
+
+    $('#clampCompress').on('click', function(e) {
+        io.emit('clampCompress');
+    });
+
+    // Motion settings
+    $('#centerDistanceBtn').on('click', function(e) {
+        io.emit('calibrateCenterDistance');
+    });
+
+    $('#wheelRadiusBtn').on('click', function(e) {
+        io.emit('calibrateWheelRadius');
+    });
+});
