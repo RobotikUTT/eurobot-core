@@ -39,17 +39,6 @@ function initUI() {
         $allLinks[e.keyCode - 49].click();
     });
 
-    // Form submit
-    $('input[type=text]').on('keydown', function(e) {
-        var parentForm = $(this.form);
-
-        if (e.keyCode === 13 && parentForm) {
-            e.preventDefault();
-            parentForm.submit();
-        }
-    });
-
-
     // Bind all "dt" input together
     $dts = $('#dtDistPInput, #dtOriPInput, #dtDistVInput, #dtOriVInput');
 
