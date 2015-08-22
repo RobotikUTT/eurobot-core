@@ -6,8 +6,11 @@ var changed    = require('gulp-changed');
 var nodemon    = require('gulp-nodemon');
 
 
+var FRONTEND_SRC = 'src/controlPanel/public/**';
+var BACKEND_SRC  = ['src/**/*.js', '!'+FRONTEND_SRC];
+
 gulp.task('build', function () {
-    return gulp.src(['src/**/*.js', '!src/controlPanel/public/**/*.js'])
+    return gulp.src(BACKEND_SRC)
         .pipe(plumber({
             handleError: function (err) {
                 console.log(err);
@@ -22,21 +25,19 @@ gulp.task('build', function () {
 });
 
 gulp.task('copy', function() {
-    return gulp.src('src/controlPanel/public/**')
+    return gulp.src(FRONTEND_SRC)
         .pipe(changed('build/controlPanel/public'))
         .pipe(gulp.dest('build/controlPanel/public'));
 });
 
 gulp.task('dev', ['build', 'copy'], function() {
-    gulp.watch('src/controlPanel/public/**', ['copy']);
+    gulp.watch(BACKEND_SRC, ['build']);
+    gulp.watch(FRONTEND_SRC, ['copy']);
 
     nodemon({
       script: 'build/main.js',
-      tasks: ['build'],
-      watch: 'src',
-      ignore: 'src/controlPanel/public/'
-    })
+      watch: 'build'
+    });
 });
-
 
 gulp.task('default', ['build', 'copy']);
