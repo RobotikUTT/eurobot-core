@@ -98,10 +98,16 @@ var MotionChart = function($container) {
 $(function() {
     window.charts = {};
 
+    var chartsContainer = $('#motionMonitorContainer');
+
     charts.distanceChart = new MotionChart($('#distanceChart'));
     charts.orientationChart = new MotionChart($('#orientationChart'));
 
     $(window).on('resize', function() {
+        if (!chartsContainer.is(':visible')) {
+            return;
+        }
+
         charts.distanceChart.resize();
         charts.orientationChart.resize();
     });

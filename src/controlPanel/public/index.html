@@ -15,7 +15,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <body>
 
-      <nav class="navbar navbar-inverse navbar-fixed-top">
+      <nav class="navbar navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -33,7 +33,7 @@
               Debug interface
             </a>
           </div>
-          <ul class="nav navbar-nav navbar-right">
+          <ul id="navbarLinks" class="nav navbar-nav navbar-right">
             <li>
               <a href="#" id="resetOdometryBtn">
                 <b>x: </b><span id="xPosInfo">?</span> <b>y: </b><span id="yPosInfo">?</span> <b>theta: </b><span id="oriInfo">?</span>
@@ -61,10 +61,34 @@
             </li>
           </ul>
         </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul id="sidebarLinks" class="nav navbar-nav">
+            <li class="active">
+              <a href="#controlCenterContainer">
+                Control center
+              </a>
+            </li>
+            <li>
+              <a href="#motionSettingsContainer">
+                Motion settings
+              </a>
+            </li>
+            <li>
+              <a href="#motionMonitorContainer">
+                Motion monitor
+              </a>
+            </li>
+            <li>
+              <a href="#devStuffContainer">
+                Dev stuff
+              </a>
+            </li>
+          </ul>
+        </div>
       </nav>
 
       <div class="container-fluid">
-        <div class="row">
+        <div id="mainRow" class="row">
           <div class="col-sm-3 col-lg-2 sidebar">
             <ul class="nav nav-sidebar">
               <li class="active">
@@ -93,398 +117,397 @@
               </li>
             </ul>
           </div>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="controlCenterContainer">
-            <h1 class="page-header">
-              Control center
-            </h1>
-            <div class="row">
-              <div class="col-lg-6">
-                <div id="mapContainer">
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div id="videoContainer">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <h2 class="page-header">Motors <button type="button" class="btn btn-danger" id="motorStopBtn">Stop</button></h2>
+          <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="controlCenterContainer">
+              <h1 class="page-header">
+                Control center
+              </h1>
               <div class="row">
                 <div class="col-lg-6">
-                  <form class="form-horizontal" id="goToCarthForm">
-                    <div class="form-group">
-                      <label class="col-xs-12 col-sm-4 col-lg-3 control-label">
-                        Go to
-                      </label>
-                      <div class="col-xs-10 col-sm-4 col-lg-3">
-                        <input type="text" class="form-control" id="xInput" placeholder="x (mm)">
-                        <input type="text" class="form-control" id="yInput" placeholder="y (mm)">
-                      </div>
-                      <button type="submit" class="btn btn-default">
-                        Go
-                      </button>
-                    </div>
-                  </form>
+                  <div id="mapContainer">
+                  </div>
                 </div>
                 <div class="col-lg-6">
-                  <form class="form-horizontal" id="runMotorForm">
-                    <div class="form-group">
-                      <label class="col-xs-12 col-sm-4 col-lg-3 control-label">
-                        Run
-                      </label>
-                      <div class="col-xs-10 col-sm-4 col-lg-3">
-                        <select class="form-control" id="motorSelect">
-                          <option>Left</option>
-                          <option>Rignt</option>
-                        </select>
-                        <input type="text" class="form-control" id="PWMInput" placeholder="PWM">
-                      </div>
-                      <button type="submit" class="btn btn-default">
-                        Go
-                      </button>
-                    </div>
-                  </form>
+                  <div id="videoContainer">
+                  </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-lg-6">
-                  <form class="form-horizontal" id="goToForm">
-                    <div class="form-group">
-                      <label for="distanceInput" class="col-xs-12 col-sm-4 col-lg-3 control-label">
-                        Go to
-                      </label>
-                      <div class="col-xs-10 col-sm-4 col-lg-3">
-                        <input type="text" class="form-control" id="distanceInput" placeholder="distance (mm)">
+                <h2 class="page-header">Motors <button type="button" class="btn btn-danger" id="motorStopBtn">Stop</button></h2>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <form class="form-horizontal" id="goToCarthForm">
+                      <div class="form-group">
+                        <label class="col-xs-12 col-sm-4 col-lg-3 control-label">
+                          Go to
+                        </label>
+                        <div class="col-xs-10 col-sm-4 col-lg-3">
+                          <input type="text" class="form-control" id="xInput" placeholder="x (mm)">
+                          <input type="text" class="form-control" id="yInput" placeholder="y (mm)">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                          Go
+                        </button>
                       </div>
-                      <button type="submit" class="btn btn-default">
-                        Go
-                      </button>
-                    </div>
-                  </form>
-                </div>
-                <div class="col-lg-6">
-                  <form class="form-horizontal" id="turnMotorForm">
-                    <div class="form-group">
-                      <label for="oriInput" class="col-xs-12 col-sm-4 col-lg-3 control-label">
-                        Turn
-                      </label>
-                      <div class="col-xs-10 col-sm-4 col-lg-3">
-                        <input type="text" class="form-control" id="oriInput" placeholder="rad">
-                      </div>
-                      <button type="submit" class="btn btn-default">
-                        Go
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <h2 class="page-header">Clamp <button type="button" id="updateClampBtn" class="btn btn-primary">Update</button> <button type="button" id="resetClampBtn" class="btn btn-warning">Reset</button></h2>
-              <div class="row">
-                <div class="col-lg-6">
-                  <form class="form-horizontal" id="elevatorForm">
-                    <div class="form-group">
-                      <label for="elevatorStepInput" class="col-xs-12 col-sm-4 col-lg-3 control-label">
-                        elevator
-                      </label>
-                      <div class="col-xs-10 col-sm-4 col-lg-3">
-                        <input type="text" class="form-control" id="elevatorStepInput" placeholder="steps">
-                      </div>
-                      <button type="submit" class="btn btn-default">
-                        Go
-                      </button>
-                      <button type="button" class="btn btn-danger" id="elevatorStopBtn">
-                        Stop
-                      </button>
-                    </div>
-                  </form>
-                </div>
-                <div class="col-lg-6">
-                  <form class="form-horizontal" id="grabForm">
-                    <div class="form-group">
-                      <label for="grabStepInput" class="col-xs-12 col-sm-4 col-lg-3 control-label">
-                        Grab
-                      </label>
-                      <div class="col-xs-10 col-sm-4 col-lg-3">
-                        <input type="text" class="form-control" id="grabStepInput" placeholder="steps">
-                      </div>
-                      <button type="submit" class="btn btn-default">
-                        Go
-                      </button>
-                      <button type="button" class="btn btn-danger" id="grabStopBtn">
-                        Stop
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <h2 class="page-header">Manual</h2>
-              <div id="manualControlContainer">
-                <i class="fa fa-arrow-up fa-4x" id="goForward"></i>
-                <i class="fa fa-arrow-down fa-4x" id="goBackward"></i>
-                <i class="fa fa-arrow-left fa-4x" id="turnLeft"></i>
-                <i class="fa fa-arrow-right fa-4x" id="turnRight"></i>
-                <i class="fa fa-long-arrow-up fa-5x" id="elevatorUp"></i>
-                <i class="fa fa-long-arrow-down fa-5x" id="elevatorDown"></i>
-                <i class="fa fa-expand fa-3x" id="clampExpand"></i>
-                <i class="fa fa-compress fa-3x" id="clampCompress"></i>
-              </div>
-            </div>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="motionSettingsContainer">
-            <h1 class="page-header">
-              Motion settings
-            </h1>
-            <form class="form-horizontal" id="motionSettingsForm">
-              <h2 class="page-header">
-                  Constants
-              </h2>
-              <div class="form-group">
-                <label for="centerDistanceInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
-                  Center distance
-                </label>
-                <div class="col-xs-7 col-sm-6 col-lg-2">
-                  <input type="text" class="form-control" id="centerDistanceInput" placeholder="mm">
-                </div>
-                <button type="button" class="btn btn-primary" id ="centerDistanceBtn">
-                  Calibrate
-                </button>
-              </div>
-              <div class="form-group">
-                <label for="wheelRadiusInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
-                  Wheel radius
-                </label>
-                <div class="col-xs-7 col-sm-6 col-lg-2">
-                  <input type="text" class="form-control" id="wheelRadiusInput" placeholder="mm">
-                </div>
-                <button type="button" class="btn btn-primary" id="wheelRadiusBtn">
-                  Calibrate
-                </button>
-              </div>
-              <div class="form-group">
-                <label for="tickSpinInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
-                  Encoder
-                </label>
-                <div class="col-xs-7 col-sm-6 col-lg-2">
-                  <input type="text" class="form-control" id="tickSpinInput" placeholder="tick/spin">
-                </div>
-              </div>
-
-              <h2 class="page-header">
-                Speed and acceleration
-              </h2>
-              <div class="form-group">
-                <label for="orientSpeedInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
-                  Angle speed
-                </label>
-                <div class="col-xs-12 col-sm-6 col-lg-2">
-                  <input type="text" class="form-control" id="orientSpeedInput" placeholder="rad/s">
-                </div>
-                <label for="oriAccInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
-                  Orientation acceleration
-                </label>
-                <div class="col-xs-12 col-sm-6 col-lg-2">
-                  <input type="text" class="form-control" id="oriAccInput" placeholder="rad/s²">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="distSpeedInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
-                  Distance speed
-                </label>
-                <div class="col-xs-12 col-sm-6 col-lg-2">
-                  <input type="text" class="form-control" id="distSpeedInput" placeholder="mm/s">
-                </div>
-                <label for="distAccInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
-                  Distance acceleration
-                </label>
-                <div class="col-xs-12 col-sm-6 col-lg-2">
-                  <input type="text" class="form-control" id="distAccInput" placeholder="mm/s²">
-                </div>
-              </div>
-
-              <h2 class="page-header">
-                Distance control
-              </h2>
-              <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active">
-                  <a href="#distPPID" aria-controls="distVPID" role="tab" data-toggle="tab">
-                    Position
-                  </a>
-                </li>
-                <li role="presentation">
-                  <a href="#distVPID" aria-controls="oriVPID" role="tab" data-toggle="tab">
-                    Velocity
-                  </a>
-                </li>
-              </ul>
-
-              <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="distPPID">
-                  <div class="form-group">
-                    <br>
-                    <label for="PDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                      P
-                    </label>
-                    <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="PDistPInput" placeholder="">
-                    </div>
-                    <label for="IDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                      I
-                    </label>
-                    <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="IDistPInput" placeholder="">
-                    </div>
-                    <label for="DDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                      D
-                    </label>
-                    <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="DDistPInput" placeholder="">
-                    </div>
+                    </form>
                   </div>
-                  <div class="form-group">
-                    <label for="dtDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                      dt
-                    </label>
-                    <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="dtDistPInput" placeholder="">
-                    </div>
+                  <div class="col-lg-6">
+                    <form class="form-horizontal" id="runMotorForm">
+                      <div class="form-group">
+                        <label class="col-xs-12 col-sm-4 col-lg-3 control-label">
+                          Run
+                        </label>
+                        <div class="col-xs-10 col-sm-4 col-lg-3">
+                          <select class="form-control" id="motorSelect">
+                            <option>Left</option>
+                            <option>Rignt</option>
+                          </select>
+                          <input type="text" class="form-control" id="PWMInput" placeholder="PWM">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                          Go
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="distVPID">
-                  <br>
-                  <div class="form-group">
-                    <label for="PDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                      P
-                    </label>
-                    <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="PDistVInput" placeholder="">
-                    </div>
-                    <label for="IDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                      I
-                    </label>
-                    <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="IDistVInput" placeholder="">
-                    </div>
-                    <label for="DDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                      D
-                    </label>
-                    <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="DDistVInput" placeholder="">
-                    </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <form class="form-horizontal" id="goToForm">
+                      <div class="form-group">
+                        <label for="distanceInput" class="col-xs-12 col-sm-4 col-lg-3 control-label">
+                          Go to
+                        </label>
+                        <div class="col-xs-10 col-sm-4 col-lg-3">
+                          <input type="text" class="form-control" id="distanceInput" placeholder="distance (mm)">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                          Go
+                        </button>
+                      </div>
+                    </form>
                   </div>
-                  <div class="form-group">
-                    <label for="dtDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
-                      dt
-                    </label>
-                    <div class="col-xs-11 col-sm-3 col-lg-2">
-                      <input type="text" class="form-control" id="dtDistVInput" placeholder="">
-                    </div>
+                  <div class="col-lg-6">
+                    <form class="form-horizontal" id="turnMotorForm">
+                      <div class="form-group">
+                        <label for="oriInput" class="col-xs-12 col-sm-4 col-lg-3 control-label">
+                          Turn
+                        </label>
+                        <div class="col-xs-10 col-sm-4 col-lg-3">
+                          <input type="text" class="form-control" id="oriInput" placeholder="rad">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                          Go
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
+                <h2 class="page-header">Clamp <button type="button" id="updateClampBtn" class="btn btn-primary">Update</button> <button type="button" id="resetClampBtn" class="btn btn-warning">Reset</button></h2>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <form class="form-horizontal" id="elevatorForm">
+                      <div class="form-group">
+                        <label for="elevatorStepInput" class="col-xs-12 col-sm-4 col-lg-3 control-label">
+                          elevator
+                        </label>
+                        <div class="col-xs-10 col-sm-4 col-lg-3">
+                          <input type="text" class="form-control" id="elevatorStepInput" placeholder="steps">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                          Go
+                        </button>
+                        <button type="button" class="btn btn-danger" id="elevatorStopBtn">
+                          Stop
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-lg-6">
+                    <form class="form-horizontal" id="grabForm">
+                      <div class="form-group">
+                        <label for="grabStepInput" class="col-xs-12 col-sm-4 col-lg-3 control-label">
+                          Grab
+                        </label>
+                        <div class="col-xs-10 col-sm-4 col-lg-3">
+                          <input type="text" class="form-control" id="grabStepInput" placeholder="steps">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                          Go
+                        </button>
+                        <button type="button" class="btn btn-danger" id="grabStopBtn">
+                          Stop
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <h2 class="page-header">Manual</h2>
+                <div id="manualControlContainer">
+                  <i class="fa fa-arrow-up fa-4x" id="goForward"></i>
+                  <i class="fa fa-arrow-down fa-4x" id="goBackward"></i>
+                  <i class="fa fa-arrow-left fa-4x" id="turnLeft"></i>
+                  <i class="fa fa-arrow-right fa-4x" id="turnRight"></i>
+                  <i class="fa fa-long-arrow-up fa-5x" id="elevatorUp"></i>
+                  <i class="fa fa-long-arrow-down fa-5x" id="elevatorDown"></i>
+                  <i class="fa fa-expand fa-3x" id="clampExpand"></i>
+                  <i class="fa fa-compress fa-3x" id="clampCompress"></i>
+                </div>
+              </div>
+          </div>
+          <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="motionSettingsContainer">
+              <h1 class="page-header">
+                Motion settings
+              </h1>
+              <form class="form-horizontal" id="motionSettingsForm">
                 <h2 class="page-header">
-                  Orientation Control
+                    Constants
+                </h2>
+                <div class="form-group">
+                  <label for="centerDistanceInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
+                    Center distance
+                  </label>
+                  <div class="col-xs-7 col-sm-6 col-lg-2">
+                    <input type="text" class="form-control" id="centerDistanceInput" placeholder="mm">
+                  </div>
+                  <button type="button" class="btn btn-primary" id ="centerDistanceBtn">
+                    Calibrate
+                  </button>
+                </div>
+                <div class="form-group">
+                  <label for="wheelRadiusInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
+                    Wheel radius
+                  </label>
+                  <div class="col-xs-7 col-sm-6 col-lg-2">
+                    <input type="text" class="form-control" id="wheelRadiusInput" placeholder="mm">
+                  </div>
+                  <button type="button" class="btn btn-primary" id="wheelRadiusBtn">
+                    Calibrate
+                  </button>
+                </div>
+                <div class="form-group">
+                  <label for="tickSpinInput" class="col-xs-2 col-sm-4 col-lg-2 control-label">
+                    Encoder
+                  </label>
+                  <div class="col-xs-7 col-sm-6 col-lg-2">
+                    <input type="text" class="form-control" id="tickSpinInput" placeholder="tick/spin">
+                  </div>
+                </div>
+
+                <h2 class="page-header">
+                  Speed and acceleration
+                </h2>
+                <div class="form-group">
+                  <label for="orientSpeedInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
+                    Angle speed
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-lg-2">
+                    <input type="text" class="form-control" id="orientSpeedInput" placeholder="rad/s">
+                  </div>
+                  <label for="oriAccInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
+                    Orientation acceleration
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-lg-2">
+                    <input type="text" class="form-control" id="oriAccInput" placeholder="rad/s²">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="distSpeedInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
+                    Distance speed
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-lg-2">
+                    <input type="text" class="form-control" id="distSpeedInput" placeholder="mm/s">
+                  </div>
+                  <label for="distAccInput" class="col-xs-4 col-sm-4 col-lg-2 control-label">
+                    Distance acceleration
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-lg-2">
+                    <input type="text" class="form-control" id="distAccInput" placeholder="mm/s²">
+                  </div>
+                </div>
+
+                <h2 class="page-header">
+                  Distance control
                 </h2>
                 <ul class="nav nav-tabs" role="tablist">
                   <li role="presentation" class="active">
-                    <a href="#oriPPID" aria-controls="oriPPID" role="tab" data-toggle="tab">
+                    <a href="#distPPID" aria-controls="distVPID" role="tab" data-toggle="tab">
                       Position
                     </a>
                   </li>
                   <li role="presentation">
-                    <a href="#oriVPID" aria-controls="oriVPID" role="tab" data-toggle="tab">
+                    <a href="#distVPID" aria-controls="oriVPID" role="tab" data-toggle="tab">
                       Velocity
                     </a>
                   </li>
                 </ul>
 
                 <div class="tab-content">
-                  <div role="tabpanel" class="tab-pane active" id="oriPPID">
+                  <div role="tabpanel" class="tab-pane active" id="distPPID">
                     <div class="form-group">
                       <br>
-                      <label for="POriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                      <label for="PDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                         P
                       </label>
                       <div class="col-xs-11 col-sm-3 col-lg-2">
-                        <input type="text" class="form-control" id="POriPInput" placeholder="">
+                        <input type="text" class="form-control" id="PDistPInput" placeholder="">
                       </div>
-                      <label for="IOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                      <label for="IDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                         I
                       </label>
                       <div class="col-xs-11 col-sm-3 col-lg-2">
-                        <input type="text" class="form-control" id="IOriPInput" placeholder="">
+                        <input type="text" class="form-control" id="IDistPInput" placeholder="">
                       </div>
-                      <label for="DOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                      <label for="DDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                         D
                       </label>
                       <div class="col-xs-11 col-sm-3 col-lg-2">
-                        <input type="text" class="form-control" id="DOriPInput" placeholder="">
+                        <input type="text" class="form-control" id="DDistPInput" placeholder="">
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="dtOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                      <label for="dtDistPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                         dt
                       </label>
                       <div class="col-xs-11 col-sm-3 col-lg-2">
-                        <input type="text" class="form-control" id="dtOriPInput" placeholder="">
+                        <input type="text" class="form-control" id="dtDistPInput" placeholder="">
                       </div>
                     </div>
                   </div>
-                  <div role="tabpanel" class="tab-pane" id="oriVPID">
+                  <div role="tabpanel" class="tab-pane" id="distVPID">
                     <br>
                     <div class="form-group">
-                      <label for="POriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                      <label for="PDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                         P
                       </label>
                       <div class="col-xs-11 col-sm-3 col-lg-2">
-                        <input type="text" class="form-control" id="POriVInput" placeholder="">
+                        <input type="text" class="form-control" id="PDistVInput" placeholder="">
                       </div>
-                      <label for="IOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                      <label for="IDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                         I
                       </label>
                       <div class="col-xs-11 col-sm-3 col-lg-2">
-                        <input type="text" class="form-control" id="IOriVInput" placeholder="">
+                        <input type="text" class="form-control" id="IDistVInput" placeholder="">
                       </div>
-                      <label for="DOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                      <label for="DDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                         D
                       </label>
                       <div class="col-xs-11 col-sm-3 col-lg-2">
-                        <input type="text" class="form-control" id="DOriVInput" placeholder="">
+                        <input type="text" class="form-control" id="DDistVInput" placeholder="">
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="dtOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                      <label for="dtDistVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
                         dt
                       </label>
                       <div class="col-xs-11 col-sm-3 col-lg-2">
-                        <input type="text" class="form-control" id="dtOriVInput" placeholder="">
+                        <input type="text" class="form-control" id="dtDistVInput" placeholder="">
                       </div>
                     </div>
                   </div>
-                  <input type="submit" id="motionSettingsBtn" class="btn btn-default">
+                  <h2 class="page-header">
+                    Orientation Control
+                  </h2>
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                      <a href="#oriPPID" aria-controls="oriPPID" role="tab" data-toggle="tab">
+                        Position
+                      </a>
+                    </li>
+                    <li role="presentation">
+                      <a href="#oriVPID" aria-controls="oriVPID" role="tab" data-toggle="tab">
+                        Velocity
+                      </a>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="oriPPID">
+                      <div class="form-group">
+                        <br>
+                        <label for="POriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                          P
+                        </label>
+                        <div class="col-xs-11 col-sm-3 col-lg-2">
+                          <input type="text" class="form-control" id="POriPInput" placeholder="">
+                        </div>
+                        <label for="IOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                          I
+                        </label>
+                        <div class="col-xs-11 col-sm-3 col-lg-2">
+                          <input type="text" class="form-control" id="IOriPInput" placeholder="">
+                        </div>
+                        <label for="DOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                          D
+                        </label>
+                        <div class="col-xs-11 col-sm-3 col-lg-2">
+                          <input type="text" class="form-control" id="DOriPInput" placeholder="">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="dtOriPInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                          dt
+                        </label>
+                        <div class="col-xs-11 col-sm-3 col-lg-2">
+                          <input type="text" class="form-control" id="dtOriPInput" placeholder="">
+                        </div>
+                      </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="oriVPID">
+                      <br>
+                      <div class="form-group">
+                        <label for="POriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                          P
+                        </label>
+                        <div class="col-xs-11 col-sm-3 col-lg-2">
+                          <input type="text" class="form-control" id="POriVInput" placeholder="">
+                        </div>
+                        <label for="IOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                          I
+                        </label>
+                        <div class="col-xs-11 col-sm-3 col-lg-2">
+                          <input type="text" class="form-control" id="IOriVInput" placeholder="">
+                        </div>
+                        <label for="DOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                          D
+                        </label>
+                        <div class="col-xs-11 col-sm-3 col-lg-2">
+                          <input type="text" class="form-control" id="DOriVInput" placeholder="">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="dtOriVInput" class="col-xs-1 col-sm-1 col-lg-1 control-label">
+                          dt
+                        </label>
+                        <div class="col-xs-11 col-sm-3 col-lg-2">
+                          <input type="text" class="form-control" id="dtOriVInput" placeholder="">
+                        </div>
+                      </div>
+                    </div>
+                    <input type="submit" id="motionSettingsBtn" class="btn btn-default">
+                  </div>
                 </div>
+              </form>
+          </div>
+          <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="motionMonitorContainer">
+            <h1 class="page-header">
+              Motion monitor
+            </h1>
+            <div class="col-lg-6">
+              <div id="distanceChart">
               </div>
-            </form>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="motionMonitorContainer">
-          <h1 class="page-header">
-            Motion monitor
-          </h1>
-          <div class="col-lg-6">
-            <div id="distanceChart">
+            </div>
+            <div class="col-lg-6">
+              <div id="orientationChart">
+              </div>
             </div>
           </div>
-          <div class="col-lg-6">
-            <div id="orientationChart">
-            </div>
+          <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="devStuffContainer">
+            <h1 class="page-header">
+              Dev Stuff
+            </h1>
           </div>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="devStuffContainer">
-          <h1 class="page-header">
-            Dev Stuff
-          </h1>
-        </div>
-    </div>
-    </div>
+      </div>
     <script src="js/lib/jquery.min.js">
     </script>
     <script src="js/lib/jquery.flot.js">

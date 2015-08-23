@@ -1,10 +1,12 @@
 function initUI() {
-    var $allLinks = $('a', '.nav-sidebar');
+    var $sideLinks = $('.nav-sidebar a');
+    var $navLinks = $('#sidebarLinks a');
+
     var $allPages = $('.main').hide();
     $allPages.first().show();
 
     var shortcuts = [];
-    for (var i = 0; i < $allLinks.length; i++) {
+    for (var i = 0; i < $sideLinks.length; i++) {
         shortcuts.push(49+i);
     }
 
@@ -15,7 +17,7 @@ function initUI() {
      */
 
     // Links and pages
-    $allLinks.on('click', function(e) {
+    $sideLinks.on('click', function(e) {
         e.preventDefault();
 
         var $link = $(this);
@@ -23,7 +25,21 @@ function initUI() {
 
         $allPages.hide();
         $page.show();
-        $allLinks.parent().removeClass('active');
+        $sideLinks.parent().removeClass('active');
+        $link.parent().addClass('active');
+
+        $(window).trigger('resize');
+    });
+
+    $navLinks.on('click', function(e) {
+        e.preventDefault();
+
+        var $link = $(this);
+        var $page = $($link.attr('href'));
+
+        $allPages.hide();
+        $page.show();
+        $navLinks.parent().removeClass('active');
         $link.parent().addClass('active');
 
         $(window).trigger('resize');
@@ -36,7 +52,8 @@ function initUI() {
         }
 
         e.preventDefault();
-        $allLinks[e.keyCode - 49].click();
+        var href = $sideLinks.eq(e.keyCode - 49).attr('href');
+        $('a[href="'+href+'"]').trigger('click');
     });
 
     // Bind all "dt" input together
