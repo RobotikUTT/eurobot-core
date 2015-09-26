@@ -9,3 +9,4 @@ Launch gulp for auto build with babel
 
 Launch nodemon for automatic reloading
   ```nodemon build/src/main.js```
+ 
