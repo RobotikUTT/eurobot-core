@@ -4,3 +4,4 @@ npm-debug.log
 src/controlPanel/public/js/lib
 src/controlPanel/public/css/lib
 src/controlPanel/public/css/fonts
+log/*

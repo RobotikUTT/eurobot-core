@@ -7,7 +7,7 @@ var nodemon    = require('gulp-nodemon');
 
 
 var FRONTEND_SRC = 'src/controlPanel/public/**';
-var BACKEND_SRC  = ['src/**/*.js', '!'+FRONTEND_SRC];
+var BACKEND_SRC  = ['src/**/*.js', 'src/**/*.json', '!' + FRONTEND_SRC];
 
 gulp.task('build', function () {
     return gulp.src(BACKEND_SRC)

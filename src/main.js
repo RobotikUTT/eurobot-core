@@ -1,30 +1,24 @@
 import 'source-map-support/register';
-import MotorController from './modules/MotorController';
-import ClampController from './modules/ClampController';
-import SensorsController from './modules/SensorsController';
+import 'babel/polyfill';
+import fs from 'fs';
+import Robot from './Robot';
+import MotionController from './module/MotionController';
 import IA from './IA/IA';
-import server from './controlPanel/server';
+import * as webServer from './controlPanel/webServer';
+import conf from './helper/config';
+import * as logger from './helper/logger';
+
+let log = logger.getLogger(module);
 
 
-let log = require('./libs/logger').getLogger(module);
+let robot = new Robot(conf.get('com').port);
 
-server
-    .start()
+robot.use(MotionController)
+    .init()
     .then(function() {
+        log.info('Robot initialized');
+        webServer.start();
         log.info('WebServer listening on *:8080');
-        let modules = {};
-
-        let motorController = new MotorController(0x02, 15);
-        modules.motorController = motorController;
-
-        let clampController = new ClampController(0x03, 13);
-        modules.clampController = clampController;
-
-        let sensorsController = new SensorsController(0x04, 11);
-        modules.sensorsController = sensorsController;
-
-        let ia = new IA(modules);
-        server.bind(modules);
     })
     .catch(function(err) {
         log.error(err);

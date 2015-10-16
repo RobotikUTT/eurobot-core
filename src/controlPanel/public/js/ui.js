@@ -7,7 +7,7 @@ function initUI() {
 
     var shortcuts = [];
     for (var i = 0; i < $sideLinks.length; i++) {
-        shortcuts.push(49+i);
+        shortcuts.push(49 + i);
     }
 
 

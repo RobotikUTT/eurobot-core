@@ -1,0 +1,8 @@
+{
+    "com": {
+        "port": "vcan0"
+    },
+    "controlPanel": {
+        "port": 8080
+    }
+}
