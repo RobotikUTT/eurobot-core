@@ -1,5 +1,5 @@
 import 'source-map-support/register';
-import 'babel/polyfill';
+import 'babel-polyfill';
 import fs from 'fs';
 import Robot from './Robot';
 import MotionController from './module/MotionController';
@@ -23,3 +23,4 @@ robot.use(MotionController)
     .catch(function(err) {
         log.error(err);
     });
+
