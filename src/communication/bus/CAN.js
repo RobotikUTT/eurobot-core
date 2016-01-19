@@ -1,6 +1,8 @@
 const TRUE_BUFFER  = (new Buffer(1)).fill(1);
 const FALSE_BUFFER = (new Buffer(1)).fill(0);
 
+const CAN_MAXSIZE = 64; // 64-bits
+
 export default class CANSerializer {
     constructor (packet) {
         this.packet = packet;
@@ -32,6 +34,10 @@ export default class CANSerializer {
                         : Buffer.concat([buffer, FALSE_BUFFER], FORMAT_SIZE);
                     break;
             }
+        }
+
+        if (FORMAT_SIZE > CAN_MAXSIZE) {
+            throw new Error('Format can not be contained in a single CAN packet.');
         }
 
         return buffer;
