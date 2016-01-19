@@ -8,7 +8,6 @@ export default class UARTSerializer {
 
     dataSizeBuffer() {
         const DATASIZE = this.packet.constructor.size() + 1;
-        console.log('data size is', DATASIZE);
         let buffer;
 
         if (DATASIZE < 255) {
@@ -64,7 +63,7 @@ export default class UARTSerializer {
         let buffer = Buffer.concat(buffers);
 
         for (let byte of buffer) {
-            v = v | byte;
+            v = v ^ byte;
         }
 
         return (new Buffer(1)).fill(v);
@@ -75,7 +74,7 @@ export default class UARTSerializer {
         let commandBuffer  = this.commandBuffer();
         let payloadBuffer  = this.payloadBuffer();
         let checksumBuffer = this.checksum(commandBuffer, payloadBuffer);
-1
+
         const SIZE = dataSizeBuffer.length + commandBuffer.length + payloadBuffer.length + 1;
 
         return Buffer.concat([dataSizeBuffer, commandBuffer, payloadBuffer, checksumBuffer], SIZE);
