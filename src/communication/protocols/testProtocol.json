@@ -1,0 +1,29 @@
+{
+    "name": "Test",
+    "data": {
+        "foo": {
+            "type": "int8",
+            "default": -1
+        },
+        "foo2": {
+            "type": "uint8",
+            "default": 1
+        },
+        "foo3": {
+            "type": "int16",
+            "default": -1
+        },
+        "foo4": {
+            "type": "uint16",
+            "default": 1
+        },
+        "foo5": {
+            "type": "bool",
+            "default": false
+        },
+        "foo6": {
+            "type": "float",
+            "default": 0.6
+        }
+    }
+}
