@@ -1,5 +1,6 @@
 {
-    "name": "Test",
+    "name": "TestPacket",
+    "id"  : 0,
     "data": {
         "foo": {
             "type": "int8",

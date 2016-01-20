@@ -8,7 +8,7 @@ var nodemon    = require('gulp-nodemon');
 
 var FRONTEND_SRC  = 'src/controlPanel/public/**';
 var BACKEND_SRC   = ['src/**/*.js', '!' + FRONTEND_SRC];
-var PROTOCOLS_SRC = 'src/communication/protocols/*.json';
+var PROTOCOLS_SRC = 'src/communication/protocol/*.json';
 
 gulp.task('build', function () {
     return gulp.src(BACKEND_SRC)
@@ -31,13 +31,13 @@ gulp.task('copy', function() {
         .pipe(gulp.dest('build/controlPanel/public'));
 });
 
-gulp.task('protocols', function() {
+gulp.task('protocol', function() {
     return gulp.src(PROTOCOLS_SRC)
-        .pipe(changed('build/communication/protocols'))
-        .pipe(gulp.dest('build/communication/protocols'));
+        .pipe(changed('build/communication/protocol'))
+        .pipe(gulp.dest('build/communication/protocol'));
 });
 
-gulp.task('dev', ['build', 'copy', 'protocols'], function() {
+gulp.task('dev', ['build', 'copy', 'protocol'], function() {
     gulp.watch(BACKEND_SRC, ['build']);
     gulp.watch(FRONTEND_SRC, ['copy']);
 
@@ -47,4 +47,4 @@ gulp.task('dev', ['build', 'copy', 'protocols'], function() {
     });
 });
 
-gulp.task('default', ['build', 'copy', 'protocols']);
+gulp.task('default', ['build', 'copy', 'protocol']);
