@@ -185,8 +185,8 @@ export default class UART extends EventEmitter {
      * @return {object} The result object
      */
     parse(buffer) {
-        let firstByte = ('00000000' + buffer[0].toString(2));
-        let bigLen = firstByte.slice(-8)[0] === '1'; // Is the first bit 1 or 0
+        let firstByte = ('00000000' + buffer[0].toString(2)).slice(-8);
+        let bigLen = firstByte[0] === '1'; // Is the first bit 1 or 0
 
         let size = bigLen ? buffer.slice(0, 2).readUInt16LE() : buffer.slice(0, 1).readUInt8();
         let id   = bigLen ? buffer.slice(2, 3).readUInt8() : buffer.slice(1, 2).readUInt8();
